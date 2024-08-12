@@ -86,7 +86,7 @@ export default function Home() {
 
             <div className="flex justify-center items-center w-full">
               <Button
-                className="bg-white rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide"
+                className="bg-white rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950"
                 variant="default"
               >
                 LOGIN
