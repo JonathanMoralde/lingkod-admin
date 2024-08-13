@@ -67,7 +67,7 @@ const Sidebar = () => {
     },
   ];
   return (
-    <NavigationMenu className=" my-10 rounded-r-3xl bg-indigo-950 px-5 py-10 max-w-xs flex-col items-start justify-start">
+    <NavigationMenu className="rounded-r-3xl bg-indigo-950 px-5 py-10 max-w-xs flex-col items-start justify-start">
       <div className="flex items-center w-full">
         <Image
           className="me-4"
@@ -109,7 +109,7 @@ const Sidebar = () => {
                     <span className="mr-5 text-xl transition-all">
                       {item.icon}
                     </span>
-                    <p className=" text-lg font-semibold ">{item.name}</p>
+                    <p className="text-lg font-semibold">{item.name}</p>
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
