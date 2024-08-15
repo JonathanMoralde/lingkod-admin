@@ -55,7 +55,7 @@ export const columns: ColumnDef<User>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const data = row.original;
 
       return (
         <div className="text-center">
@@ -68,14 +68,15 @@ export const columns: ColumnDef<User>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(payment.id)}
               >
                 Copy payment ID
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
+              <DropdownMenuItem>Approve</DropdownMenuItem>
+              <DropdownMenuItem>View details</DropdownMenuItem>
+              <DropdownMenuItem>Edit details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

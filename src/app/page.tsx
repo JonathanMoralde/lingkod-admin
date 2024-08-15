@@ -1,42 +1,113 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 import Image from "next/image";
+import { loginSchema } from "@/models/loginSchema";
+import { onSubmitAction } from "./api/action";
+import { useFormState } from "react-dom";
+import { toast } from "sonner";
+
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
+  const router = useRouter();
+
+  const [state, formAction] = useFormState(onSubmitAction, {
+    message: "",
+  });
+  // Integrate React Hook Form with Zod validation
+  const form = useForm<z.output<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      ...(state?.fields ?? {}),
+    },
+  });
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Handle toast notifications and navigation based on state changes
+  useEffect(() => {
+    console.log("rerender");
+    if (state?.success) {
+      // Show success toast
+
+      setTimeout(() => {
+        toast.success("User signed in successfully!");
+      });
+      // Navigate to a different page when the sign-in is successful
+      router.push("/lingkod/dashboard"); // Change "/dashboard" to your desired route
+    } else {
+      // Show error toast
+      setTimeout(() => {
+        if (
+          state?.success != null &&
+          !state?.success &&
+          state?.issues != null &&
+          state?.issues?.length
+        ) {
+          toast.error(state.issues.join(", "));
+        }
+      });
+    }
+  }, [state?.success, state?.issues, toast, router]); // Only run when state.success or state.issues changes
+
   return (
     <main className="relative overflow-hidden bg-indigo-900 min-h-screen">
-      <Image
-        className="absolute rotate-12 top-[-35rem] left-[-30rem] "
-        src="/1.svg"
-        alt="Background Image"
-        // layout="responsive"
-        width={1300}
-        height={1300}
-        priority
-      />
-      <Image
-        className="absolute rotate-12 bottom-[-45rem] right-[-30rem] "
-        src="/2.svg"
-        alt="Background Image"
-        // layout="responsive"
-        width={1300}
-        height={1300}
-        priority
-      />
+      <div className="absolute rotate-12 top-[-35rem] left-[-30rem]">
+        <div className="relative w-[81.25rem] h-[81.25rem]">
+          <Image
+            className=" "
+            src="/1.svg"
+            alt="Background Image"
+            fill
+            sizes="w-auto h-auto"
+            priority
+          />
+        </div>
+      </div>
+      <div
+        className="absolute rotate-12 bottom-[-45rem] right-[-30rem] 
+      "
+      >
+        <div className="relative w-[81.25rem] h-[81.25rem]">
+          <Image
+            className=""
+            src="/2.svg"
+            alt="Background Image"
+            fill
+            priority
+            sizes="w-auto h-auto"
+          />
+        </div>
+      </div>
 
       <section className="h-screen flex items-center w-full my-auto max-w-screen-lg mx-auto relative">
         <div className="flex justify-between items-center h-3/4 w-full bg-[#4844B4] rounded-3xl border-4 border-white shadow-lg">
           {/* logo */}
           <div className="bg-white h-full w-1/2 rounded-2xl flex flex-col justify-center items-center">
-            <div className="w-[300px] h-[300px] mb-10 rounded-full shadow-lg">
+            <div className="relative w-[18.75rem] h-[18.75rem] mb-10 rounded-full shadow-lg">
               <Image
                 src="/logo-no-background 1.png"
                 alt="Lingkod Logo"
-                layout="responsive"
-                width={300}
-                height={300}
+                fill
+                sizes="w-auto h-auto"
                 priority
               />
             </div>
@@ -44,54 +115,75 @@ export default function Home() {
               Serving Local Communities
             </h1>
           </div>
-          {/* //bg-gradient-to-l from-indigo-800 to-indigo-700 */}
           {/* login form */}
+
           <div className="w-1/2 px-10 py-20  h-full rounded-2xl ">
             <h3 className="text-white scroll-m-20 text-2xl font-semibold tracking-tight mb-8 text-center">
               Welcome back, Admin!
             </h3>
 
-            {/* email */}
-            <div className="mb-4">
-              <Label htmlFor="email" className="text-white">
-                Email
-              </Label>
-              <Input
-                className="text-white rounded"
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-              />
-            </div>
-
-            {/* password */}
-            <div className="mb-4">
-              <Label htmlFor="password" className="text-white">
-                Password
-              </Label>
-              <Input
-                className="text-white rounded"
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-              />
-            </div>
-
-            {/* forgot pass */}
-            <p className="leading-7 text-white text-right mb-10">
-              Forgot Password
-            </p>
-
-            {/* login btn */}
-
-            <div className="flex justify-center items-center w-full">
-              <Button
-                className="bg-white rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950"
-                variant="default"
+            <Form {...form}>
+              <form
+                ref={formRef}
+                action={formAction}
+                onSubmit={form.handleSubmit(() => formRef.current?.submit())}
               >
-                LOGIN
-              </Button>
-            </div>
+                {/* email */}
+                <FormField
+                  name="email"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem className="mb-4">
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="text-white rounded"
+                          type="email"
+                          placeholder="Enter your email"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* password */}
+                <FormField
+                  name="password"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem className="mb-10">
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="text-white rounded"
+                          type="password"
+                          placeholder="Enter your password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* forgot pass */}
+                <p className="leading-7 text-white text-right mb-10">
+                  <Link href="/forgotPassword">Forgot Password</Link>
+                </p>
+
+                {/* login btn */}
+                <div className="flex justify-center items-center w-full">
+                  <Button
+                    type="submit"
+                    className="bg-white rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950"
+                  >
+                    LOGIN
+                  </Button>
+                </div>
+              </form>
+            </Form>
           </div>
         </div>
       </section>
