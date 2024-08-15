@@ -4,6 +4,7 @@ import { loginSchema } from "@/models/loginSchema";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/config/firebase";
+import { cookies } from "next/headers"; // Import cookies utility from Next.js
 
 export type FormState = {
   message: string;
@@ -36,11 +37,24 @@ export async function onSubmitAction(
   }
 
   try {
-    await signInWithEmailAndPassword(
+    const userCredential = await signInWithEmailAndPassword(
       auth,
       parsed.data.email,
       parsed.data.password
     );
+
+    // Get the user's ID token
+    const token = await userCredential.user.getIdToken();
+
+    // Set the token in a cookie
+    const cookieStore = cookies(); // Use Next.js cookies utility
+    cookieStore.set("authToken", token, {
+      httpOnly: true, // Ensures the cookie is only accessible by the server
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      path: "/", // The cookie is available across the entire site
+      sameSite: "strict", // Prevent CSRF attacks
+      maxAge: 60 * 60 * 24 * 7, // Cookie expiry (e.g., 7 days)
+    });
 
     return { message: "User signed in successfully", success: true };
   } catch (error) {
