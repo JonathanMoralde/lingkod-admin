@@ -14,6 +14,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { handleApprove } from "./actions";
+import Link from "next/link";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -57,6 +59,16 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const data = row.original;
 
+      // const handleApproveClick = async (id: string) => {
+      //   const result = await handleApprove(id);
+      //   if (result.success) {
+      //     // Optionally, trigger a client-side update or refresh
+      //   } else {
+      //     // Handle error
+      //     console.error(result.error);
+      //   }
+      // };
+
       return (
         <div className="text-center">
           <DropdownMenu>
@@ -74,8 +86,16 @@ export const columns: ColumnDef<User>[] = [
                 Copy payment ID
               </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Approve</DropdownMenuItem>
-              <DropdownMenuItem>View details</DropdownMenuItem>
+              {data.status == "pending" && (
+                <DropdownMenuItem
+                  onClick={async () => await handleApprove(data.id)}
+                >
+                  Approve
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem>
+                <Link href={`/lingkod/residents/${data.id}`}>View details</Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>Edit details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

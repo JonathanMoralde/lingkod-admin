@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { User, columns } from "./columns";
 import { DataTable } from "../../../components/lingkod/data-table";
 import { getData } from "./actions";
-
 const Residents = async () => {
   // const payments: User[] = [
   //   {

@@ -1,3 +1,5 @@
+"use server";
+
 import { User } from "./columns";
 import { db } from "@/config/firebase";
 import {
@@ -9,6 +11,7 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
+import { revalidatePath } from "next/cache";
 
 export async function getData(): Promise<User[]> {
   // Fetch data from your API here.
@@ -29,4 +32,19 @@ export async function getData(): Promise<User[]> {
   });
 
   return data;
+}
+
+export async function handleApprove(id: string) {
+  try {
+    const documentRef = doc(db, "users", id);
+    await updateDoc(documentRef, { status: "approved" });
+
+    // Trigger revalidation for the specific path
+    revalidatePath("/lingkod/residents");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating status:", error);
+    return { success: false, error: "Error updating status" };
+  }
 }

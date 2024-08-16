@@ -75,7 +75,7 @@ const HeaderBar = () => {
       // Sign out the user with Firebase
       await logout();
 
-      deleteAuthCookie();
+      await deleteAuthCookie();
 
       // Redirect to the login page or home page
       router.push("/");

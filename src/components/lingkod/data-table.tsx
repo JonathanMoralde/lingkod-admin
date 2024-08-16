@@ -11,6 +11,7 @@ import {
   getSortedRowModel,
   ColumnFiltersState,
   getFilteredRowModel,
+  FilterFn,
 } from "@tanstack/react-table";
 
 import {
@@ -30,6 +31,15 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
+// Global filter function excluding "actions" column
+const globalFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
+  if (columnId === "actions") return true; // Skip filtering for "actions"
+  const value = row.getValue(columnId);
+  return String(value)
+    .toLowerCase()
+    .includes(String(filterValue).toLowerCase());
+};
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -38,6 +48,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [globalFilter, setGlobalFilter] = React.useState<string>("");
 
   const table = useReactTable({
     data,
@@ -46,25 +57,26 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
+    // onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    // state: {
+    //   sorting,
+    //   columnFilters,
+    // },
+    globalFilterFn,
     state: {
       sorting,
-      columnFilters,
+      globalFilter: globalFilter,
     },
+    onGlobalFilterChange: setGlobalFilter,
   });
-
   return (
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search name"
-          value={
-            (table.getColumn("full_name")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("full_name")?.setFilterValue(event.target.value)
-          }
+          placeholder="Search"
+          value={globalFilter}
+          onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm rounded border-gray-400 text-gray-400 hover:border-white  hover:text-white transition-all"
         />
       </div>
