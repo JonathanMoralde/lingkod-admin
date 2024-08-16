@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import {
   Form,
   FormField,
@@ -17,58 +18,89 @@ import {
 } from "@/components/ui/form";
 import Image from "next/image";
 import { loginSchema } from "@/models/loginSchema";
-import { onSubmitAction } from "./api/action";
+import { onSubmitAction } from "./action";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
-
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function Home() {
   const router = useRouter();
+  const { user, login } = useAuth();
 
-  const [state, formAction] = useFormState(onSubmitAction, {
-    message: "",
-  });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // const [state, formAction] = useFormState(onSubmitAction, {
+  //   message: "",
+  // });
+
+  useEffect(() => {
+    if (user) {
+      router.push("/lingkod/dashboard");
+    }
+  }, [user, router]);
+
   // Integrate React Hook Form with Zod validation
   const form = useForm<z.output<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
-      ...(state?.fields ?? {}),
     },
   });
 
-  const formRef = useRef<HTMLFormElement>(null);
+  // const formRef = useRef<HTMLFormElement>(null);
 
-  // Handle toast notifications and navigation based on state changes
-  useEffect(() => {
-    console.log("rerender");
-    if (state?.success) {
-      // Show success toast
+  // // Handle toast notifications and navigation based on state changes
+  // useEffect(() => {
+  //   console.log("rerender");
+  //   if (state?.success) {
+  //     // Show success toast
 
-      setTimeout(() => {
-        toast.success("User signed in successfully!");
-      });
-      // Navigate to a different page when the sign-in is successful
-      router.push("/lingkod/dashboard"); // Change "/dashboard" to your desired route
-    } else {
-      // Show error toast
-      setTimeout(() => {
-        if (
-          state?.success != null &&
-          !state?.success &&
-          state?.issues != null &&
-          state?.issues?.length
-        ) {
-          toast.error(state.issues.join(", "));
-        }
-      });
+  //     setTimeout(() => {
+  //       toast.success("User signed in successfully!");
+  //     });
+  //     // Navigate to a different page when the sign-in is successful
+  //     router.push("/lingkod/dashboard"); // Change "/dashboard" to your desired route
+  //   } else {
+  //     // Show error toast
+  //     setTimeout(() => {
+  //       if (
+  //         state?.success != null &&
+  //         !state?.success &&
+  //         state?.issues != null &&
+  //         state?.issues?.length
+  //       ) {
+  //         toast.error(state.issues.join(", "));
+  //       }
+  //     });
+  //   }
+  // }, [state?.success, state?.issues, toast, router]); // Only run when state.success or state.issues changes
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+    setIsLoading(true);
+    try {
+      await login(data.email, data.password);
+      toast.success("User signed in successfully!");
+      setIsLoading(false);
+      router.push("/lingkod/dashboard"); // Change to your desired route
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error message:", error.message);
+
+        toast.error(`Failed to sign in. ${error.message}`);
+      } else {
+        console.error("Unknown error:", error);
+      }
+      setIsLoading(false);
     }
-  }, [state?.success, state?.issues, toast, router]); // Only run when state.success or state.issues changes
+  };
 
-  return (
+  return user ? (
+    <main className="grid place-items-center min-h-screen">
+      <Loader2 className="h-10 w-10 animate-spin" />
+    </main>
+  ) : (
     <main className="relative overflow-hidden bg-indigo-900 min-h-screen">
       <div className="absolute rotate-12 top-[-35rem] left-[-30rem]">
         <div className="relative w-[81.25rem] h-[81.25rem]">
@@ -123,11 +155,7 @@ export default function Home() {
             </h3>
 
             <Form {...form}>
-              <form
-                ref={formRef}
-                action={formAction}
-                onSubmit={form.handleSubmit(() => formRef.current?.submit())}
-              >
+              <form onSubmit={form.handleSubmit(onSubmit)}>
                 {/* email */}
                 <FormField
                   name="email"
@@ -178,7 +206,11 @@ export default function Home() {
                   <Button
                     type="submit"
                     className="bg-white rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950"
+                    disabled={isLoading}
                   >
+                    {isLoading ?? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
                     LOGIN
                   </Button>
                 </div>

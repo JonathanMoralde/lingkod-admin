@@ -78,3 +78,7 @@ export async function onSubmitAction(
 
   return { message: "An unknown error occurred", success: false };
 }
+
+export async function deleteAuthCookie() {
+  cookies().delete("authToken");
+}
