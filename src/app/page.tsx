@@ -205,7 +205,7 @@ export default function Home() {
                 <div className="flex justify-center items-center w-full">
                   <Button
                     type="submit"
-                    className="bg-white rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950"
+                    className="bg-white rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 w-1/2"
                     disabled={isLoading}
                   >
                     {isLoading ?? (

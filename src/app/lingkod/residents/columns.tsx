@@ -52,7 +52,7 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "status",
-    header: "Account Status",
+    header: "Account Verification Status",
   },
   {
     id: "actions",
@@ -78,7 +78,7 @@ export const columns: ColumnDef<User>[] = [
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               {/* <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(payment.id)}
@@ -86,15 +86,21 @@ export const columns: ColumnDef<User>[] = [
                 Copy payment ID
               </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              {data.status == "pending" && (
-                <DropdownMenuItem
-                  onClick={async () => await handleApprove(data.id)}
-                >
-                  Approve
-                </DropdownMenuItem>
-              )}
+              {
+                // data.status == "pending" && (
+                //   <DropdownMenuItem
+                //   // onClick={async () => await handleApprove(data.id)}
+                //   >
+                //     <Link href={`/lingkod/residents/verify/${data.id}`}>
+                //       Verify User
+                //     </Link>
+                //   </DropdownMenuItem>
+                // )
+              }
               <DropdownMenuItem>
-                <Link href={`/lingkod/residents/${data.id}`}>View details</Link>
+                <Link href={`/lingkod/residents/${data.id}`}>
+                  {data.status == "pending" ? "Verify Account" : "View details"}
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>Edit details</DropdownMenuItem>
             </DropdownMenuContent>
