@@ -24,7 +24,7 @@ const Events = async () => {
           </Link>
         </div>
 
-        <div className="flex flex-wrap w-full justify-between">
+        <div className="flex flex-wrap w-full gap-4">
           {data.map((event, index) => (
             <EventCard
               title={event.event_title}

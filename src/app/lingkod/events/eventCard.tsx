@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import {
@@ -24,6 +26,8 @@ import { format } from "date-fns";
 
 import Link from "next/link";
 import { Timestamp } from "firebase/firestore";
+import { handleDelete } from "./actions";
+import { toast } from "sonner";
 
 type Props = {
   id: string;
@@ -34,8 +38,16 @@ type Props = {
 };
 
 const EventCard = (props: Props) => {
+  const deleteEvent = async (id: string) => {
+    try {
+      await handleDelete(id);
+      toast.success("Successfully deleted the event!");
+    } catch (error) {
+      toast.error("Failed to delete the event!");
+    }
+  };
   return (
-    <Card className="w-[24%] h-80 rounded-xl overflow-hidden mb-4">
+    <Card className="w-[23%] h-80 rounded-xl overflow-hidden">
       <CardHeader className="relative w-full h-1/2 mt-0 space-y-0">
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="z-20 absolute right-0 top-0">
@@ -48,7 +60,9 @@ const EventCard = (props: Props) => {
             <Link href={`/lingkod/events/${props.id}`}>
               <DropdownMenuItem>Edit Event</DropdownMenuItem>
             </Link>
-            <DropdownMenuItem>Delete Event</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => deleteEvent(props.id)}>
+              Delete Event
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         <div className="absolute top-0 bottom-0 left-0 right-0 z-10 bg-[#00000054]"></div>

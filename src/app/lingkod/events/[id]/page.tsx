@@ -35,8 +35,9 @@ import { toast } from "sonner";
 import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
 // If you are using date-fns v3.x, please import the v3 adapter
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { handleSubmit } from "../actions";
+import { getEventData, handleEdit } from "../actions";
 import { Timestamp } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 
 type Props = { params: { id: string } };
 
@@ -62,6 +63,8 @@ type FormData = z.infer<typeof formSchema>;
 const EditEvent = (props: Props) => {
   const { id }: { id: string } = props.params;
 
+  const router = useRouter();
+
   const [date, setDate] = React.useState<Date>();
   const [imagePreview, setImagePreview] = React.useState<string | null>(null);
   const [time, setTime] = React.useState<Date | null>(null);
@@ -70,6 +73,34 @@ const EditEvent = (props: Props) => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
+
+  useEffect(() => {
+    const fetchEventDetail = async () => {
+      try {
+        const eventData = await getEventData(id);
+
+        // Set the form values using the fetched event data
+        form.setValue("title", eventData.title);
+        form.setValue("body", eventData.description);
+        form.setValue("location", eventData.event_location);
+        form.setValue("date", new Date(eventData.event_date)); // Convert the timestamp to a Date object
+        form.setValue(
+          "time",
+          new Date(`1970-01-01T${eventData.event_time}:00Z`)
+        ); // Convert event_time to a Date object
+        setDate(new Date(eventData.event_date));
+
+        // Set the image preview if there's an event_pic URL
+        if (eventData.event_pic) {
+          setImagePreview(eventData.event_pic);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchEventDetail();
+  }, [id, form]);
 
   // Form submission handler
   const onSubmit: SubmitHandler<FormData> = async (
@@ -87,7 +118,8 @@ const EditEvent = (props: Props) => {
         data.location,
         format(data.time, "hh:mm aa")
       );
-      await handleSubmit(
+      await handleEdit(
+        id,
         JSON.stringify(fileBase64),
         data.title,
         data.body,
@@ -95,7 +127,7 @@ const EditEvent = (props: Props) => {
         data.location,
         format(data.time, "hh:mm aa")
       );
-      toast.success("Event posted successfully!");
+      toast.success("Event was updated successfully!");
       form.reset({
         image: undefined,
         title: "",
@@ -107,11 +139,12 @@ const EditEvent = (props: Props) => {
       setDate(undefined);
       setTime(null);
       setImagePreview(null);
+      router.back();
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error message:", error.message);
 
-        toast.error(`Failed to post an event. ${error.message}`);
+        toast.error(`Failed to update the event. ${error.message}`);
       } else {
         console.error("Unknown error:", error);
       }
