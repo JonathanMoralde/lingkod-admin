@@ -44,7 +44,7 @@ export const columns: ColumnDef<ElectricBill>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Requested
+          Due Date
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -63,7 +63,7 @@ export const columns: ColumnDef<ElectricBill>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Requested
+          Disconnection Date
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -88,7 +88,7 @@ export const columns: ColumnDef<ElectricBill>[] = [
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               {/* <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(payment.id)}
@@ -96,9 +96,7 @@ export const columns: ColumnDef<ElectricBill>[] = [
                 Copy payment ID
               </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Approve</DropdownMenuItem>
               <DropdownMenuItem>View details</DropdownMenuItem>
-              <DropdownMenuItem>Edit details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

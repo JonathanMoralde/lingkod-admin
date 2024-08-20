@@ -57,7 +57,7 @@ export const columns: ColumnDef<DocRequest>[] = [
   },
   {
     accessorKey: "status",
-    header: "Account Status",
+    header: "Status",
   },
   {
     id: "actions",
@@ -73,7 +73,7 @@ export const columns: ColumnDef<DocRequest>[] = [
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               {/* <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(payment.id)}
@@ -81,9 +81,9 @@ export const columns: ColumnDef<DocRequest>[] = [
                 Copy payment ID
               </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Approve</DropdownMenuItem>
+              <DropdownMenuItem>Accept</DropdownMenuItem>
+              <DropdownMenuItem>Decline</DropdownMenuItem>
               <DropdownMenuItem>View details</DropdownMenuItem>
-              <DropdownMenuItem>Edit details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

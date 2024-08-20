@@ -31,14 +31,14 @@ export const columns: ColumnDef<Report>[] = [
     header: "Full Name",
   },
   {
-    accessorKey: "date_requested",
+    accessorKey: "date_submitted",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Requested
+          Date Submitted
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -63,7 +63,7 @@ export const columns: ColumnDef<Report>[] = [
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               {/* <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(payment.id)}
@@ -71,9 +71,7 @@ export const columns: ColumnDef<Report>[] = [
                 Copy payment ID
               </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Approve</DropdownMenuItem>
               <DropdownMenuItem>View details</DropdownMenuItem>
-              <DropdownMenuItem>Edit details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
