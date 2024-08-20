@@ -84,10 +84,6 @@ const EditEvent = (props: Props) => {
         form.setValue("body", eventData.description);
         form.setValue("location", eventData.event_location);
         form.setValue("date", new Date(eventData.event_date)); // Convert the timestamp to a Date object
-        form.setValue(
-          "time",
-          new Date(`1970-01-01T${eventData.event_time}:00Z`)
-        ); // Convert event_time to a Date object
         setDate(new Date(eventData.event_date));
 
         // Set the image preview if there's an event_pic URL
