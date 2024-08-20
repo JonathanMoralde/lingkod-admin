@@ -2,25 +2,43 @@ import React from "react";
 import EventCard from "./eventCard";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Event, getData } from "./actions";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-const Events = () => {
+const Events = async () => {
+  const data: Event[] = await getData();
+
   return (
-    <section className="bg-indigo-950 rounded-xl px-4 py-10 h-[80vh]">
-      <div className="mb-6 flex justify-between">
-        <h3 className="text-xl font-semibold ">Events</h3>
+    <ScrollArea className="bg-indigo-950 rounded-xl h-[80vh]">
+      <div className="py-10 px-4">
+        <div className="mb-6 flex justify-between">
+          <h3 className="text-xl font-semibold ">Events</h3>
 
-        <Link href="/lingkod/events/new">
-          <Button
-            variant="default"
-            className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 "
-          >
-            New Event
-          </Button>
-        </Link>
+          <Link href="/lingkod/events/new">
+            <Button
+              variant="default"
+              className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 "
+            >
+              New Event
+            </Button>
+          </Link>
+        </div>
+
+        <div className="flex flex-wrap w-full justify-between">
+          {data.map((event, index) => (
+            <EventCard
+              title={event.event_title}
+              description={event.description}
+              event_date={event.event_date}
+              event_pic={event.event_pic}
+              id={event.id}
+              key={index}
+            />
+          ))}
+          {/* <EventCard title="" /> */}
+        </div>
       </div>
-
-      <div className="flex flex-wrap w-full">{/* <EventCard /> */}</div>
-    </section>
+    </ScrollArea>
   );
 };
 

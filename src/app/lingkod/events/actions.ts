@@ -14,6 +14,35 @@ import {
   addDoc,
 } from "firebase/firestore";
 
+export type Event = {
+  id: string;
+  event_title: string;
+  description: string;
+  event_date: number;
+  event_pic: string;
+};
+
+export async function getData(): Promise<Event[]> {
+  // Fetch data from your API here.
+
+  const eventRef = query(collection(db, "events"));
+  const eventSnapshot = await getDocs(eventRef);
+
+  const data: Event[] = eventSnapshot.docs.map((doc) => {
+    const docData = doc.data();
+
+    return {
+      id: doc.id,
+      event_title: docData.title as string, // Omit 'id' from the User type to avoid conflicts
+      description: docData.description as string,
+      event_date: (docData.event_date as Timestamp).toMillis(),
+      event_pic: docData.event_pic as string,
+    };
+  });
+
+  return data;
+}
+
 const base64ToBlob = (base64: string): Blob => {
   const byteString = atob(base64.split(",")[1]);
   const mimeString = base64.split(",")[0].split(":")[1].split(";")[0];
