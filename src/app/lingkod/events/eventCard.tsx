@@ -57,7 +57,7 @@ const EventCard = (props: Props) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="dark:bg-[#4844B4] me-4">
-            <Link href={`/lingkod/events/${props.id}`}>
+            <Link href={`/lingkod/events/new/${props.id}`}>
               <DropdownMenuItem>Edit Event</DropdownMenuItem>
             </Link>
             <DropdownMenuItem onClick={() => deleteEvent(props.id)}>

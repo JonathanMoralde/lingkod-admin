@@ -31,38 +31,73 @@ import {
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
 // If you are using date-fns v3.x, please import the v3 adapter
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { handleSubmit } from "../actions";
+import { getEventData, handleEdit, handleSubmit } from "../actions";
 import { Timestamp } from "firebase/firestore";
 
 type Props = {};
 
 // Define the form schema using Zod
 
+// const formSchema = z.object({
+//   image: z
+//     .instanceof(File)
+//     .refine((file) => file.size <= 5000000, "Max file size is 5MB"),
+//   title: z.string().min(1, "Event title is required"),
+//   body: z.string().min(1, "Description is required"),
+//   location: z.string().min(1, "Event Location is required"),
+//   date: z.date({
+//     required_error: "Event date is required",
+//   }),
+//   time: z.date({
+//     required_error: "Event time is required",
+//   }),
+//   category: z.string(),
+// });
 const formSchema = z.object({
   image: z
     .instanceof(File)
     .refine((file) => file.size <= 5000000, "Max file size is 5MB"),
   title: z.string().min(1, "Event title is required"),
   body: z.string().min(1, "Description is required"),
-  location: z.string().min(1, "Event Location is required"),
+  location: z.string().optional(),
   date: z.date({
-    required_error: "Event date is required",
+    required_error: "Date is required",
   }),
-  time: z.date({
-    required_error: "Event time is required",
-  }),
+  time: z.date().optional(),
+  category: z.string(),
 });
 
-type FormData = z.infer<typeof formSchema>;
+const refinedFormSchema = formSchema.refine(
+  (data) => {
+    if (data.category === "event") {
+      return data.location && data.time;
+    }
+    return true;
+  },
+  {
+    message: "Location and Time are required for events.",
+    path: ["location"], // Highlight the first missing field, can also use "time" or handle both separately
+  }
+);
+
+type FormData = z.infer<typeof refinedFormSchema>;
 
 const NewEvent = (props: Props) => {
   const [date, setDate] = React.useState<Date>();
   const [imagePreview, setImagePreview] = React.useState<string | null>(null);
   const [time, setTime] = React.useState<Date | null>(null);
+  const [category, setCategory] = useState<string>("");
 
   // Set up React Hook Form with Zod validation
   const form = useForm<FormData>({
@@ -82,16 +117,18 @@ const NewEvent = (props: Props) => {
         data.title,
         data.body,
         Timestamp.fromDate(data.date).toMillis(),
-        data.location,
-        format(data.time, "hh:mm aa")
+        category,
+        data.location ? data.location : undefined,
+        data.time ? format(data.time, "hh:mm aa") : undefined
       );
       await handleSubmit(
         JSON.stringify(fileBase64),
         data.title,
         data.body,
         Timestamp.fromDate(data.date).toMillis(),
-        data.location,
-        format(data.time, "hh:mm aa")
+        data.category,
+        data.location ? data.location : undefined,
+        data.time ? format(data.time, "hh:mm aa") : undefined
       );
       toast.success("Event posted successfully!");
       form.reset({
@@ -101,6 +138,7 @@ const NewEvent = (props: Props) => {
         location: "",
         date: undefined,
         time: undefined,
+        category: "",
       });
       setDate(undefined);
       setTime(null);
@@ -211,28 +249,109 @@ const NewEvent = (props: Props) => {
 
               <FormField
                 control={form.control}
-                name="location"
+                name="category" // Make sure this matches your schema field name
                 render={({ field }) => (
                   <FormItem className="mb-4">
-                    <FormLabel>Event Location</FormLabel>
+                    <FormLabel>Select Category</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Enter location"
-                        {...field}
-                        className="placeholder:text-gray-400"
-                      />
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          setCategory(value);
+                        }} // Update the form state
+                        value={field.value} // Controlled input
+                      >
+                        <SelectTrigger className="w-full dark:bg-transparent dark:border-gray-300 rounded dark:focus:outline-none">
+                          <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent className=" rounded">
+                          <SelectItem value="news">News</SelectItem>
+                          <SelectItem value="event">Event</SelectItem>
+                          <SelectItem value="update">Update</SelectItem>
+                          <SelectItem value="alert">Alert</SelectItem>
+                          <SelectItem value="reminder">Reminders</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {category === "event" && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <FormItem className="mb-4">
+                        <FormLabel>Event Location</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter location"
+                            {...field}
+                            className="placeholder:text-gray-400"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col mb-6">
+                        <FormLabel>Event Time</FormLabel>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <MobileTimePicker
+                            className="border-gray-300"
+                            slotProps={{
+                              textField: {
+                                sx: {
+                                  "& .MuiOutlinedInput-root": {
+                                    "& fieldset": {
+                                      borderColor: "#d1d5db",
+                                    },
+                                    "&:hover fieldset": {
+                                      borderColor: "#d1d5db",
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                      borderColor: "#d1d5db",
+                                    },
+                                  },
+                                  "& .MuiInputBase-input": {
+                                    color: "#d1d5db",
+                                  },
+                                  "& .MuiInputLabel-root": {
+                                    color: "#d1d5db",
+                                  },
+                                },
+                              },
+                            }}
+                            value={time}
+                            onChange={(newValue) => {
+                              setTime(newValue);
+                              field.onChange(newValue);
+                            }}
+                          />
+                        </LocalizationProvider>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+
               <FormField
                 control={form.control}
                 name="date"
                 render={({ field }) => (
                   <FormItem className="flex flex-col mb-5">
-                    <FormLabel>Event Date</FormLabel>
+                    <FormLabel>
+                      {category === "event" ? "Event Date" : "Date"}
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -267,7 +386,7 @@ const NewEvent = (props: Props) => {
                 )}
               />
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="time"
                 render={({ field }) => (
@@ -309,7 +428,7 @@ const NewEvent = (props: Props) => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <div className="grid place-items-center">
                 <Button

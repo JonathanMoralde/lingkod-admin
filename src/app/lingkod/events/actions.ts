@@ -30,10 +30,11 @@ export interface EventDetails {
   id: string;
   title: string;
   description: string;
+  category: string;
   event_date: number;
   event_pic: string;
-  event_time: string;
-  event_location: string;
+  event_time?: string;
+  event_location?: string;
 }
 
 export async function getData(): Promise<Event[]> {
@@ -75,6 +76,7 @@ export async function getEventData(id: string): Promise<EventDetails> {
       id: id,
       title: docData?.title,
       description: docData?.description,
+      category: docData?.category,
       event_date: (docData?.event_date as Timestamp).toMillis(),
       event_pic: docData?.event_pic,
       event_location: docData?.event_location,
@@ -104,8 +106,9 @@ export async function handleSubmit(
   title: string,
   body: string,
   date: number,
-  location: string,
-  time: string
+  category: string,
+  location?: string,
+  time?: string
 ) {
   try {
     const collectionRef = collection(db, "events");
@@ -118,14 +121,23 @@ export async function handleSubmit(
     const imageUrl = await getDownloadURL(snapshot.ref);
 
     // insert the event details in the events collection
-    await addDoc(collectionRef, {
+    const eventData: any = {
       title,
       description: body,
       event_date: Timestamp.fromMillis(date),
       event_pic: imageUrl,
-      event_location: location,
-      event_time: time,
-    });
+      category,
+    };
+
+    // Conditionally add optional fields
+    if (location) {
+      eventData.event_location = location;
+    }
+
+    if (time) {
+      eventData.event_time = time;
+    }
+    await addDoc(collectionRef, eventData);
 
     revalidatePath("/lingkod/events");
 
@@ -155,8 +167,9 @@ export async function handleEdit(
   title: string,
   body: string,
   date: number,
-  location: string,
-  time: string
+  category: string,
+  location?: string,
+  time?: string
 ) {
   try {
     const documentRef = doc(collection(db, "events"), id);
@@ -168,14 +181,24 @@ export async function handleEdit(
     const snapshot = await uploadBytes(storageRef, fileBlob);
     const imageUrl = await getDownloadURL(snapshot.ref);
 
-    await updateDoc(documentRef, {
+    const eventData: any = {
       title,
       description: body,
       event_date: Timestamp.fromMillis(date),
       event_pic: imageUrl,
-      event_location: location,
-      event_time: time,
-    });
+      category,
+    };
+
+    // Conditionally add optional fields
+    if (location) {
+      eventData.event_location = location;
+    }
+
+    if (time) {
+      eventData.event_time = time;
+    }
+
+    await updateDoc(documentRef, eventData);
 
     revalidatePath("/lingkod/events");
 
