@@ -22,7 +22,7 @@ import { format } from "date-fns";
 export type ElectricBill = {
   id: string;
   full_name: string;
-  total_amount: number;
+  total_due: number;
   due_date: number;
   disconnection_date: number;
 };
@@ -33,8 +33,16 @@ export const columns: ColumnDef<ElectricBill>[] = [
     header: "Full Name",
   },
   {
-    accessorKey: "total_amount",
-    header: "Total Amount",
+    accessorKey: "total_due",
+    header: "Total Due",
+    cell: ({ row }) => {
+      const formattedTotalDue = new Intl.NumberFormat("en-PH", {
+        style: "currency",
+        currency: "PHP",
+        minimumFractionDigits: 0,
+      }).format(row.original.total_due);
+      return <span>{formattedTotalDue}</span>;
+    },
   },
   {
     accessorKey: "due_date",
@@ -51,7 +59,7 @@ export const columns: ColumnDef<ElectricBill>[] = [
     },
     cell: ({ row }) => {
       const timestamp = row.original.due_date;
-      const formattedDate = format(new Date(timestamp), "MM/dd/yyyy hh:mm a");
+      const formattedDate = format(new Date(timestamp), "MMMM dd, yyyy");
       return <span>{formattedDate}</span>;
     },
   },
@@ -70,7 +78,7 @@ export const columns: ColumnDef<ElectricBill>[] = [
     },
     cell: ({ row }) => {
       const timestamp = row.original.disconnection_date;
-      const formattedDate = format(new Date(timestamp), "MM/dd/yyyy hh:mm a");
+      const formattedDate = format(new Date(timestamp), "MMMM dd, yyyy");
       return <span>{formattedDate}</span>;
     },
   },

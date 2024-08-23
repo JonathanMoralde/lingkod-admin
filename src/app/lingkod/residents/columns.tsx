@@ -97,11 +97,11 @@ export const columns: ColumnDef<User>[] = [
                 //   </DropdownMenuItem>
                 // )
               }
-              <DropdownMenuItem>
-                <Link href={`/lingkod/residents/${data.id}`}>
+              <Link href={`/lingkod/residents/${data.id}`}>
+                <DropdownMenuItem>
                   {data.status == "pending" ? "Verify Account" : "View details"}
-                </Link>
-              </DropdownMenuItem>
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem>Edit details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

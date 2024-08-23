@@ -6,8 +6,19 @@ import {
   FaFileDownload,
   FaCalendar,
 } from "react-icons/fa";
+import {
+  getBlotterCount,
+  getEventsCount,
+  getRequestsCount,
+  getResidentCount,
+} from "./action";
 
-const Dashboard = () => {
+const Dashboard = async () => {
+  const residentCount = await getResidentCount();
+  const reportsCount = await getBlotterCount();
+  const requestsCount = await getRequestsCount();
+  const eventsCount = await getEventsCount();
+
   return (
     <section className="bg-indigo-950 rounded-xl px-4 py-10  h-[80vh]">
       <h3 className="text-3xl font-semibold mb-6 text-center">
@@ -18,25 +29,25 @@ const Dashboard = () => {
         <ReportCard
           title="Profiles"
           description="Total Residents"
-          data={5}
+          data={residentCount}
           icon={<FaUsers size={50} />}
         />
         <ReportCard
           title="Blotter Reports"
           description="Total Blotter Reports"
-          data={1}
+          data={reportsCount}
           icon={<FaExclamationTriangle size={50} />}
         />
         <ReportCard
           title="Document Request"
           description="Total Document Request"
-          data={2}
+          data={requestsCount}
           icon={<FaFileDownload size={50} />}
         />
         <ReportCard
           title="Events"
           description="Total Events"
-          data={3}
+          data={eventsCount}
           icon={<FaCalendar size={50} />}
         />
       </div>
