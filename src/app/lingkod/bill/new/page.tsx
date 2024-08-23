@@ -168,7 +168,7 @@ const PostBill = (props: Props) => {
                             variant="outline"
                             role="combobox"
                             aria-expanded={open}
-                            className=" justify-between"
+                            className=" justify-between rounded"
                           >
                             {value
                               ? users.find((user) => user.value === value)
@@ -246,6 +246,7 @@ const PostBill = (props: Props) => {
                           type="number"
                           {...field}
                           placeholder="Enter meter number"
+                          className="rounded"
                         />
                       </FormControl>
                       <FormMessage>
@@ -266,6 +267,7 @@ const PostBill = (props: Props) => {
                           type="number"
                           {...field}
                           placeholder="Enter present reading"
+                          className="rounded"
                         />
                       </FormControl>
                       <FormMessage>
@@ -286,6 +288,7 @@ const PostBill = (props: Props) => {
                           type="number"
                           {...field}
                           placeholder="Enter previous reading"
+                          className="rounded"
                         />
                       </FormControl>
                       <FormMessage>
@@ -306,6 +309,7 @@ const PostBill = (props: Props) => {
                           type="number"
                           {...field}
                           placeholder="Enter total due"
+                          className="rounded"
                         />
                       </FormControl>
                       <FormMessage>
@@ -327,7 +331,7 @@ const PostBill = (props: Props) => {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              " justify-start text-left font-normal",
+                              " justify-start text-left font-normal rounded",
                               !date && "text-muted-foreground "
                             )}
                           >
@@ -366,7 +370,7 @@ const PostBill = (props: Props) => {
                         <PopoverTrigger asChild>
                           <Button
                             variant={"outline"}
-                            className="justify-start text-left font-normal"
+                            className="justify-start text-left font-normal rounded"
                           >
                             <CalendarIcon className="mr-2 h-4 w-4" />
                             {selectedMonth ? (
@@ -406,7 +410,7 @@ const PostBill = (props: Props) => {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              " justify-start text-left font-normal",
+                              " justify-start text-left font-normal rounded",
                               !dueDate && "text-muted-foreground "
                             )}
                           >
@@ -446,7 +450,7 @@ const PostBill = (props: Props) => {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              " justify-start text-left font-normal",
+                              " justify-start text-left font-normal rounded",
                               !disconnectionDate && "text-muted-foreground "
                             )}
                           >

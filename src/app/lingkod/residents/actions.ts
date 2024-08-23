@@ -117,3 +117,51 @@ export async function getUserData(uid: string): Promise<UserDetails> {
     valid_id: docData.valid_id,
   };
 }
+
+export async function handleEdit(
+  id: string,
+  first_name: string,
+  middle_name: string,
+  last_name: string,
+  zone: string,
+  email: string,
+  age: number,
+  birthday: Date,
+  block: string,
+  lot: string,
+  sector: string,
+  civil_status: string,
+  gender: string,
+  contact_number: string
+) {
+  try {
+    const documentRef = doc(collection(db, "users"), id);
+
+    const eventData: any = {
+      first_name,
+      middle_name,
+      last_name,
+      joined_full_name: `${first_name} ${middle_name} ${last_name}`,
+      joined_full_name_lowercase: `${first_name.toLocaleLowerCase()} ${middle_name.toLocaleLowerCase()} ${last_name.toLocaleLowerCase()}`,
+      zone,
+      email,
+      age,
+      birthday,
+      block,
+      lot,
+      sector,
+      civil_status,
+      gender,
+      contact_number,
+    };
+
+    await updateDoc(documentRef, eventData);
+
+    revalidatePath("/lingkod/residents");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error posting event:", error);
+    return { success: false, error: "Error posting event" };
+  }
+}

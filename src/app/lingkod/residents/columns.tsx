@@ -102,7 +102,9 @@ export const columns: ColumnDef<User>[] = [
                   {data.status == "pending" ? "Verify Account" : "View details"}
                 </DropdownMenuItem>
               </Link>
-              <DropdownMenuItem>Edit details</DropdownMenuItem>
+              <Link href={`/lingkod/residents/edit/${data.id}`}>
+                <DropdownMenuItem>Edit details</DropdownMenuItem>
+              </Link>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
