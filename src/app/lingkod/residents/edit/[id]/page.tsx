@@ -147,7 +147,7 @@ const EditUser = (props: Props) => {
       <div className="py-10">
         <div className="flex items-center  mb-10">
           <Button variant="ghost" size="icon" className=" justify-start">
-            <Link href="/lingkod/bill">
+            <Link href="/lingkod/residents">
               <ArrowLeft />
             </Link>
           </Button>
