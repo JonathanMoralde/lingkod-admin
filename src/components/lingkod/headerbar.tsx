@@ -39,6 +39,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { deleteAuthCookie } from "@/app/action";
 import { useAuth } from "@/app/context/AuthContext";
+import Link from "next/link";
 
 const HeaderBar = () => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -107,24 +108,13 @@ const HeaderBar = () => {
             <DropdownMenuLabel>{user?.email ?? "Loading"}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-              </DropdownMenuItem>
-              {/* <DropdownMenuItem>
-                <CreditCard className="mr-2 h-4 w-4" />
-                <span>Billing</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Keyboard className="mr-2 h-4 w-4" />
-                <span>Keyboard shortcuts</span>
-              </DropdownMenuItem> */}
+              <Link href="/lingkod/settings/profile">
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
