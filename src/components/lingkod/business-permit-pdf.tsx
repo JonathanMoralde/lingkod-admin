@@ -9,20 +9,25 @@ import {
   Font,
 } from "@react-pdf/renderer";
 
-const BarangayClearancePDF = () => {
+type Props = {};
+
+const BusinessPermitPdf = (props: Props) => {
   // Register the font
   Font.register({
     family: "Times New Roman",
-    src: "/Times New Roman.ttf", // Update this path to where you store your font files
-    fontStyle: "normal",
-    fontWeight: "normal",
-  });
-
-  Font.register({
-    family: "Times New Roman",
-    src: "/Times New Roman.ttf", // Update this path to where you store your font files
-    fontStyle: "normal",
-    fontWeight: "bold",
+    fonts: [
+      { src: "/Times New Roman.ttf" }, // Update this path to where you store your font files
+      { src: "/Times New Roman.ttf", fontStyle: "normal", fontWeight: "bold" },
+      {
+        src: "/Times New Roman.ttf",
+        fontStyle: "italic",
+      },
+      {
+        src: "/Times New Roman.ttf",
+        fontStyle: "italic",
+        fontWeight: "normal",
+      },
+    ],
   });
 
   const styles = StyleSheet.create({
@@ -45,7 +50,7 @@ const BarangayClearancePDF = () => {
     title: {
       textAlign: "center",
       fontSize: 18,
-      marginBottom: 30,
+      marginVertical: 40,
       fontWeight: "bold",
     },
     subtitle: {
@@ -135,30 +140,61 @@ const BarangayClearancePDF = () => {
         </View>
         <View style={styles.separator}></View>
 
-        <Text style={styles.subtitle}>OFFICE OF THE BARANGAY CAPTAIN</Text>
-        <Text style={styles.title}>BARANGAY CLEARANCE</Text>
+        <Text style={styles.title}>BARANGAY BUSINESS PERMIT</Text>
 
-        <Text style={styles.body}>TO WHOM IT MAY CONCERN:</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            fontSize: 12,
+            marginBottom: 20,
+          }}
+        >
+          <View style={{ marginRight: 30 }}>
+            {/* left */}
+            <Text style={{ marginBottom: 20 }}>Nature of Business:</Text>
+            <Text>Proprietor:</Text>
+            <Text>Permit Number:</Text>
+            <Text>Address:</Text>
+            <Text>Business Location:</Text>
+            <Text>Status:</Text>
+          </View>
+          <View style={{ marginRight: 30, maxWidth: "50%" }}>
+            {/* middle */}
+            <Text style={{ marginBottom: 30 }}>__________________________</Text>
+            <Text>__________________________</Text>
+            <Text>__________________________</Text>
+            <Text>__________________________</Text>
+            <Text>__________________________</Text>
+            <Text>__________________________</Text>
+          </View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+            }}
+          >
+            {/* right */}
+            <Text>Valid until: _____________</Text>
+            <Text>Amount Paid: _____________</Text>
+          </View>
+        </View>
 
         <Text style={styles.paragraph}>
-          This is to certify that ________, of legal age, male/female,
-          married/single, born on ___, and a bonafide resident of ____, San
-          Roque, Polangui, Albay.
+          This Permit is being issued subject to existing rules and regulations,
+          provided however, that the necessary fees are paid to the Treasurer of
+          the Barangay as assessed.
         </Text>
 
         <Text style={styles.paragraph}>
-          Further CERTIFY that he/she is known to me of good moral character and
-          is a law abiding citizen. He/she has no pending case nor derogatory
-          record in this Barangay.
+          This is non-transferable and shall be deemed null and void upon
+          failure by the owner to follow said rules and regulations set forth by
+          the Local Government Unit of Polangui, Albay.
         </Text>
 
         <Text style={styles.paragraph}>
-          This certification is being issued upon the request of the
-          above-mentioned name and for whatever purpose/s it may serve.
-        </Text>
-
-        <Text style={styles.paragraph}>
-          Issued this ___ day of _____ at Barangay San Roque, Polangui, Albay.
+          GIVEN this ___ day of _____ at Barangay San Roque, Polangui, Albay.
         </Text>
 
         {/* <Text style={styles.watermark}>Barangay Logo</Text> */}
@@ -173,14 +209,13 @@ const BarangayClearancePDF = () => {
               width: "45%",
               textAlign: "center",
               fontSize: 12,
-              marginTop: 18,
+              marginTop: 50,
             }}
           >
             <Text>____________________________________</Text>
-            <Text>Bearer Signature</Text>
+            <Text>Owner</Text>
           </View>
           <View style={styles.signatureBox}>
-            <Text style={{ marginLeft: 16 }}>Approved By:</Text>
             <View style={{ textAlign: "center", marginTop: 5 }}>
               <Text>____________________________________</Text>
               <Text>Barangay Captain</Text>
@@ -193,23 +228,29 @@ const BarangayClearancePDF = () => {
             <Text>CTC No.: _______________ </Text>
             <Text>ISSUED at: ______________</Text>
             <Text>ISSUED on: ______________ </Text>
-          </View>
-          <View style={{ width: "45%" }}>
-            <Text style={{ marginLeft: 16 }}>Issued By:</Text>
-            <View style={{ textAlign: "center", marginTop: 5 }}>
-              <Text>____________________________________</Text>
-              <Text>Barangay Secretary</Text>
-            </View>
+            <Text>OR No.: _______________ </Text>
+            <Text>ISSUED on: ______________ </Text>
           </View>
         </View>
-
-        <View style={styles.twoBoxSection}>
-          <View style={styles.box} />
-          <View style={styles.box} />
+        <View
+          style={{
+            marginTop: 30,
+            width: "100%",
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "Times New Roman",
+              fontStyle: "italic",
+              fontSize: 10,
+            }}
+          >
+            {`(This License, while in force, shall be posted in a conspicuous place in the business premises.)`}
+          </Text>
         </View>
       </Page>
     </Document>
   );
 };
 
-export default BarangayClearancePDF;
+export default BusinessPermitPdf;

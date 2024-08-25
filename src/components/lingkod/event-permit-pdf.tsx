@@ -9,20 +9,25 @@ import {
   Font,
 } from "@react-pdf/renderer";
 
-const BarangayClearancePDF = () => {
+type Props = {};
+
+const EventPermitPdf = (props: Props) => {
   // Register the font
   Font.register({
     family: "Times New Roman",
-    src: "/Times New Roman.ttf", // Update this path to where you store your font files
-    fontStyle: "normal",
-    fontWeight: "normal",
-  });
-
-  Font.register({
-    family: "Times New Roman",
-    src: "/Times New Roman.ttf", // Update this path to where you store your font files
-    fontStyle: "normal",
-    fontWeight: "bold",
+    fonts: [
+      { src: "/Times New Roman.ttf" }, // Update this path to where you store your font files
+      { src: "/Times New Roman.ttf", fontStyle: "normal", fontWeight: "bold" },
+      {
+        src: "/Times New Roman.ttf",
+        fontStyle: "italic",
+      },
+      {
+        src: "/Times New Roman.ttf",
+        fontStyle: "italic",
+        fontWeight: "normal",
+      },
+    ],
   });
 
   const styles = StyleSheet.create({
@@ -136,25 +141,49 @@ const BarangayClearancePDF = () => {
         <View style={styles.separator}></View>
 
         <Text style={styles.subtitle}>OFFICE OF THE BARANGAY CAPTAIN</Text>
-        <Text style={styles.title}>BARANGAY CLEARANCE</Text>
-
-        <Text style={styles.body}>TO WHOM IT MAY CONCERN:</Text>
-
-        <Text style={styles.paragraph}>
-          This is to certify that ________, of legal age, male/female,
-          married/single, born on ___, and a bonafide resident of ____, San
-          Roque, Polangui, Albay.
+        <Text style={styles.title}>
+          BARANGAY PERMIT TO HOLD SOCIAL GATHERING
         </Text>
 
+        {/* <Text style={styles.body}>TO WHOM IT MAY CONCERN:</Text> */}
+
         <Text style={styles.paragraph}>
+          This is to certify that _______________ has requested permission to
+          hold a _________________ with the following details:
+        </Text>
+
+        <View style={{ fontSize: 12, marginVertical: 5 }}>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: 5,
+            }}
+          >
+            <View style={{ width: "50%" }}>
+              <Text>Date: __________</Text>
+            </View>
+            <View style={{ width: "50%" }}>
+              <Text>Time: __________</Text>
+            </View>
+          </View>
+          <Text style={{ marginBottom: 5 }}>Place/Venue: ___________</Text>
+          <Text>No. of Guest: ___________</Text>
+        </View>
+
+        {/* <Text style={styles.paragraph}>
           Further CERTIFY that he/she is known to me of good moral character and
           is a law abiding citizen. He/she has no pending case nor derogatory
           record in this Barangay.
-        </Text>
+        </Text> */}
 
         <Text style={styles.paragraph}>
-          This certification is being issued upon the request of the
-          above-mentioned name and for whatever purpose/s it may serve.
+          After checking the venue and certifying that it can accommodate the
+          guests. _____________ is granted permission to hold this event as
+          he/she/they promised to abide by the health and safety protocols set
+          by the IATF and the Municipality of Polangui regarding the holding of
+          social gatherings.
         </Text>
 
         <Text style={styles.paragraph}>
@@ -176,11 +205,11 @@ const BarangayClearancePDF = () => {
               marginTop: 18,
             }}
           >
-            <Text>____________________________________</Text>
-            <Text>Bearer Signature</Text>
+            {/* <Text>____________________________________</Text>
+            <Text>Bearer Signature</Text> */}
           </View>
           <View style={styles.signatureBox}>
-            <Text style={{ marginLeft: 16 }}>Approved By:</Text>
+            {/* <Text style={{ marginLeft: 16 }}>Approved By:</Text> */}
             <View style={{ textAlign: "center", marginTop: 5 }}>
               <Text>____________________________________</Text>
               <Text>Barangay Captain</Text>
@@ -188,7 +217,7 @@ const BarangayClearancePDF = () => {
           </View>
         </View>
 
-        <View style={styles.footerSection}>
+        {/* <View style={styles.footerSection}>
           <View style={{ width: "45%" }}>
             <Text>CTC No.: _______________ </Text>
             <Text>ISSUED at: ______________</Text>
@@ -201,15 +230,15 @@ const BarangayClearancePDF = () => {
               <Text>Barangay Secretary</Text>
             </View>
           </View>
-        </View>
+        </View> */}
 
-        <View style={styles.twoBoxSection}>
+        {/* <View style={styles.twoBoxSection}>
           <View style={styles.box} />
           <View style={styles.box} />
-        </View>
+        </View> */}
       </Page>
     </Document>
   );
 };
 
-export default BarangayClearancePDF;
+export default EventPermitPdf;

@@ -10,6 +10,7 @@ import {
   FaFileAlt,
   FaCalendarAlt,
   FaBolt,
+  FaHome,
 } from "react-icons/fa";
 
 import { Separator } from "@/components/ui/separator";
@@ -44,6 +45,11 @@ const Sidebar = () => {
       name: "Residents Profile",
       path: "/lingkod/residents",
       icon: <FaUser />,
+    },
+    {
+      name: "Household",
+      path: "/lingkod/household",
+      icon: <FaHome />,
     },
     {
       name: "Requests",

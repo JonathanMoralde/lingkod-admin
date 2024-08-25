@@ -9,7 +9,9 @@ import {
   Font,
 } from "@react-pdf/renderer";
 
-const BarangayClearancePDF = () => {
+type Props = {};
+
+const BarangayIndigency = (props: Props) => {
   // Register the font
   Font.register({
     family: "Times New Roman",
@@ -136,14 +138,14 @@ const BarangayClearancePDF = () => {
         <View style={styles.separator}></View>
 
         <Text style={styles.subtitle}>OFFICE OF THE BARANGAY CAPTAIN</Text>
-        <Text style={styles.title}>BARANGAY CLEARANCE</Text>
+        <Text style={styles.title}>CERTIFICATE OF INDIGENCY</Text>
 
         <Text style={styles.body}>TO WHOM IT MAY CONCERN:</Text>
 
         <Text style={styles.paragraph}>
-          This is to certify that ________, of legal age, male/female,
-          married/single, born on ___, and a bonafide resident of ____, San
-          Roque, Polangui, Albay.
+          This is to certify that _____, male/female, married/single, of legal
+          age, Filipino citizen and a resident of this barangay, belongs to the
+          Indigent Families of this barangay.
         </Text>
 
         <Text style={styles.paragraph}>
@@ -153,8 +155,8 @@ const BarangayClearancePDF = () => {
         </Text>
 
         <Text style={styles.paragraph}>
-          This certification is being issued upon the request of the
-          above-mentioned name and for whatever purpose/s it may serve.
+          This CERTIFICATION is issued upon the request of the above-mentioned
+          individual for whatever legal purpose/s it may best serve him or her.
         </Text>
 
         <Text style={styles.paragraph}>
@@ -176,11 +178,11 @@ const BarangayClearancePDF = () => {
               marginTop: 18,
             }}
           >
-            <Text>____________________________________</Text>
-            <Text>Bearer Signature</Text>
+            {/* <Text>____________________________________</Text>
+            <Text>Bearer Signature</Text> */}
           </View>
           <View style={styles.signatureBox}>
-            <Text style={{ marginLeft: 16 }}>Approved By:</Text>
+            {/* <Text style={{ marginLeft: 16 }}>Approved By:</Text> */}
             <View style={{ textAlign: "center", marginTop: 5 }}>
               <Text>____________________________________</Text>
               <Text>Barangay Captain</Text>
@@ -188,7 +190,7 @@ const BarangayClearancePDF = () => {
           </View>
         </View>
 
-        <View style={styles.footerSection}>
+        {/* <View style={styles.footerSection}>
           <View style={{ width: "45%" }}>
             <Text>CTC No.: _______________ </Text>
             <Text>ISSUED at: ______________</Text>
@@ -201,15 +203,15 @@ const BarangayClearancePDF = () => {
               <Text>Barangay Secretary</Text>
             </View>
           </View>
-        </View>
+        </View> */}
 
-        <View style={styles.twoBoxSection}>
+        {/* <View style={styles.twoBoxSection}>
           <View style={styles.box} />
           <View style={styles.box} />
-        </View>
+        </View> */}
       </Page>
     </Document>
   );
 };
 
-export default BarangayClearancePDF;
+export default BarangayIndigency;

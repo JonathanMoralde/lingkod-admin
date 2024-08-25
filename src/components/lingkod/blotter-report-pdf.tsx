@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Page,
   Text,
@@ -9,20 +10,25 @@ import {
   Font,
 } from "@react-pdf/renderer";
 
-const BarangayClearancePDF = () => {
+type Props = {};
+
+const BlotterReportPdf = (props: Props) => {
   // Register the font
   Font.register({
     family: "Times New Roman",
-    src: "/Times New Roman.ttf", // Update this path to where you store your font files
-    fontStyle: "normal",
-    fontWeight: "normal",
-  });
-
-  Font.register({
-    family: "Times New Roman",
-    src: "/Times New Roman.ttf", // Update this path to where you store your font files
-    fontStyle: "normal",
-    fontWeight: "bold",
+    fonts: [
+      { src: "/Times New Roman.ttf" }, // Update this path to where you store your font files
+      { src: "/Times New Roman.ttf", fontStyle: "normal", fontWeight: "bold" },
+      {
+        src: "/Times New Roman.ttf",
+        fontStyle: "italic",
+      },
+      {
+        src: "/Times New Roman.ttf",
+        fontStyle: "italic",
+        fontWeight: "normal",
+      },
+    ],
   });
 
   const styles = StyleSheet.create({
@@ -45,7 +51,7 @@ const BarangayClearancePDF = () => {
     title: {
       textAlign: "center",
       fontSize: 18,
-      marginBottom: 30,
+      marginVertical: 40,
       fontWeight: "bold",
     },
     subtitle: {
@@ -135,30 +141,43 @@ const BarangayClearancePDF = () => {
         </View>
         <View style={styles.separator}></View>
 
-        <Text style={styles.subtitle}>OFFICE OF THE BARANGAY CAPTAIN</Text>
-        <Text style={styles.title}>BARANGAY CLEARANCE</Text>
+        <Text style={styles.title}>BLOTTER REPORT</Text>
 
-        <Text style={styles.body}>TO WHOM IT MAY CONCERN:</Text>
+        {/* <Text style={styles.body}>TO WHOM IT MAY CONCERN:</Text> */}
 
-        <Text style={styles.paragraph}>
-          This is to certify that ________, of legal age, male/female,
-          married/single, born on ___, and a bonafide resident of ____, San
-          Roque, Polangui, Albay.
-        </Text>
+        <Text style={{ fontSize: 12, marginBottom: 30 }}>MMMM dd, yyyy</Text>
 
-        <Text style={styles.paragraph}>
+        {/* <Text style={styles.paragraph}>
           Further CERTIFY that he/she is known to me of good moral character and
           is a law abiding citizen. He/she has no pending case nor derogatory
           record in this Barangay.
+        </Text> */}
+
+        <Text style={styles.paragraph}>
+          _____________, and a resident in this barangay filed a report to the
+          Barangay Hall and alleging that Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Voluptates odit suscipit incidunt earum culpa
+          voluptatibus error ipsa accusamus necessitatibus hic expedita
+          repellendus quam eius eum dolores repudiandae quis, consequatur
+          nostrum! Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          Mollitia quibusdam neque error voluptas corrupti. Expedita alias ab
+          ratione laboriosam quia. Lorem ipsum dolor sit amet consectetur,
+          adipisicing elit. Molestias quibusdam id eos reprehenderit atque ad
+          voluptatum at nobis nisi praesentium molestiae voluptatibus ex fugiat
+          perspiciatis est voluptates dolorum recusandae, commodi, odit totam
+          eligendi! Quam cupiditate doloremque autem tempore commodi modi est
+          provident voluptatem qui culpa. Dolore eaque sit veniam porro, aperiam
+          maxime molestias laboriosam facere fugit nam, eius neque nemo unde
+          quaerat provident ducimus iusto fuga natus ea praesentium, accusantium
+          laborum voluptatibus. Saepe odio eveniet corporis nisi eius
+          praesentium quod veritatis amet libero iusto odit explicabo totam
+          voluptatem itaque, delectus exercitationem deleniti eum animi in
+          pariatur nulla. Ad, nobis vero.
         </Text>
 
         <Text style={styles.paragraph}>
-          This certification is being issued upon the request of the
-          above-mentioned name and for whatever purpose/s it may serve.
-        </Text>
-
-        <Text style={styles.paragraph}>
-          Issued this ___ day of _____ at Barangay San Roque, Polangui, Albay.
+          Issued this ___ day of _____, for whatever legal purpose it may serve,
+          at Barangay San Roque, Polangui, Albay.
         </Text>
 
         {/* <Text style={styles.watermark}>Barangay Logo</Text> */}
@@ -176,11 +195,11 @@ const BarangayClearancePDF = () => {
               marginTop: 18,
             }}
           >
-            <Text>____________________________________</Text>
-            <Text>Bearer Signature</Text>
+            {/* <Text>____________________________________</Text>
+            <Text>Bearer Signature</Text> */}
           </View>
           <View style={styles.signatureBox}>
-            <Text style={{ marginLeft: 16 }}>Approved By:</Text>
+            {/* <Text style={{ marginLeft: 16 }}>Approved By:</Text> */}
             <View style={{ textAlign: "center", marginTop: 5 }}>
               <Text>____________________________________</Text>
               <Text>Barangay Captain</Text>
@@ -188,7 +207,7 @@ const BarangayClearancePDF = () => {
           </View>
         </View>
 
-        <View style={styles.footerSection}>
+        {/* <View style={styles.footerSection}>
           <View style={{ width: "45%" }}>
             <Text>CTC No.: _______________ </Text>
             <Text>ISSUED at: ______________</Text>
@@ -201,15 +220,15 @@ const BarangayClearancePDF = () => {
               <Text>Barangay Secretary</Text>
             </View>
           </View>
-        </View>
+        </View> */}
 
-        <View style={styles.twoBoxSection}>
+        {/* <View style={styles.twoBoxSection}>
           <View style={styles.box} />
           <View style={styles.box} />
-        </View>
+        </View> */}
       </Page>
     </Document>
   );
 };
 
-export default BarangayClearancePDF;
+export default BlotterReportPdf;
