@@ -6,13 +6,14 @@ import {
   signInWithEmailAndPassword,
   signOut,
   UserCredential,
+  User,
 } from "firebase/auth";
 import { auth } from "@/config/firebase";
 
-interface User {
-  uid: string;
-  email: string;
-}
+// interface User {
+//   uid: string;
+//   email: string;
+// }
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<UserCredential>;
@@ -40,10 +41,11 @@ export const AuthContextProvider = ({
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser({
-          uid: user.uid,
-          email: user.email!,
-        });
+        setUser(user);
+        // setUser({
+        //   uid: user.uid,
+        //   email: user.email!,
+        // });
       } else {
         setUser(null);
       }

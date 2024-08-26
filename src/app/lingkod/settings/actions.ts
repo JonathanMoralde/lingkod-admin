@@ -17,7 +17,13 @@ import {
   getDoc,
   setDoc,
 } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  getAuth,
+  User,
+} from "firebase/auth";
 import { revalidatePath } from "next/cache";
 
 export type CurrentAdmin = {

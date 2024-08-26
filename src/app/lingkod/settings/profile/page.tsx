@@ -35,7 +35,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useRouter } from "next/navigation";
-import { CurrentAdmin, getCurrentAdminData, handleEdit } from "./actions";
+import { CurrentAdmin, getCurrentAdminData, handleEdit } from "../actions";
 
 import { useAuth } from "../../../context/AuthContext";
 
