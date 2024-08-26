@@ -111,7 +111,15 @@ const HeaderBar = () => {
               <Link href="/lingkod/settings/profile">
                 <DropdownMenuItem>
                   <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
+                  <span>Account Settings</span>
+                </DropdownMenuItem>
+              </Link>
+            </DropdownMenuGroup>
+            <DropdownMenuGroup>
+              <Link href="/lingkod/officer-management">
+                <DropdownMenuItem>
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  <span>Officer Management</span>
                 </DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>

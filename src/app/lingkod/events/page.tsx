@@ -11,7 +11,7 @@ const Events = async () => {
   return (
     <ScrollArea className="bg-indigo-950 rounded-xl h-[80vh]">
       <div className="py-10 px-4">
-        <div className="mb-6 flex justify-between">
+        <div className="mb-2 flex justify-between">
           <h3 className="text-xl font-semibold ">Events</h3>
 
           <Link href="/lingkod/events/new">

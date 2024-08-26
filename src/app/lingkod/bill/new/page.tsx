@@ -141,7 +141,7 @@ const PostBill = (props: Props) => {
   return (
     <ScrollArea className="bg-indigo-950 rounded-xl px-4   h-[80vh]">
       <div className="py-10">
-        <div className="flex items-center  mb-10">
+        <div className="flex items-center  mb-4">
           <Button variant="ghost" size="icon" className=" justify-start">
             <Link href="/lingkod/bill">
               <ArrowLeft />

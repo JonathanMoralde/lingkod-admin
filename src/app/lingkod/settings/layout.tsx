@@ -17,7 +17,7 @@ const layout = ({
   return (
     <>
       <section className="bg-indigo-950 rounded-xl px-4 py-10 h-[80vh]">
-        <h3 className="text-xl font-semibold mb-10">Settings</h3>
+        <h3 className="text-xl font-semibold mb-10">Account Settings</h3>
 
         <div className="flex h-5/6">
           <div className="flex flex-col w-1/4 gap-2">
@@ -41,17 +41,6 @@ const layout = ({
                 }`}
               >
                 Change Password
-              </Button>
-            </Link>
-            <Link href="/lingkod/settings/new-admin">
-              <Button
-                className={`hover:bg-[#ffffff24] w-full flex justify-start rounded-full ${
-                  pathname === "/lingkod/settings/new-admin"
-                    ? "bg-[#4844b4ad] text-white"
-                    : "hover:bg-[#e5e7eb2e]"
-                }`}
-              >
-                New admin account
               </Button>
             </Link>
           </div>
