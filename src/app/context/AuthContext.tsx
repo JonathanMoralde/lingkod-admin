@@ -8,7 +8,8 @@ import {
   UserCredential,
   User,
 } from "firebase/auth";
-import { auth } from "@/config/firebase";
+import { auth, db } from "@/config/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 // interface User {
 //   uid: string;
@@ -55,8 +56,50 @@ export const AuthContextProvider = ({
     return () => unsubscribe();
   }, []);
 
-  const login = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password);
+  const login = async (email: string, password: string) => {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+
+    if (user) {
+      // Retrieve the user document from Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+
+        // Check if the user role is 'admin'
+        if (userData?.role === "admin") {
+          // Proceed with the admin-specific logic
+          return userCredential;
+        } else {
+          // If user is not an admin, log out and throw an error
+          await auth.signOut();
+          throw new Error("You do not have admin privileges.");
+        }
+      } else {
+        // If the user document does not exist
+        await auth.signOut();
+        throw new Error("User document not found.");
+      }
+    } else {
+      throw new Error("User authentication failed.");
+    }
+    // signinwithemail
+
+    // use uid to get the doc in firestore
+
+    // check if user doc in users collection if its role is 'admin'
+
+    // proceed
+
+    // if user is not an admin, logout and throw an error
+
+    // return signInWithEmailAndPassword(auth, email, password);
   };
 
   const logout = async () => {

@@ -131,7 +131,7 @@ export default function Home() {
       </div>
 
       <section className="h-screen flex items-center w-full my-auto max-w-screen-lg mx-auto relative">
-        <div className="flex justify-between items-center h-3/4 w-full bg-[#4844B4] rounded-3xl border-4 border-white shadow-lg">
+        <div className="flex justify-between items-center h-3/4 w-full bg-[#4844B4] rounded-3xl border-2 border-white shadow-lg">
           {/* logo */}
           <div className="bg-white h-full w-1/2 rounded-2xl flex flex-col justify-center items-center">
             <div className="relative w-[18.75rem] h-[18.75rem] mb-10 rounded-full shadow-lg">
