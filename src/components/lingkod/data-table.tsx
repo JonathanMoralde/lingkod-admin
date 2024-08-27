@@ -68,6 +68,11 @@ export function DataTable<TData, TValue>({
       sorting,
       globalFilter: globalFilter,
     },
+    initialState: {
+      pagination: {
+        pageSize: 10, //number of rows
+      },
+    },
     onGlobalFilterChange: setGlobalFilter,
   });
   return (
