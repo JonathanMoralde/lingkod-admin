@@ -102,3 +102,45 @@ export async function handleSubmit(
     return { success: false, error: "Error posting event" };
   }
 }
+
+export type BillDetail = {
+  id: string;
+  uid: string;
+  bapa_name: string;
+  meter_no: number;
+  present_reading: number;
+  previous_reading: number;
+  total_due: number;
+  date_released: number;
+  due_date: number;
+  disconnection_date: number;
+  month_year: number;
+};
+export async function getBillData(id: string): Promise<BillDetail> {
+  // Fetch data from your API here.
+
+  const billDoc = doc(collection(db, "bills"), id);
+
+  const billDocSnap = await getDoc(billDoc);
+
+  if (billDocSnap.exists()) {
+    const docData = billDocSnap.data();
+
+    // Assuming your docData has the correct type annotations
+    return {
+      id: id,
+      uid: docData.uid,
+      bapa_name: docData.bapa_name,
+      date_released: (docData.date_released as Timestamp).toMillis(),
+      disconnection_date: (docData.disconnection_date as Timestamp).toMillis(),
+      due_date: (docData.due_date as Timestamp).toMillis(),
+      meter_no: docData.meter_no,
+      present_reading: docData.present_reading,
+      previous_reading: docData.previous_reading,
+      total_due: docData.total_due,
+      month_year: (docData.month as Timestamp).toMillis(),
+    };
+  } else {
+    throw new Error("Document not found");
+  }
+}

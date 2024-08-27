@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Event, getData } from "./actions";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
 
 const Events = async () => {
   const data: Event[] = await getData();
@@ -23,6 +24,15 @@ const Events = async () => {
             </Button>
           </Link>
         </div>
+
+        {/* <div className="flex items-center py-4">
+          <Input
+            placeholder="Search"
+            value={globalFilter}
+            onChange={(event) => setGlobalFilter(event.target.value)}
+            className="max-w-sm rounded border-gray-400 text-gray-400 hover:border-white  hover:text-white transition-all"
+          />
+        </div> */}
 
         <div className="flex flex-wrap w-full gap-4">
           {data.map((event, index) => (
