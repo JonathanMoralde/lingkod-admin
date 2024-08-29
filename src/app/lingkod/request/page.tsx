@@ -2,7 +2,6 @@ import { DocRequest, columns } from "./columns";
 import { DataTable } from "@/components/lingkod/data-table";
 import { Timestamp } from "firebase/firestore";
 import React from "react";
-import PdfBtn from "./pdf-btn";
 import { getData } from "./actions";
 
 const Request = async () => {
