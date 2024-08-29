@@ -58,7 +58,6 @@ export type BrgyIndigency = {
 };
 export type BrgyClearance = {
   age: number;
-  birthday: number;
   civil_status: string;
   gender: string;
   zone: string;
@@ -113,7 +112,6 @@ export async function getDocRequestDetails(docId: string): Promise<DocDetails> {
       case "Barangay Clearance":
         result.details = {
           age: docData.details.age,
-          birthday: (docData.details.birthday as Timestamp).toMillis(),
           civil_status: docData.details.civil_status,
           gender: docData.details.gender,
           zone: docData.details.zone,

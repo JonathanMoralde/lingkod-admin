@@ -83,20 +83,24 @@ export const columns: ColumnDef<DocRequest>[] = [
                 Copy payment ID
               </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={async () => {
-                  await handleApprove(data.id);
-                }}
-              >
-                Accept
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={async () => {
-                  await handleReject(data.id);
-                }}
-              >
-                Decline
-              </DropdownMenuItem>
+              {data.status == "pending" && (
+                <>
+                  <DropdownMenuItem
+                    onClick={async () => {
+                      await handleApprove(data.id);
+                    }}
+                  >
+                    Accept
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={async () => {
+                      await handleReject(data.id);
+                    }}
+                  >
+                    Decline
+                  </DropdownMenuItem>
+                </>
+              )}
               <Link href={`/pdf/${data.id}`} target="_blank">
                 <DropdownMenuItem>View details</DropdownMenuItem>
               </Link>

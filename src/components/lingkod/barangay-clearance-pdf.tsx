@@ -184,10 +184,8 @@ const BarangayClearancePDF = (props: Props) => {
           This is to certify that{" "}
           <Text style={{ fontWeight: "bold" }}>{data.full_name}</Text>, of legal
           age, {clearanceDetails.gender.toLocaleLowerCase()},{" "}
-          {clearanceDetails.civil_status.toLocaleLowerCase()}, born on{" "}
-          {format(new Date(clearanceDetails.birthday), "MMMM dd, yyyy")}, and a
-          bonafide resident of Zone {clearanceDetails.zone}, San Roque,
-          Polangui, Albay.
+          {clearanceDetails.civil_status.toLocaleLowerCase()}, and a bonafide
+          resident of Zone {clearanceDetails.zone}, San Roque, Polangui, Albay.
         </Text>
 
         <Text style={styles.paragraph}>
