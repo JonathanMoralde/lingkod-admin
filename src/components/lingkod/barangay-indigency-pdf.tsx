@@ -8,10 +8,47 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
+import {
+  BrgyClearance,
+  BrgyIndigency,
+  BusinessPermit,
+  DocDetails,
+  EventPermit,
+} from "@/app/pdf/[id]/actions";
+import { BarangayOfficial } from "@/app/pdf/[id]/actions";
 
-type Props = {};
+import { format } from "date-fns";
+const formatWithOrdinal = (date: Date): string => {
+  const day = format(date, "d");
+  const dayNumber = parseInt(day, 10);
+  const suffix =
+    dayNumber % 10 === 1 && dayNumber !== 11
+      ? "st"
+      : dayNumber % 10 === 2 && dayNumber !== 12
+      ? "nd"
+      : dayNumber % 10 === 3 && dayNumber !== 13
+      ? "rd"
+      : "th";
+  return `${day}${suffix}`;
+};
+
+type Props = {
+  data: DocDetails;
+  barangayCaptain: BarangayOfficial;
+  barangaySecretary: BarangayOfficial;
+};
 
 const BarangayIndigency = (props: Props) => {
+  const { data }: { data: DocDetails } = props;
+
+  const indigencyDetails = props.data.details as BrgyIndigency;
+
+  const today = new Date();
+  const formattedDate = `${formatWithOrdinal(today)} day of ${format(
+    today,
+    "MMMM, yyyy"
+  )}`;
+
   // Register the font
   Font.register({
     family: "Times New Roman",
@@ -143,27 +180,36 @@ const BarangayIndigency = (props: Props) => {
         <Text style={styles.body}>TO WHOM IT MAY CONCERN:</Text>
 
         <Text style={styles.paragraph}>
-          This is to certify that _____, male/female, married/single, of legal
-          age, Filipino citizen and a resident of this barangay, belongs to the
-          Indigent Families of this barangay.
+          This is to certify that {data.full_name},{" "}
+          {indigencyDetails.gender.toLocaleLowerCase()},{" "}
+          {indigencyDetails.civil_status.toLocaleLowerCase()}, of legal age,{" "}
+          {indigencyDetails.citizenship} citizenship and a resident of this
+          barangay, belongs to the Indigent Families of this barangay.
         </Text>
 
         <Text style={styles.paragraph}>
-          Further CERTIFY that he/she is known to me of good moral character and
-          is a law abiding citizen. He/she has no pending case nor derogatory
-          record in this Barangay.
+          Further CERTIFY that{" "}
+          {indigencyDetails.gender.toLocaleLowerCase() == "male" ? "he" : "she"}{" "}
+          is known to me of good moral character and is a law abiding citizen.
+          {indigencyDetails.gender.toLocaleLowerCase() == "male"
+            ? "He"
+            : "She"}{" "}
+          has no pending case nor derogatory record in this Barangay.
         </Text>
 
         <Text style={styles.paragraph}>
           This CERTIFICATION is issued upon the request of the above-mentioned
-          individual for whatever legal purpose/s it may best serve him or her.
+          individual for whatever legal purpose/s it may best serve{" "}
+          {indigencyDetails.gender.toLocaleLowerCase() == "male"
+            ? "him"
+            : "her"}
+          .
         </Text>
 
         <Text style={styles.paragraph}>
-          Issued this ___ day of _____ at Barangay San Roque, Polangui, Albay.
+          Issued this {formattedDate} at Barangay San Roque, Polangui, Albay.
         </Text>
 
-        {/* <Text style={styles.watermark}>Barangay Logo</Text> */}
         <Image
           src="/28d74124c3365e8a66a995661eaa8724.png"
           style={styles.watermark}
@@ -177,38 +223,16 @@ const BarangayIndigency = (props: Props) => {
               fontSize: 12,
               marginTop: 18,
             }}
-          >
-            {/* <Text>____________________________________</Text>
-            <Text>Bearer Signature</Text> */}
-          </View>
+          ></View>
           <View style={styles.signatureBox}>
-            {/* <Text style={{ marginLeft: 16 }}>Approved By:</Text> */}
             <View style={{ textAlign: "center", marginTop: 5 }}>
-              <Text>____________________________________</Text>
+              <Text style={{ width: "100%", borderBottom: "1px solid black" }}>
+                {props.barangayCaptain.full_name}
+              </Text>
               <Text>Barangay Captain</Text>
             </View>
           </View>
         </View>
-
-        {/* <View style={styles.footerSection}>
-          <View style={{ width: "45%" }}>
-            <Text>CTC No.: _______________ </Text>
-            <Text>ISSUED at: ______________</Text>
-            <Text>ISSUED on: ______________ </Text>
-          </View>
-          <View style={{ width: "45%" }}>
-            <Text style={{ marginLeft: 16 }}>Issued By:</Text>
-            <View style={{ textAlign: "center", marginTop: 5 }}>
-              <Text>____________________________________</Text>
-              <Text>Barangay Secretary</Text>
-            </View>
-          </View>
-        </View> */}
-
-        {/* <View style={styles.twoBoxSection}>
-          <View style={styles.box} />
-          <View style={styles.box} />
-        </View> */}
       </Page>
     </Document>
   );

@@ -21,7 +21,7 @@ const BillDetails = async (props: Props) => {
 
         <h3 className="text-xl font-semibold w-full">BAPA Consumption Bill</h3>
       </div>
-      <div className="w-3/4">
+      <div className="w-1/2">
         <div className="mb-4">
           <h3>
             BAPA Member Name:

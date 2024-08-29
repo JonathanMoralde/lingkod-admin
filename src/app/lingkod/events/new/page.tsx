@@ -237,7 +237,7 @@ const NewEvent = (props: Props) => {
                     <FormLabel>Description</FormLabel>
                     <FormControl className="dark:bg-transparent dark:border-gray-300 ">
                       <Textarea
-                        placeholder="Tell us a little bit about yourself"
+                        placeholder="Enter details here"
                         className="resize-none "
                         {...field}
                       />
@@ -265,11 +265,14 @@ const NewEvent = (props: Props) => {
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
                         <SelectContent className=" rounded">
-                          <SelectItem value="news">News</SelectItem>
-                          <SelectItem value="event">Event</SelectItem>
-                          <SelectItem value="update">Update</SelectItem>
-                          <SelectItem value="alert">Alert</SelectItem>
-                          <SelectItem value="reminder">Reminders</SelectItem>
+                          <SelectItem value="News">News</SelectItem>
+                          <SelectItem value="Events">Events</SelectItem>
+                          <SelectItem value="Updates">Updates</SelectItem>
+                          <SelectItem value="Alerts">Alerts</SelectItem>
+                          <SelectItem value="Notifications">
+                            Notifications
+                          </SelectItem>
+                          <SelectItem value="Reminders">Reminders</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

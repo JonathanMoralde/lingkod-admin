@@ -8,10 +8,47 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
+import {
+  BrgyClearance,
+  BrgyIndigency,
+  BusinessPermit,
+  DocDetails,
+  EventPermit,
+} from "@/app/pdf/[id]/actions";
+import { BarangayOfficial } from "@/app/pdf/[id]/actions";
 
-type Props = {};
+import { format } from "date-fns";
+const formatWithOrdinal = (date: Date): string => {
+  const day = format(date, "d");
+  const dayNumber = parseInt(day, 10);
+  const suffix =
+    dayNumber % 10 === 1 && dayNumber !== 11
+      ? "st"
+      : dayNumber % 10 === 2 && dayNumber !== 12
+      ? "nd"
+      : dayNumber % 10 === 3 && dayNumber !== 13
+      ? "rd"
+      : "th";
+  return `${day}${suffix}`;
+};
+
+type Props = {
+  data: DocDetails;
+  barangayCaptain: BarangayOfficial;
+  barangaySecretary: BarangayOfficial;
+};
 
 const BusinessPermitPdf = (props: Props) => {
+  const { data }: { data: DocDetails } = props;
+
+  const businessPermitDetails = props.data.details as BusinessPermit;
+
+  const today = new Date();
+  const formattedDate = `${formatWithOrdinal(today)} day of ${format(
+    today,
+    "MMMM, yyyy"
+  )}`;
+
   // Register the font
   Font.register({
     family: "Times New Roman",
@@ -152,22 +189,26 @@ const BusinessPermitPdf = (props: Props) => {
         >
           <View style={{ marginRight: 30 }}>
             {/* left */}
-            <Text style={{ marginBottom: 20 }}>Nature of Business:</Text>
+            <Text style={{ marginBottom: 20 }}>Nature of Business: </Text>
             <Text>Proprietor:</Text>
             <Text>Permit Number:</Text>
             <Text>Address:</Text>
             <Text>Business Location:</Text>
             <Text>Status:</Text>
           </View>
+
           <View style={{ marginRight: 30, maxWidth: "50%" }}>
             {/* middle */}
-            <Text style={{ marginBottom: 30 }}>__________________________</Text>
-            <Text>__________________________</Text>
-            <Text>__________________________</Text>
-            <Text>__________________________</Text>
-            <Text>__________________________</Text>
-            <Text>__________________________</Text>
+            <Text style={{ marginBottom: 20 }}>
+              {businessPermitDetails.nature_of_business}
+            </Text>
+            <Text>{businessPermitDetails.proprietor}</Text>
+            <Text>{businessPermitDetails.permit_no}</Text>
+            <Text>{businessPermitDetails.address}</Text>
+            <Text>{businessPermitDetails.business_location}</Text>
+            <Text>{businessPermitDetails.status}</Text>
           </View>
+
           <View
             style={{
               display: "flex",
@@ -176,8 +217,14 @@ const BusinessPermitPdf = (props: Props) => {
             }}
           >
             {/* right */}
-            <Text>Valid until: _____________</Text>
-            <Text>Amount Paid: _____________</Text>
+            <Text>
+              Valid until:{" "}
+              {format(
+                new Date(businessPermitDetails.valid_until),
+                "MMMM dd, yyyy"
+              )}
+            </Text>
+            <Text>Amount Paid: {businessPermitDetails.amount_paid} PHP</Text>
           </View>
         </View>
 
@@ -194,7 +241,7 @@ const BusinessPermitPdf = (props: Props) => {
         </Text>
 
         <Text style={styles.paragraph}>
-          GIVEN this ___ day of _____ at Barangay San Roque, Polangui, Albay.
+          GIVEN this {formattedDate} at Barangay San Roque, Polangui, Albay.
         </Text>
 
         {/* <Text style={styles.watermark}>Barangay Logo</Text> */}
@@ -212,12 +259,16 @@ const BusinessPermitPdf = (props: Props) => {
               marginTop: 50,
             }}
           >
-            <Text>____________________________________</Text>
+            <Text style={{ width: "100%", borderBottom: "1px solid black" }}>
+              {data.full_name}
+            </Text>
             <Text>Owner</Text>
           </View>
           <View style={styles.signatureBox}>
             <View style={{ textAlign: "center", marginTop: 5 }}>
-              <Text>____________________________________</Text>
+              <Text style={{ width: "100%", borderBottom: "1px solid black" }}>
+                {props.barangayCaptain.full_name}
+              </Text>
               <Text>Barangay Captain</Text>
             </View>
           </View>

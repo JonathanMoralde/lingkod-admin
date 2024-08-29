@@ -8,10 +8,47 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
+import {
+  BrgyClearance,
+  BrgyIndigency,
+  BusinessPermit,
+  DocDetails,
+  EventPermit,
+} from "@/app/pdf/[id]/actions";
+import { BarangayOfficial } from "@/app/pdf/[id]/actions";
 
-type Props = {};
+import { format } from "date-fns";
+const formatWithOrdinal = (date: Date): string => {
+  const day = format(date, "d");
+  const dayNumber = parseInt(day, 10);
+  const suffix =
+    dayNumber % 10 === 1 && dayNumber !== 11
+      ? "st"
+      : dayNumber % 10 === 2 && dayNumber !== 12
+      ? "nd"
+      : dayNumber % 10 === 3 && dayNumber !== 13
+      ? "rd"
+      : "th";
+  return `${day}${suffix}`;
+};
+
+type Props = {
+  data: DocDetails;
+  barangayCaptain: BarangayOfficial;
+  barangaySecretary: BarangayOfficial;
+};
 
 const EventPermitPdf = (props: Props) => {
+  const { data }: { data: DocDetails } = props;
+
+  const eventPermitDetails = props.data.details as EventPermit;
+
+  const today = new Date();
+  const formattedDate = `${formatWithOrdinal(today)} day of ${format(
+    today,
+    "MMMM, yyyy"
+  )}`;
+
   // Register the font
   Font.register({
     family: "Times New Roman",
@@ -148,8 +185,12 @@ const EventPermitPdf = (props: Props) => {
         {/* <Text style={styles.body}>TO WHOM IT MAY CONCERN:</Text> */}
 
         <Text style={styles.paragraph}>
-          This is to certify that _______________ has requested permission to
-          hold a _________________ with the following details:
+          This is to certify that {data.full_name}, of legal age,{" "}
+          {eventPermitDetails.gender.toLocaleLowerCase()},{" "}
+          {eventPermitDetails.civil_status.toLocaleLowerCase()},{" "}
+          {eventPermitDetails.citizenship} citizenship, and a resident of
+          Barangay San Roque, Polangui, Albay has requested permission to hold a
+          "{eventPermitDetails.event_name}"" with the following details:
         </Text>
 
         <View style={{ fontSize: 12, marginVertical: 5 }}>
@@ -162,14 +203,22 @@ const EventPermitPdf = (props: Props) => {
             }}
           >
             <View style={{ width: "50%" }}>
-              <Text>Date: __________</Text>
+              <Text>
+                Date:{" "}
+                {format(
+                  new Date(eventPermitDetails.event_date),
+                  "MMMM dd, yyyy"
+                )}
+              </Text>
             </View>
             <View style={{ width: "50%" }}>
-              <Text>Time: __________</Text>
+              <Text>Time: {eventPermitDetails.event_time}</Text>
             </View>
           </View>
-          <Text style={{ marginBottom: 5 }}>Place/Venue: ___________</Text>
-          <Text>No. of Guest: ___________</Text>
+          <Text style={{ marginBottom: 5 }}>
+            Place/Venue: {eventPermitDetails.event_place}
+          </Text>
+          <Text>No. of Guest: {eventPermitDetails.guest_no}</Text>
         </View>
 
         {/* <Text style={styles.paragraph}>
@@ -180,14 +229,19 @@ const EventPermitPdf = (props: Props) => {
 
         <Text style={styles.paragraph}>
           After checking the venue and certifying that it can accommodate the
-          guests. _____________ is granted permission to hold this event as
-          he/she/they promised to abide by the health and safety protocols set
-          by the IATF and the Municipality of Polangui regarding the holding of
-          social gatherings.
+          guests. {data.full_name} is granted permission to hold this event as{" "}
+          {eventPermitDetails.gender.toLocaleLowerCase() == "male"
+            ? "he"
+            : eventPermitDetails.gender.toLocaleLowerCase() == "female"
+            ? "she"
+            : "they"}{" "}
+          promised to abide by the health and safety protocols set by the IATF
+          and the Municipality of Polangui regarding the holding of social
+          gatherings.
         </Text>
 
         <Text style={styles.paragraph}>
-          Issued this ___ day of _____ at Barangay San Roque, Polangui, Albay.
+          Issued this {formattedDate} at Barangay San Roque, Polangui, Albay.
         </Text>
 
         {/* <Text style={styles.watermark}>Barangay Logo</Text> */}
@@ -211,7 +265,9 @@ const EventPermitPdf = (props: Props) => {
           <View style={styles.signatureBox}>
             {/* <Text style={{ marginLeft: 16 }}>Approved By:</Text> */}
             <View style={{ textAlign: "center", marginTop: 5 }}>
-              <Text>____________________________________</Text>
+              <Text style={{ width: "100%", borderBottom: "1px solid black" }}>
+                {props.barangayCaptain.full_name}
+              </Text>
               <Text>Barangay Captain</Text>
             </View>
           </View>

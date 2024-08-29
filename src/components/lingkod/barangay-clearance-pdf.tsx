@@ -8,8 +8,48 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
+import {
+  BrgyClearance,
+  BrgyIndigency,
+  BusinessPermit,
+  DocDetails,
+  EventPermit,
+} from "@/app/pdf/[id]/actions";
+import { format } from "date-fns";
+import { Timestamp } from "firebase/firestore";
+import { BarangayOfficial } from "@/app/pdf/[id]/actions";
 
-const BarangayClearancePDF = () => {
+type Props = {
+  data: DocDetails;
+  barangayCaptain: BarangayOfficial;
+  barangaySecretary: BarangayOfficial;
+};
+
+const formatWithOrdinal = (date: Date): string => {
+  const day = format(date, "d");
+  const dayNumber = parseInt(day, 10);
+  const suffix =
+    dayNumber % 10 === 1 && dayNumber !== 11
+      ? "st"
+      : dayNumber % 10 === 2 && dayNumber !== 12
+      ? "nd"
+      : dayNumber % 10 === 3 && dayNumber !== 13
+      ? "rd"
+      : "th";
+  return `${day}${suffix}`;
+};
+
+const BarangayClearancePDF = (props: Props) => {
+  const { data }: { data: DocDetails } = props;
+
+  const clearanceDetails = props.data.details as BrgyClearance;
+
+  const today = new Date();
+  const formattedDate = `${formatWithOrdinal(today)} day of ${format(
+    today,
+    "MMMM, yyyy"
+  )}`;
+
   // Register the font
   Font.register({
     family: "Times New Roman",
@@ -141,24 +181,33 @@ const BarangayClearancePDF = () => {
         <Text style={styles.body}>TO WHOM IT MAY CONCERN:</Text>
 
         <Text style={styles.paragraph}>
-          This is to certify that ________, of legal age, male/female,
-          married/single, born on ___, and a bonafide resident of ____, San
-          Roque, Polangui, Albay.
+          This is to certify that{" "}
+          <Text style={{ fontWeight: "bold" }}>{data.full_name}</Text>, of legal
+          age, {clearanceDetails.gender.toLocaleLowerCase()},{" "}
+          {clearanceDetails.civil_status.toLocaleLowerCase()}, born on{" "}
+          {format(new Date(clearanceDetails.birthday), "MMMM dd, yyyy")}, and a
+          bonafide resident of Zone {clearanceDetails.zone}, San Roque,
+          Polangui, Albay.
         </Text>
 
         <Text style={styles.paragraph}>
-          Further CERTIFY that he/she is known to me of good moral character and
-          is a law abiding citizen. He/she has no pending case nor derogatory
-          record in this Barangay.
+          Further CERTIFY that{" "}
+          {clearanceDetails.gender.toLocaleLowerCase() == "male" ? "he" : "she"}{" "}
+          is known to me of good moral character and is a law abiding citizen.
+          {clearanceDetails.gender.toLocaleLowerCase() == "male"
+            ? "He"
+            : "She"}{" "}
+          has no pending case nor derogatory record in this Barangay.
         </Text>
 
         <Text style={styles.paragraph}>
           This certification is being issued upon the request of the
-          above-mentioned name and for whatever purpose/s it may serve.
+          above-mentioned name, for the purpose of {clearanceDetails.purpose}{" "}
+          and for whatever purpose/s it may serve.
         </Text>
 
         <Text style={styles.paragraph}>
-          Issued this ___ day of _____ at Barangay San Roque, Polangui, Albay.
+          Issued this {formattedDate} at Barangay San Roque, Polangui, Albay.
         </Text>
 
         {/* <Text style={styles.watermark}>Barangay Logo</Text> */}
@@ -176,13 +225,22 @@ const BarangayClearancePDF = () => {
               marginTop: 18,
             }}
           >
-            <Text>____________________________________</Text>
+            <Text style={{ width: "100%", borderBottom: "1px solid black" }}>
+              {data.full_name}
+            </Text>
             <Text>Bearer Signature</Text>
           </View>
           <View style={styles.signatureBox}>
-            <Text style={{ marginLeft: 16 }}>Approved By:</Text>
-            <View style={{ textAlign: "center", marginTop: 5 }}>
-              <Text>____________________________________</Text>
+            <Text>Approved By:</Text>
+            <View
+              style={{
+                textAlign: "center",
+                marginTop: 5,
+              }}
+            >
+              <Text style={{ width: "100%", borderBottom: "1px solid black" }}>
+                {props.barangayCaptain.full_name}
+              </Text>
               <Text>Barangay Captain</Text>
             </View>
           </View>
@@ -195,9 +253,11 @@ const BarangayClearancePDF = () => {
             <Text>ISSUED on: ______________ </Text>
           </View>
           <View style={{ width: "45%" }}>
-            <Text style={{ marginLeft: 16 }}>Issued By:</Text>
+            <Text>Issued By:</Text>
             <View style={{ textAlign: "center", marginTop: 5 }}>
-              <Text>____________________________________</Text>
+              <Text style={{ width: "100%", borderBottom: "1px solid black" }}>
+                {props.barangaySecretary.full_name}
+              </Text>
               <Text>Barangay Secretary</Text>
             </View>
           </View>

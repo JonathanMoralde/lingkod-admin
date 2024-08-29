@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { format } from "date-fns";
+import Link from "next/link";
+import { handleApprove, handleReject } from "./actions";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -51,7 +53,7 @@ export const columns: ColumnDef<DocRequest>[] = [
     },
     cell: ({ row }) => {
       const timestamp = row.original.date_requested;
-      const formattedDate = format(new Date(timestamp), "MM/dd/yyyy hh:mm a");
+      const formattedDate = format(new Date(timestamp), "MMMM dd, yyyy");
       return <span>{formattedDate}</span>;
     },
   },
@@ -81,9 +83,23 @@ export const columns: ColumnDef<DocRequest>[] = [
                 Copy payment ID
               </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Accept</DropdownMenuItem>
-              <DropdownMenuItem>Decline</DropdownMenuItem>
-              <DropdownMenuItem>View details</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={async () => {
+                  await handleApprove(data.id);
+                }}
+              >
+                Accept
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={async () => {
+                  await handleReject(data.id);
+                }}
+              >
+                Decline
+              </DropdownMenuItem>
+              <Link href={`/pdf/${data.id}`} target="_blank">
+                <DropdownMenuItem>View details</DropdownMenuItem>
+              </Link>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
