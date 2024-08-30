@@ -15,13 +15,13 @@ import {
   BusinessPermit,
   DocDetails,
   EventPermit,
-} from "./actions";
+} from "../actions";
 import BarangayClearancePDF from "@/components/lingkod/barangay-clearance-pdf";
 import BarangayIndigency from "@/components/lingkod/barangay-indigency-pdf";
 import BusinessPermitPdf from "@/components/lingkod/business-permit-pdf";
 import EventPermitPdf from "@/components/lingkod/event-permit-pdf";
 import BlotterReportPdf from "@/components/lingkod/blotter-report-pdf";
-import { BarangayOfficial } from "@/app/pdf/[id]/actions";
+import { BarangayOfficial } from "@/app/pdf/actions";
 
 type Props = {
   data: DocDetails;

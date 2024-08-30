@@ -9,8 +9,12 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
+import { BarangayOfficial } from "@/app/pdf/actions";
 
-type Props = {};
+type Props = {
+  barangayCaptain: BarangayOfficial;
+  barangaySecretary: BarangayOfficial;
+};
 
 const BlotterReportPdf = (props: Props) => {
   // Register the font
@@ -201,7 +205,9 @@ const BlotterReportPdf = (props: Props) => {
           <View style={styles.signatureBox}>
             {/* <Text style={{ marginLeft: 16 }}>Approved By:</Text> */}
             <View style={{ textAlign: "center", marginTop: 5 }}>
-              <Text>____________________________________</Text>
+              <Text style={{ width: "100%", borderBottom: "1px solid black" }}>
+                {props.barangayCaptain.full_name}
+              </Text>
               <Text>Barangay Captain</Text>
             </View>
           </View>

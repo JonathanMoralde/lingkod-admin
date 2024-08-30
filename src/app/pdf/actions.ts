@@ -164,3 +164,14 @@ export async function getDocRequestDetails(docId: string): Promise<DocDetails> {
     throw new Error("Document not found");
   }
 }
+
+// ! BLOTTER REPORT
+
+// export type BlotterDocDetails = {
+//   id: string;
+//   full_name: string;
+//   type: string;
+//   date_requested: number;
+//   status: "pending" | "accepted" | "declined";
+//   details: BrgyIndigency | BrgyClearance | EventPermit | BusinessPermit;
+// };

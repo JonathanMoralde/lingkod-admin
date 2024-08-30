@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { format } from "date-fns";
+import Link from "next/link";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -45,7 +46,7 @@ export const columns: ColumnDef<Report>[] = [
     },
     cell: ({ row }) => {
       const timestamp = row.original.date_submitted;
-      const formattedDate = format(new Date(timestamp), "MM/dd/yyyy hh:mm a");
+      const formattedDate = format(new Date(timestamp), "MMMM dd,yyyy hh:mm a");
       return <span>{formattedDate}</span>;
     },
   },
@@ -65,13 +66,10 @@ export const columns: ColumnDef<Report>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              {/* <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
-              >
-                Copy payment ID
-              </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View details</DropdownMenuItem>
+              <Link href={`/pdf/blotter/${123}`} target="_blank">
+                <DropdownMenuItem>View details</DropdownMenuItem>
+              </Link>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

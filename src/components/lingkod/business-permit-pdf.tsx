@@ -14,8 +14,8 @@ import {
   BusinessPermit,
   DocDetails,
   EventPermit,
-} from "@/app/pdf/[id]/actions";
-import { BarangayOfficial } from "@/app/pdf/[id]/actions";
+} from "@/app/pdf/actions";
+import { BarangayOfficial } from "@/app/pdf/actions";
 
 import { format } from "date-fns";
 const formatWithOrdinal = (date: Date): string => {

@@ -70,7 +70,7 @@ export function DataTable<TData, TValue>({
     },
     initialState: {
       pagination: {
-        pageSize: 10, //number of rows
+        pageSize: 4, //number of rows
       },
     },
     onGlobalFilterChange: setGlobalFilter,

@@ -1,12 +1,11 @@
 import React from "react";
-import { DocDetails, getDocRequestDetails } from "../actions";
-import PdfView from "./pdf-viewer";
-import { barangayOfficial, BarangayOfficial } from "../actions";
+import { barangayOfficial, BarangayOfficial } from "../../actions";
+import BlotterPdfView from "./pdf-viewer";
 
 type Props = { params: { id: string } };
 
 const PdfPreview = async (props: Props) => {
-  const docDetails: DocDetails = await getDocRequestDetails(props.params.id);
+  // const docDetails: DocDetails = await getDocRequestDetails(props.params.id);
   const barangayCaptain: BarangayOfficial = await barangayOfficial("Captain");
   const barangaySecretary: BarangayOfficial = await barangayOfficial(
     "Secretary"
@@ -14,8 +13,7 @@ const PdfPreview = async (props: Props) => {
 
   return (
     <main className="h-screen w-full">
-      <PdfView
-        data={docDetails}
+      <BlotterPdfView
         barangayCaptain={barangayCaptain}
         barangaySecretary={barangaySecretary}
       />
