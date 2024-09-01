@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import {
   FaTachometerAlt,
@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/navigation-menu";
 
 import Link from "next/link";
+import { useAuth } from "@/app/context/AuthContext";
 interface NavItem {
   name: string;
   path: string;
@@ -34,8 +35,10 @@ interface NavItem {
 }
 
 const Sidebar = () => {
+  const { userDetails } = useAuth();
+  console.log(userDetails);
   const pathname = usePathname();
-  const navLinks: NavItem[] = [
+  let navLinks: NavItem[] = [
     {
       name: "Dashboard",
       path: "/lingkod/dashboard",
@@ -72,6 +75,17 @@ const Sidebar = () => {
       icon: <FaBolt />,
     },
   ];
+
+  // Dynamically filter routes based on userDetails.position
+  if (
+    userDetails?.position !== "Captain" &&
+    userDetails?.position !== "Secretary"
+  ) {
+    navLinks = navLinks.filter((link) =>
+      ["Dashboard", "Events", "Electric Bill"].includes(link.name)
+    );
+  }
+
   return (
     <NavigationMenu className="rounded-r-3xl bg-indigo-950 px-5 py-10 max-w-xs flex-col items-start justify-start">
       <div className="flex items-center w-full">

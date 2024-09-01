@@ -167,11 +167,51 @@ export async function getDocRequestDetails(docId: string): Promise<DocDetails> {
 
 // ! BLOTTER REPORT
 
-// export type BlotterDocDetails = {
-//   id: string;
-//   full_name: string;
-//   type: string;
-//   date_requested: number;
-//   status: "pending" | "accepted" | "declined";
-//   details: BrgyIndigency | BrgyClearance | EventPermit | BusinessPermit;
-// };
+export type BlotterDocDetails = {
+  id: string;
+  case_no?: number;
+  complainant: string;
+  date_reported: string;
+  time_reported: string;
+  what: string;
+  when: string;
+  where: string;
+  why: string;
+  how: string;
+  status: string;
+};
+
+export async function getDocBlotterDetails(
+  docId: string
+): Promise<BlotterDocDetails> {
+  // Fetch data from your API here.
+
+  const eventDoc = doc(collection(db, "blotter_reports"), docId);
+
+  const eventDocSnap = await getDoc(eventDoc);
+
+  if (eventDocSnap.exists()) {
+    const docData = eventDocSnap.data();
+
+    let result: BlotterDocDetails = {
+      id: docId,
+      complainant: docData.complainant,
+      date_reported: docData.reported_date,
+      time_reported: docData.reported_time,
+      what: docData.what,
+      when: docData.when,
+      where: docData.where,
+      why: docData.why,
+      how: docData.how,
+      status: docData.status,
+    };
+
+    if (docData.case_no != null) {
+      result.case_no = docData.case_no;
+    }
+
+    return result;
+  } else {
+    throw new Error("Document not found");
+  }
+}

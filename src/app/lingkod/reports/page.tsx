@@ -2,20 +2,10 @@ import React from "react";
 import { columns, Report } from "./columns";
 import { Timestamp } from "firebase/firestore";
 import { DataTable } from "@/components/lingkod/data-table";
+import { getData } from "./actions";
 
-const Reports = () => {
-  const reports: Report[] = [
-    {
-      id: "YiDEQ77g4CPpwoHpviyTzpKJBuH3",
-      full_name: "Test Y Sheesh",
-      date_submitted: Timestamp.now().toMillis(),
-    },
-    {
-      id: "YiDEQ77g4CPpwoHpviyTzpKJBuH4",
-      full_name: "Test Y 2",
-      date_submitted: Timestamp.now().toMillis(),
-    },
-  ];
+const Reports = async () => {
+  const reports: Report[] = await getData();
 
   return (
     <section className="bg-indigo-950 rounded-xl px-4 py-10  h-[80vh]">

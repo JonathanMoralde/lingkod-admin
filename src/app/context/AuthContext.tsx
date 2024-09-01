@@ -9,7 +9,14 @@ import {
   User,
 } from "firebase/auth";
 import { auth, db } from "@/config/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 // interface User {
 //   uid: string;
@@ -17,9 +24,21 @@ import { doc, getDoc } from "firebase/firestore";
 // }
 interface AuthContextType {
   user: User | null;
+  userDetails: AdminUserDetails | null;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
 }
+
+export type AdminUserDetails = {
+  email: string;
+  first_name: string;
+  gender: string;
+  joined_full_name: string;
+  last_name: string;
+  middle_name: string;
+  position: string;
+  uid: string;
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -38,6 +57,7 @@ export const AuthContextProvider = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<Boolean>(true);
+  const [userDetails, setUserDetails] = useState<AdminUserDetails | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -55,6 +75,38 @@ export const AuthContextProvider = ({
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const fetchAdminUserDetails = async () => {
+      if (user != null) {
+        const userRef = query(
+          collection(db, "users"),
+          where("uid", "==", user?.uid)
+        );
+        const userSnapshot = await getDocs(userRef);
+
+        if (!userSnapshot.empty) {
+          const doc = userSnapshot.docs[0];
+
+          const docData = doc.data();
+          const details = {
+            email: docData.email,
+            first_name: docData.first_name,
+            gender: docData.gender,
+            joined_full_name: docData.joined_full_name,
+            last_name: docData.last_name,
+            middle_name: docData.middle_name,
+            position: docData.position,
+            uid: docData.uid,
+          };
+
+          setUserDetails(details);
+          document.cookie = `userDetails=${JSON.stringify(details)}; path=/`;
+        }
+      }
+    };
+    fetchAdminUserDetails();
+  }, [user]);
 
   const login = async (email: string, password: string) => {
     const userCredential = await signInWithEmailAndPassword(
@@ -109,7 +161,7 @@ export const AuthContextProvider = ({
 
   return (
     // <AuthContext.Provider value={{ user, login, logout }}>
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, userDetails, login, logout }}>
       {loading ? null : children}
     </AuthContext.Provider>
   );

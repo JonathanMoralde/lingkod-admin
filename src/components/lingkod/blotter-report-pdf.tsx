@@ -9,11 +9,12 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
-import { BarangayOfficial } from "@/app/pdf/actions";
+import { BarangayOfficial, BlotterDocDetails } from "@/app/pdf/actions";
 
 type Props = {
   barangayCaptain: BarangayOfficial;
   barangaySecretary: BarangayOfficial;
+  data: BlotterDocDetails;
 };
 
 const BlotterReportPdf = (props: Props) => {
@@ -55,7 +56,7 @@ const BlotterReportPdf = (props: Props) => {
     title: {
       textAlign: "center",
       fontSize: 18,
-      marginVertical: 40,
+      marginBottom: 30,
       fontWeight: "bold",
     },
     subtitle: {
@@ -145,46 +146,62 @@ const BlotterReportPdf = (props: Props) => {
         </View>
         <View style={styles.separator}></View>
 
-        <Text style={styles.title}>BLOTTER REPORT</Text>
+        <Text style={styles.subtitle}>OFFICE OF THE BARANGAY CAPTAIN</Text>
+        <Text style={styles.title}>BARANGAY BLOTTER</Text>
 
         {/* <Text style={styles.body}>TO WHOM IT MAY CONCERN:</Text> */}
+        <View
+          style={{ display: "flex", marginBottom: 10, flexDirection: "row" }}
+        >
+          <Text style={{ fontSize: 12 }}>Case No.: </Text>
+          <Text style={{ fontSize: 12 }}>
+            {props.data.case_no ? props.data.case_no : ""}
+          </Text>
+        </View>
+        <View
+          style={{ display: "flex", marginBottom: 10, flexDirection: "row" }}
+        >
+          <Text style={{ fontSize: 12 }}>Reported Date: </Text>
+          <Text style={{ fontSize: 12 }}>{props.data.date_reported}</Text>
+        </View>
+        <View
+          style={{ marginBottom: 30, display: "flex", flexDirection: "row" }}
+        >
+          <Text style={{ fontSize: 12 }}>Reported Time: </Text>
+          <Text style={{ fontSize: 12 }}>{props.data.time_reported}</Text>
+        </View>
 
-        <Text style={{ fontSize: 12, marginBottom: 30 }}>MMMM dd, yyyy</Text>
+        <View
+          style={{ display: "flex", marginBottom: 10, flexDirection: "row" }}
+        >
+          <Text style={{ fontSize: 12 }}>What: </Text>
+          <Text style={{ fontSize: 12 }}>{props.data.what}</Text>
+        </View>
+        <View
+          style={{ display: "flex", marginBottom: 10, flexDirection: "row" }}
+        >
+          <Text style={{ fontSize: 12 }}>Where: </Text>
+          <Text style={{ fontSize: 12 }}>{props.data.where}</Text>
+        </View>
+        <View
+          style={{ display: "flex", marginBottom: 10, flexDirection: "row" }}
+        >
+          <Text style={{ fontSize: 12 }}>When: </Text>
+          <Text style={{ fontSize: 12 }}>{props.data.when}</Text>
+        </View>
+        <View
+          style={{ display: "flex", marginBottom: 30, flexDirection: "row" }}
+        >
+          <Text style={{ fontSize: 12 }}>Why: </Text>
+          <Text style={{ fontSize: 12 }}>{props.data.why}</Text>
+        </View>
+        <View
+          style={{ display: "flex", marginBottom: 10, flexDirection: "row" }}
+        >
+          <Text style={{ fontSize: 12 }}>How: </Text>
+          <Text style={{ fontSize: 12 }}>{props.data.how}</Text>
+        </View>
 
-        {/* <Text style={styles.paragraph}>
-          Further CERTIFY that he/she is known to me of good moral character and
-          is a law abiding citizen. He/she has no pending case nor derogatory
-          record in this Barangay.
-        </Text> */}
-
-        <Text style={styles.paragraph}>
-          _____________, and a resident in this barangay filed a report to the
-          Barangay Hall and alleging that Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Voluptates odit suscipit incidunt earum culpa
-          voluptatibus error ipsa accusamus necessitatibus hic expedita
-          repellendus quam eius eum dolores repudiandae quis, consequatur
-          nostrum! Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-          Mollitia quibusdam neque error voluptas corrupti. Expedita alias ab
-          ratione laboriosam quia. Lorem ipsum dolor sit amet consectetur,
-          adipisicing elit. Molestias quibusdam id eos reprehenderit atque ad
-          voluptatum at nobis nisi praesentium molestiae voluptatibus ex fugiat
-          perspiciatis est voluptates dolorum recusandae, commodi, odit totam
-          eligendi! Quam cupiditate doloremque autem tempore commodi modi est
-          provident voluptatem qui culpa. Dolore eaque sit veniam porro, aperiam
-          maxime molestias laboriosam facere fugit nam, eius neque nemo unde
-          quaerat provident ducimus iusto fuga natus ea praesentium, accusantium
-          laborum voluptatibus. Saepe odio eveniet corporis nisi eius
-          praesentium quod veritatis amet libero iusto odit explicabo totam
-          voluptatem itaque, delectus exercitationem deleniti eum animi in
-          pariatur nulla. Ad, nobis vero.
-        </Text>
-
-        <Text style={styles.paragraph}>
-          Issued this ___ day of _____, for whatever legal purpose it may serve,
-          at Barangay San Roque, Polangui, Albay.
-        </Text>
-
-        {/* <Text style={styles.watermark}>Barangay Logo</Text> */}
         <Image
           src="/28d74124c3365e8a66a995661eaa8724.png"
           style={styles.watermark}
@@ -194,21 +211,25 @@ const BlotterReportPdf = (props: Props) => {
           <View
             style={{
               width: "45%",
-              textAlign: "center",
               fontSize: 12,
               marginTop: 18,
+              textAlign: "center",
             }}
           >
-            {/* <Text>____________________________________</Text>
-            <Text>Bearer Signature</Text> */}
+            <Text style={{ textAlign: "left" }}>Reported By:</Text>
+            <Text style={{ width: "100%", borderBottom: "1px solid black" }}>
+              {props.data.complainant}
+            </Text>
+            <Text>Complainant</Text>
           </View>
-          <View style={styles.signatureBox}>
+          <View style={{ ...styles.signatureBox, marginTop: 80 }}>
             {/* <Text style={{ marginLeft: 16 }}>Approved By:</Text> */}
             <View style={{ textAlign: "center", marginTop: 5 }}>
+              <Text style={{ textAlign: "left" }}>Recorded By:</Text>
               <Text style={{ width: "100%", borderBottom: "1px solid black" }}>
-                {props.barangayCaptain.full_name}
+                {props.barangaySecretary.full_name}
               </Text>
-              <Text>Barangay Captain</Text>
+              <Text>Barangay Secretary</Text>
             </View>
           </View>
         </View>

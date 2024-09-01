@@ -22,33 +22,52 @@ import Link from "next/link";
 // You can use a Zod schema here if you want.
 export type Report = {
   id: string;
-  full_name: string;
-  date_submitted: number;
+  case_no?: number;
+  complainant: string;
+  date_reported: string;
+  time_reported: string;
+  what: string;
+  status: string;
 };
 
 export const columns: ColumnDef<Report>[] = [
   {
-    accessorKey: "full_name",
-    header: "Full Name",
+    accessorKey: "case_no",
+    header: "Case No.",
+    cell: ({ getValue }) => {
+      const caseNo = getValue<number | undefined>();
+      return caseNo != null ? caseNo : "Not assigned yet";
+    },
   },
   {
-    accessorKey: "date_submitted",
+    accessorKey: "complainant",
+    header: "Complainant",
+  },
+  {
+    accessorKey: "what",
+    header: "About",
+  },
+  {
+    accessorKey: "date_reported",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Date Submitted
+          Date Reported
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => {
-      const timestamp = row.original.date_submitted;
-      const formattedDate = format(new Date(timestamp), "MMMM dd,yyyy hh:mm a");
-      return <span>{formattedDate}</span>;
-    },
+  },
+  {
+    accessorKey: "time_reported",
+    header: "Time Reported",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
   },
   {
     id: "actions",
@@ -67,7 +86,9 @@ export const columns: ColumnDef<Report>[] = [
             <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <Link href={`/pdf/blotter/${123}`} target="_blank">
+              <DropdownMenuItem>Assign Case No.</DropdownMenuItem>
+              <DropdownMenuItem>Update Status.</DropdownMenuItem>
+              <Link href={`/pdf/blotter/${data.id}`} target="_blank">
                 <DropdownMenuItem>View details</DropdownMenuItem>
               </Link>
             </DropdownMenuContent>

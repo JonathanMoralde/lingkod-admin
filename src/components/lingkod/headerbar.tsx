@@ -45,7 +45,7 @@ const HeaderBar = () => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user, logout, userDetails } = useAuth();
 
   useEffect(() => {
     // Set up an interval to update the date every second
@@ -115,14 +115,19 @@ const HeaderBar = () => {
                 </DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>
-            <DropdownMenuGroup>
-              <Link href="/lingkod/officer-management">
-                <DropdownMenuItem>
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  <span>Officer Management</span>
-                </DropdownMenuItem>
-              </Link>
-            </DropdownMenuGroup>
+            {userDetails?.position === "Captain" ||
+            userDetails?.position === "Secretary" ? (
+              <DropdownMenuGroup>
+                <Link href="/lingkod/officer-management">
+                  <DropdownMenuItem>
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    <span>Officer Management</span>
+                  </DropdownMenuItem>
+                </Link>
+              </DropdownMenuGroup>
+            ) : (
+              ""
+            )}
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
