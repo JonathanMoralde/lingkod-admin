@@ -19,18 +19,16 @@ const ResidentDetail = async (props: Props) => {
 
   return (
     <ScrollArea className="bg-indigo-950 rounded-xl px-4 py-10 h-[80vh]">
-      <div className="flex items-center  mb-10">
-        <Button variant="ghost" size="icon">
+      <div className="flex items-center text-center mb-10">
+        <Button variant="ghost" size="icon" className=" justify-start">
           <Link href="/lingkod/residents">
             <ArrowLeft />
           </Link>
         </Button>
 
-        <h3 className="text-xl font-semibold text-center w-full">
-          User Information
-        </h3>
+        <h3 className="text-xl font-semibold w-full">User Information</h3>
       </div>
-      <div className="flex justify-center mb-10">
+      <div className="flex mb-10 gap-10">
         {/* image & btn */}
         <div className="w-1/4 h-full me-4">
           <div className="relative mx-auto w-52 h-52 rounded-full overflow-hidden">
@@ -43,7 +41,6 @@ const ResidentDetail = async (props: Props) => {
             />
           </div>
         </div>
-
         {/* details */}
         <div className="flex w-1/2 justify-between">
           <div>
@@ -61,7 +58,7 @@ const ResidentDetail = async (props: Props) => {
             </p>
             <p className="mb-4 font-light">
               <span className="font-semibold">Birthday: </span>
-              {format(new Date(data.birthday), "MMMM d, yyyy")}
+              {data.birthday}
             </p>
             <p className="mb-4 font-light">
               <span className="font-semibold">Civil Status: </span>

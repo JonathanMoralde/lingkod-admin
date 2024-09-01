@@ -87,7 +87,7 @@ export const columns: ColumnDef<Report>[] = [
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Assign Case No.</DropdownMenuItem>
-              <DropdownMenuItem>Update Status.</DropdownMenuItem>
+              <DropdownMenuItem>Update Status</DropdownMenuItem>
               <Link href={`/pdf/blotter/${data.id}`} target="_blank">
                 <DropdownMenuItem>View details</DropdownMenuItem>
               </Link>

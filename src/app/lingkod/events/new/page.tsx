@@ -281,7 +281,7 @@ const NewEvent = (props: Props) => {
                 )}
               />
 
-              {category === "event" && (
+              {category === "Events" && (
                 <>
                   <FormField
                     control={form.control}
@@ -353,7 +353,7 @@ const NewEvent = (props: Props) => {
                 render={({ field }) => (
                   <FormItem className="flex flex-col mb-5">
                     <FormLabel>
-                      {category === "event" ? "Event Date" : "Date"}
+                      {category === "Events" ? "Event Date" : "Date"}
                     </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -366,7 +366,7 @@ const NewEvent = (props: Props) => {
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {date ? (
-                            format(date, "PPP")
+                            format(date, "MMMM dd, yyyy")
                           ) : (
                             <span className="text-gray-400">Pick a date</span>
                           )}

@@ -2,6 +2,7 @@
 
 import { User } from "./columns";
 import { db } from "@/config/firebase";
+import { format } from "date-fns";
 import {
   getFirestore,
   collection,
@@ -72,7 +73,7 @@ export interface UserDetails {
   email: string;
   status: "pending" | "approved" | "not approved";
   age: number;
-  birthday: number;
+  birthday: string;
   block: string;
   civil_status: string;
   first_name: string;
@@ -103,7 +104,7 @@ export async function getUserData(uid: string): Promise<UserDetails> {
     email: docData.email,
     status: docData.status,
     age: docData.age,
-    birthday: (docData.birthday as Timestamp).toMillis(),
+    birthday: docData.birthday,
     block: docData.block,
     civil_status: docData.civil_status,
     contact_number: docData.contact_number,
@@ -146,7 +147,7 @@ export async function handleEdit(
       zone,
       email,
       age,
-      birthday,
+      birtday: format(birthday, "MMMM dd, yyyy"),
       block,
       lot,
       sector,

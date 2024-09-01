@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { format } from "date-fns";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -24,6 +25,7 @@ export type HouseholdDetail = {
   address: string;
   member_no: number;
   contact_no: string;
+  date_submitted: number;
 };
 
 export const columns: ColumnDef<HouseholdDetail>[] = [
@@ -43,61 +45,49 @@ export const columns: ColumnDef<HouseholdDetail>[] = [
     accessorKey: "contact_no",
     header: "Contact Number",
   },
-  //   {
-  //     id: "actions",
-  //     cell: ({ row }) => {
-  //       const data = row.original;
+  {
+    accessorKey: "date_submitted",
+    header: "Date Submitted",
+    cell: ({ row }) => {
+      const timestamp = row.original.date_submitted;
+      const formattedDate = format(new Date(timestamp), "MMMM dd, yyyy");
+      return <span>{formattedDate}</span>;
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const data = row.original;
 
-  //       // const handleApproveClick = async (id: string) => {
-  //       //   const result = await handleApprove(id);
-  //       //   if (result.success) {
-  //       //     // Optionally, trigger a client-side update or refresh
-  //       //   } else {
-  //       //     // Handle error
-  //       //     console.error(result.error);
-  //       //   }
-  //       // };
+      // const handleApproveClick = async (id: string) => {
+      //   const result = await handleApprove(id);
+      //   if (result.success) {
+      //     // Optionally, trigger a client-side update or refresh
+      //   } else {
+      //     // Handle error
+      //     console.error(result.error);
+      //   }
+      // };
 
-  //       return (
-  //         <div className="text-center">
-  //           <DropdownMenu>
-  //             <DropdownMenuTrigger asChild className="">
-  //               <Button variant="ghost" className="h-8 w-8 p-0">
-  //                 <span className="sr-only">Open menu</span>
-  //                 <MoreVertical className="h-4 w-4" />
-  //               </Button>
-  //             </DropdownMenuTrigger>
-  //             <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
-  //               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-  //               {/* <DropdownMenuItem
-  //                 onClick={() => navigator.clipboard.writeText(payment.id)}
-  //               >
-  //                 Copy payment ID
-  //               </DropdownMenuItem> */}
-  //               <DropdownMenuSeparator />
-  //               {
-  //                 // data.status == "pending" && (
-  //                 //   <DropdownMenuItem
-  //                 //   // onClick={async () => await handleApprove(data.id)}
-  //                 //   >
-  //                 //     <Link href={`/lingkod/residents/verify/${data.id}`}>
-  //                 //       Verify User
-  //                 //     </Link>
-  //                 //   </DropdownMenuItem>
-  //                 // )
-  //               }
-  //               {/* <Link href={`/lingkod/residents/${data.id}`}>
-  //                 <DropdownMenuItem>
-  //                   {data.status == "pending" ? "Verify Account" : "View details"}
-  //                 </DropdownMenuItem>
-  //               </Link>
-  //               <Link href={`/lingkod/residents/edit/${data.id}`}>
-  //                 <DropdownMenuItem>Edit details</DropdownMenuItem>
-  //               </Link> */}
-  //             </DropdownMenuContent>
-  //           </DropdownMenu>
-  //         </div>
-  //       );
-  //     },
-  //   },
+      return (
+        <div className="text-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="">
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <Link href={`/lingkod/household/${data.id}`}>
+                <DropdownMenuItem>View details</DropdownMenuItem>
+              </Link>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    },
+  },
 ];
