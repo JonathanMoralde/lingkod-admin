@@ -66,7 +66,7 @@ const Sidebar = () => {
     },
     {
       name: "Events",
-      path: "/lingkod/events",
+      path: "/lingkod/events/all",
       icon: <FaCalendarAlt />,
     },
     {

@@ -11,14 +11,12 @@ const HouseholdDetails = (props: Props) => {
     <section className="bg-indigo-950 rounded-xl px-4 py-10  h-[80vh]>HouseholdDetails">
       <div className="flex items-center  mb-10">
         <Button variant="ghost" size="icon" className=" justify-start">
-          <Link href="/lingkod/residents">
+          <Link href="/lingkod/household">
             <ArrowLeft />
           </Link>
         </Button>
 
-        <h3 className="text-xl font-semibold text-center w-full">
-          Household details
-        </h3>
+        <h3 className="text-xl font-semibold w-full">Household details</h3>
       </div>
     </section>
   );

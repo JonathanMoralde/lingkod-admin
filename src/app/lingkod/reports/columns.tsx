@@ -86,8 +86,13 @@ export const columns: ColumnDef<Report>[] = [
             <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Assign Case No.</DropdownMenuItem>
-              <DropdownMenuItem>Update Status</DropdownMenuItem>
+              <Link href={`/lingkod/reports/edit/case-no/${data.id}`}>
+                <DropdownMenuItem>Assign Case No.</DropdownMenuItem>
+              </Link>
+
+              <Link href={`/lingkod/reports/edit/status/${data.id}`}>
+                <DropdownMenuItem>Update Status</DropdownMenuItem>
+              </Link>
               <Link href={`/pdf/blotter/${data.id}`} target="_blank">
                 <DropdownMenuItem>View details</DropdownMenuItem>
               </Link>

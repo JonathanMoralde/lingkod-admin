@@ -17,6 +17,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
+import { isEqual } from "date-fns";
 
 export type Event = {
   id: string;
@@ -37,13 +38,22 @@ export interface EventDetails {
   event_location?: string;
 }
 
-export async function getData(): Promise<Event[]> {
+export async function getData(category: string): Promise<Event[]> {
   // Fetch data from your API here.
 
-  const eventRef = query(
-    collection(db, "events"),
-    orderBy("event_date", "desc")
-  );
+  let eventRef = query(collection(db, "events"), orderBy("event_date", "desc"));
+
+  if (category !== "all") {
+    const selectedCategory = `${category.charAt(0).toUpperCase()}${category
+      .slice(1)
+      .toLowerCase()}`;
+    console.log(selectedCategory);
+    eventRef = query(
+      collection(db, "events"),
+      where("category", "==", selectedCategory),
+      orderBy("event_date", "desc")
+    );
+  }
   const eventSnapshot = await getDocs(eventRef);
 
   const data: Event[] = eventSnapshot.docs.map((doc) => {

@@ -145,6 +145,7 @@ export async function handleEdit(
       first_name,
       middle_name,
       last_name,
+      joined_full_name: `${first_name} ${middle_name.charAt(0)}. ${last_name}`,
       position,
       gender,
     };

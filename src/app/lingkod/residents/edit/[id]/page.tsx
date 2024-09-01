@@ -56,9 +56,6 @@ const formSchema = z.object({
   birthday: z.date({
     required_error: "Date is required",
   }),
-  block: z.string(),
-  lot: z.string(),
-  sector: z.string(),
   civil_status: z.string(),
   gender: z.string(),
   contact_number: z.string(),
@@ -93,9 +90,6 @@ const EditUser = (props: Props) => {
         form.setValue("email", userData.email);
         form.setValue("age", userData.age);
         form.setValue("birthday", new Date(userData.birthday));
-        form.setValue("block", userData.block);
-        form.setValue("sector", userData.sector);
-        form.setValue("lot", userData.lot);
         form.setValue("civil_status", userData.civil_status);
         form.setValue("gender", userData.gender);
         form.setValue("contact_number", userData.contact_number);
@@ -122,9 +116,6 @@ const EditUser = (props: Props) => {
         data.email,
         data.age,
         data.birthday,
-        data.block,
-        data.lot,
-        data.sector,
         data.civil_status,
         data.gender,
         data.contact_number
@@ -210,41 +201,7 @@ const EditUser = (props: Props) => {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="zone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Zone</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Zone"
-                          {...field}
-                          className="rounded"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="Email"
-                          {...field}
-                          className="rounded"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+
                 <FormField
                   control={form.control}
                   name="age"
@@ -255,7 +212,10 @@ const EditUser = (props: Props) => {
                         <Input
                           type="number"
                           placeholder="Age"
-                          {...field}
+                          value={field.value || ""} // Ensure it's an empty string if undefined
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          } // Convert to number on change
                           className="rounded"
                         />
                       </FormControl>
@@ -307,47 +267,13 @@ const EditUser = (props: Props) => {
               <div className="w-1/2">
                 <FormField
                   control={form.control}
-                  name="block"
+                  name="zone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Block</FormLabel>
+                      <FormLabel>Zone</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Block"
-                          {...field}
-                          className="rounded"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="lot"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Lot</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Lot"
-                          {...field}
-                          className="rounded"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="sector"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Sector</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Sector"
+                          placeholder="Zone"
                           {...field}
                           className="rounded"
                         />
@@ -399,6 +325,24 @@ const EditUser = (props: Props) => {
                       <FormControl>
                         <Input
                           placeholder="Contact Number"
+                          {...field}
+                          className="rounded"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="Email"
                           {...field}
                           className="rounded"
                         />

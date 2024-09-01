@@ -39,7 +39,7 @@ import { format } from "date-fns";
 
 import Link from "next/link";
 import { Timestamp } from "firebase/firestore";
-import { handleDelete } from "./actions";
+import { handleDelete } from "../actions";
 import { toast } from "sonner";
 
 type Props = {

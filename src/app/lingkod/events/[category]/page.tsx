@@ -2,12 +2,19 @@ import React from "react";
 import EventCard from "./eventCard";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Event, getData } from "./actions";
+import { Event, getData } from "../actions";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
+import FilterBtn from "./filterBtn";
 
-const Events = async () => {
-  const data: Event[] = await getData();
+type Props = {
+  params: {
+    category: string;
+  };
+};
+
+const Events = async (props: Props) => {
+  const data: Event[] = await getData(props.params.category);
 
   return (
     <ScrollArea className="bg-indigo-950 rounded-xl h-[80vh]">
@@ -25,14 +32,7 @@ const Events = async () => {
           </Link>
         </div>
 
-        {/* <div className="flex items-center py-4">
-          <Input
-            placeholder="Search"
-            value={globalFilter}
-            onChange={(event) => setGlobalFilter(event.target.value)}
-            className="max-w-sm rounded border-gray-400 text-gray-400 hover:border-white  hover:text-white transition-all"
-          />
-        </div> */}
+        <FilterBtn currentCategory={props.params.category} />
 
         <div className="flex flex-wrap w-full gap-4">
           {data.map((event, index) => (

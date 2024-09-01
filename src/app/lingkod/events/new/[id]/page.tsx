@@ -176,7 +176,7 @@ const EditEvent = (props: Props) => {
     <ScrollArea className="bg-indigo-950 rounded-xl px-4 py-10 h-[80vh]">
       <div className="flex items-center  mb-10">
         <Button variant="ghost" size="icon" className=" justify-start">
-          <Link href="/lingkod/events">
+          <Link href="/lingkod/events/all">
             <ArrowLeft />
           </Link>
         </Button>
