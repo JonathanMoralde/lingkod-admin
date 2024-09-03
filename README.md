@@ -8,6 +8,8 @@ Firebase Authentication
 
 Resident and Household management
 
+Document request mangement
+
 Blotter report tracking
 
 Public announcements
