@@ -92,7 +92,7 @@ const EditStatus = (props: Props) => {
                       <SelectValue placeholder="Select new status" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
+                  <SelectContent className="dark:bg-[#4844b4] bg-[#4844b4]">
                     <SelectItem value="pending">Pending</SelectItem>
                     <SelectItem value="ongoing">Ongoing</SelectItem>
                     <SelectItem value="resolved">Resolved Issue</SelectItem>

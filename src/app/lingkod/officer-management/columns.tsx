@@ -82,7 +82,7 @@ export const columns: ColumnDef<Admin>[] = [
                   {" "}
                   Disable Account
                 </AlertDialogTrigger>
-                <AlertDialogContent>
+                <AlertDialogContent className="dark:bg-[#4844b4] bg-[#4844b4]">
                   <AlertDialogHeader>
                     <AlertDialogTitle>
                       You are about to disable an account

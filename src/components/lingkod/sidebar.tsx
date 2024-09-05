@@ -91,7 +91,7 @@ const Sidebar = () => {
       <div className="flex items-center w-full">
         <Image
           className="me-4"
-          src="/logo-no-background 1.png"
+          src="/linkod_logo.png"
           alt="Lingkod Logo"
           // layout="responsive"
           width={100}

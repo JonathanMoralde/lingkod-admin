@@ -178,7 +178,7 @@ const PostBill = (props: Props) => {
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-full p-0">
-                          <Command className="w-full">
+                          <Command className="w-full dark:bg-[#4844b4] bg-[#4844b4]">
                             <CommandInput placeholder="Search resident" />
                             <CommandList>
                               <CommandEmpty>No user found.</CommandEmpty>
@@ -345,6 +345,7 @@ const PostBill = (props: Props) => {
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0">
                           <Calendar
+                            className=" bg-[#4844b4]"
                             mode="single"
                             selected={date}
                             onSelect={(selectedDate) => {
@@ -424,6 +425,7 @@ const PostBill = (props: Props) => {
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0">
                           <Calendar
+                            className="bg-[##4844b4]"
                             mode="single"
                             selected={dueDate}
                             onSelect={(selectedDueDate) => {
@@ -464,6 +466,7 @@ const PostBill = (props: Props) => {
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0">
                           <Calendar
+                            className="bg-[##4844b4]"
                             mode="single"
                             selected={disconnectionDate}
                             onSelect={(selectedDisconnectionDate) => {

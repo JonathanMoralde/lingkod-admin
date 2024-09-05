@@ -136,7 +136,7 @@ export default function Home() {
           <div className="bg-white h-full w-1/2 rounded-2xl flex flex-col justify-center items-center">
             <div className="relative w-[18.75rem] h-[18.75rem] mb-10 rounded-full shadow-lg">
               <Image
-                src="/logo-no-background 1.png"
+                src="/linkod_logo.png"
                 alt="Lingkod Logo"
                 fill
                 sizes="w-auto h-auto"

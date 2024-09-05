@@ -29,6 +29,7 @@ import { Input } from "@/components/ui/input";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  hideSearch?: boolean;
 }
 
 // Global filter function excluding "actions" column
@@ -43,6 +44,7 @@ const globalFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  hideSearch,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -77,14 +79,19 @@ export function DataTable<TData, TValue>({
   });
   return (
     <div>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Search"
-          value={globalFilter}
-          onChange={(event) => setGlobalFilter(event.target.value)}
-          className="max-w-sm rounded border-gray-400 text-gray-400 hover:border-white  hover:text-white transition-all"
-        />
-      </div>
+      {hideSearch ? (
+        ""
+      ) : (
+        <div className="flex items-center py-4">
+          <Input
+            placeholder="Search"
+            value={globalFilter}
+            onChange={(event) => setGlobalFilter(event.target.value)}
+            className="max-w-sm rounded border-gray-400 text-gray-400 hover:border-white  hover:text-white transition-all"
+          />
+        </div>
+      )}
+
       <div className="">
         <Table>
           <TableHeader>

@@ -246,9 +246,27 @@ const BarangayClearancePDF = (props: Props) => {
 
         <View style={styles.footerSection}>
           <View style={{ width: "45%" }}>
-            <Text>CTC No.: _______________ </Text>
-            <Text>ISSUED at: ______________</Text>
-            <Text>ISSUED on: ______________ </Text>
+            <Text>
+              CTC No.:{" "}
+              {clearanceDetails.ctc_no
+                ? clearanceDetails.ctc_no
+                : "_______________"}
+            </Text>
+            <Text>
+              ISSUED at:{" "}
+              {clearanceDetails.ctc_issued_at
+                ? clearanceDetails.ctc_issued_at
+                : "_______________"}
+            </Text>
+            <Text>
+              ISSUED on:{" "}
+              {clearanceDetails.ctc_issued_on
+                ? format(
+                    new Date(clearanceDetails.ctc_issued_on),
+                    "MMMM dd, yyyy"
+                  )
+                : "_______________"}{" "}
+            </Text>
           </View>
           <View style={{ width: "45%" }}>
             <Text>Issued By:</Text>

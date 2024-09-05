@@ -276,11 +276,42 @@ const BusinessPermitPdf = (props: Props) => {
 
         <View style={styles.footerSection}>
           <View style={{ width: "45%" }}>
-            <Text>CTC No.: _______________ </Text>
-            <Text>ISSUED at: ______________</Text>
-            <Text>ISSUED on: ______________ </Text>
-            <Text>OR No.: _______________ </Text>
-            <Text>ISSUED on: ______________ </Text>
+            <Text>
+              CTC No.:{" "}
+              {businessPermitDetails.ctc_no
+                ? businessPermitDetails.ctc_no
+                : "_______________"}
+            </Text>
+            <Text>
+              ISSUED at:{" "}
+              {businessPermitDetails.ctc_issued_at
+                ? businessPermitDetails.ctc_issued_at
+                : "_______________"}
+            </Text>
+            <Text>
+              ISSUED on:{" "}
+              {businessPermitDetails.ctc_issued_on
+                ? format(
+                    new Date(businessPermitDetails.ctc_issued_on),
+                    "MMMM dd, yyyy"
+                  )
+                : "_______________"}{" "}
+            </Text>
+            <Text>
+              OR No.:{" "}
+              {businessPermitDetails.or_no
+                ? businessPermitDetails.or_no
+                : "_______________"}
+            </Text>
+            <Text>
+              ISSUED on:{" "}
+              {businessPermitDetails.or_issued_on
+                ? format(
+                    new Date(businessPermitDetails.or_issued_on),
+                    "MMMM dd, yyyy"
+                  )
+                : "_______________"}{" "}
+            </Text>
           </View>
         </View>
         <View

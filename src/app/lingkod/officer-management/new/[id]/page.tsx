@@ -207,7 +207,7 @@ const EditOfficer = (props: Props) => {
                           >
                             <SelectValue placeholder="Select position" />
                           </SelectTrigger>
-                          <SelectContent className=" rounded">
+                          <SelectContent className=" rounded dark:bg-[#4844b4] bg-[#4844b4]">
                             <SelectItem value="Captain">
                               Barangay Captain
                             </SelectItem>
@@ -255,7 +255,7 @@ const EditOfficer = (props: Props) => {
                           >
                             <SelectValue placeholder="Select gender" />
                           </SelectTrigger>
-                          <SelectContent className=" rounded">
+                          <SelectContent className=" rounded dark:bg-[#4844b4] bg-[#4844b4]">
                             <SelectItem value="Male">Male</SelectItem>
                             <SelectItem value="Female">Female</SelectItem>
                             <SelectItem value="Undefined">

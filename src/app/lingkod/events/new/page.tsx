@@ -264,7 +264,7 @@ const NewEvent = (props: Props) => {
                         <SelectTrigger className="w-full dark:bg-transparent dark:border-gray-300 rounded dark:focus:outline-none">
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
-                        <SelectContent className=" rounded">
+                        <SelectContent className=" rounded dark:bg-[#4844b4] bg-[#4844b4]">
                           <SelectItem value="News">News</SelectItem>
                           <SelectItem value="Events">Events</SelectItem>
                           <SelectItem value="Updates">Updates</SelectItem>
@@ -374,6 +374,7 @@ const NewEvent = (props: Props) => {
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
                         <Calendar
+                          className="bg-[#4844b4]"
                           mode="single"
                           selected={date}
                           onSelect={(selectedDate) => {

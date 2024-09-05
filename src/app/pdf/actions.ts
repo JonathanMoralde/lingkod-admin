@@ -62,6 +62,9 @@ export type BrgyClearance = {
   gender: string;
   zone: string;
   purpose: String;
+  ctc_no?: string;
+  ctc_issued_at?: string;
+  ctc_issued_on?: number;
 };
 export type EventPermit = {
   age: number;
@@ -83,6 +86,11 @@ export type BusinessPermit = {
   proprietor: string;
   status: string;
   valid_until: number;
+  ctc_no?: string;
+  ctc_issued_at?: string;
+  ctc_issued_on?: number;
+  or_no?: string;
+  or_issued_on?: number;
 };
 
 export async function getDocRequestDetails(docId: string): Promise<DocDetails> {
@@ -117,6 +125,18 @@ export async function getDocRequestDetails(docId: string): Promise<DocDetails> {
           zone: docData.details.zone,
           purpose: docData.details.purpose,
         } as BrgyClearance;
+
+        if (
+          docData.details.ctc_no &&
+          docData.details.ctc_issued_at &&
+          docData.details.ctc_issued_on
+        ) {
+          result.details.ctc_no = docData.details.ctc_no;
+          result.details.ctc_issued_at = docData.details.ctc_issued_at;
+          result.details.ctc_issued_on = (
+            docData.details.ctc_issued_on as Timestamp
+          ).toMillis();
+        }
         break;
 
       case "Barangay Indigency":
@@ -153,6 +173,25 @@ export async function getDocRequestDetails(docId: string): Promise<DocDetails> {
           status: docData.details.status,
           valid_until: (docData.details.valid_until as Timestamp).toMillis(),
         } as BusinessPermit;
+
+        if (
+          docData.details.ctc_no &&
+          docData.details.ctc_issued_at &&
+          docData.details.ctc_issued_on
+        ) {
+          result.details.ctc_no = docData.details.ctc_no;
+          result.details.ctc_issued_at = docData.details.ctc_issued_at;
+          result.details.ctc_issued_on = (
+            docData.details.ctc_issued_on as Timestamp
+          ).toMillis();
+        }
+
+        if (docData.details.or_no && docData.details.or_issued_on) {
+          result.details.or_no = docData.details.ctc_no;
+          result.details.or_issued_on = (
+            docData.details.ctc_issued_on as Timestamp
+          ).toMillis();
+        }
         break;
 
       default:

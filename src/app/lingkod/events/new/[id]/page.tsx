@@ -273,7 +273,7 @@ const EditEvent = (props: Props) => {
                         <SelectTrigger className="w-full dark:bg-transparent dark:border-gray-300 rounded dark:focus:outline-none">
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
-                        <SelectContent className=" rounded">
+                        <SelectContent className=" rounded dark:bg-[#4844b4] bg-[#4844b4]">
                           <SelectItem value="news">News</SelectItem>
                           <SelectItem value="event">Event</SelectItem>
                           <SelectItem value="update">Update</SelectItem>
@@ -380,6 +380,7 @@ const EditEvent = (props: Props) => {
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
                         <Calendar
+                          className="bg-[#4844b4]"
                           mode="single"
                           selected={date}
                           onSelect={(selectedDate) => {

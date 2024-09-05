@@ -51,3 +51,35 @@ export async function handleReject(id: string): Promise<void> {
   // Trigger revalidation for the specific path
   revalidatePath(`/lingkod/request`);
 }
+
+export async function assignCTCNo(
+  id: string,
+  ctcNo: string,
+  issuedAt: string,
+  issuedOn: number
+): Promise<void> {
+  const documentRef = doc(db, "requests", id);
+  await updateDoc(documentRef, {
+    "details.ctc_no": ctcNo,
+    "details.ctc_issued_at": issuedAt,
+    "details.ctc_issued_on": Timestamp.fromMillis(issuedOn),
+  });
+
+  // Trigger revalidation for the specific path
+  revalidatePath(`/lingkod/request`);
+}
+
+export async function assignORNo(
+  id: string,
+  orNo: string,
+  issuedOn: number
+): Promise<void> {
+  const documentRef = doc(db, "requests", id);
+  await updateDoc(documentRef, {
+    "details.or_no": orNo,
+    "details.or_issued_on": Timestamp.fromMillis(issuedOn),
+  });
+
+  // Trigger revalidation for the specific path
+  revalidatePath(`/lingkod/request`);
+}

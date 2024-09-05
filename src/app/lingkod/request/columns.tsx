@@ -101,6 +101,20 @@ export const columns: ColumnDef<DocRequest>[] = [
                   </DropdownMenuItem>
                 </>
               )}
+              {data.type == "Barangay Clearance" ||
+              data.type == "Business Permit" ? (
+                <Link href={`/lingkod/request/assign-ctc/${data.id}`}>
+                  <DropdownMenuItem>Assign CTC</DropdownMenuItem>
+                </Link>
+              ) : (
+                ""
+              )}
+              {data.type == "Business Permit" && (
+                <Link href={`/lingkod/request/assign-or/${data.id}`}>
+                  <DropdownMenuItem>Assign OR</DropdownMenuItem>
+                </Link>
+              )}
+
               <Link href={`/pdf/${data.id}`} target="_blank">
                 <DropdownMenuItem>View details</DropdownMenuItem>
               </Link>
