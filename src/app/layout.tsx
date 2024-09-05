@@ -8,8 +8,8 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Lingkod",
-  description: "Admin Panel of Lingkod",
+  title: "Linkod",
+  description: "Admin Panel of Linkod",
 };
 
 export default function RootLayout({
