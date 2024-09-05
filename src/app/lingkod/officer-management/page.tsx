@@ -7,6 +7,8 @@ import { getData } from "./actions";
 
 type Props = {};
 
+export const dynamic = "force-dynamic";
+
 const OfficerManagement = async (props: Props) => {
   const data: Admin[] = await getData();
   return (

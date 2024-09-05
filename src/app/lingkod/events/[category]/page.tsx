@@ -13,6 +13,8 @@ type Props = {
   };
 };
 
+export const dynamic = "force-dynamic";
+
 const Events = async (props: Props) => {
   const data: Event[] = await getData(props.params.category);
 

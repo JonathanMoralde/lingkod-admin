@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getData } from "./action";
 
+export const dynamic = "force-dynamic";
+
 const Bill = async () => {
   const bills = await getData();
 

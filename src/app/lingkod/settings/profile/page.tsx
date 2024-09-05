@@ -134,7 +134,7 @@ const Profile = (props: Props) => {
                     <FormLabel>First Name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter first name"
+                        placeholder="first name"
                         {...field}
                         className="placeholder:text-gray-400 rounded"
                         readOnly={!isEdit}
@@ -153,7 +153,7 @@ const Profile = (props: Props) => {
                     <FormLabel>Middle Name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter middle name"
+                        placeholder="middle name"
                         {...field}
                         className="placeholder:text-gray-400 rounded"
                         readOnly={!isEdit}
@@ -172,7 +172,7 @@ const Profile = (props: Props) => {
                     <FormLabel>Last Name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter last name"
+                        placeholder="last name"
                         {...field}
                         className="placeholder:text-gray-400 rounded"
                         readOnly={!isEdit}
@@ -185,48 +185,46 @@ const Profile = (props: Props) => {
             </div>
 
             <div className="w-1/2 space-y-4">
+              <FormField
+                control={form.control}
+                name="position"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Position</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="position"
+                        {...field}
+                        className="placeholder:text-gray-400 rounded"
+                        readOnly
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               {!isEdit && (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="position"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Position</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Edit position"
-                            {...field}
-                            className="placeholder:text-gray-400 rounded"
-                            readOnly
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="gender"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Gender</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Edit gender"
-                            {...field}
-                            className="placeholder:text-gray-400 rounded"
-                            readOnly
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
+                <FormField
+                  control={form.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gender</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="gender"
+                          {...field}
+                          className="placeholder:text-gray-400 rounded"
+                          readOnly
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               )}
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="position" // Make sure this matches your schema field name
                 render={({ field }) => (
@@ -270,7 +268,7 @@ const Profile = (props: Props) => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <FormField
                 control={form.control}

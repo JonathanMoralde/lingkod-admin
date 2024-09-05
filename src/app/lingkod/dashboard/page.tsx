@@ -13,6 +13,8 @@ import {
   getResidentCount,
 } from "./action";
 
+export const dynamic = "force-dynamic";
+
 const Dashboard = async () => {
   const residentCount = await getResidentCount();
   const reportsCount = await getBlotterCount();

@@ -4,6 +4,8 @@ import { Timestamp } from "firebase/firestore";
 import { DataTable } from "@/components/lingkod/data-table";
 import { getData } from "./actions";
 
+export const dynamic = "force-dynamic";
+
 const Reports = async () => {
   const reports: Report[] = await getData();
 
