@@ -3,6 +3,7 @@ import { DataTable } from "@/components/lingkod/data-table";
 import { Timestamp } from "firebase/firestore";
 import React from "react";
 import { getData } from "./actions";
+import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 
 const Request = async () => {
   const requests: DocRequest[] = await getData();
