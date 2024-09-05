@@ -42,7 +42,7 @@ export async function getResidentCount(): Promise<number> {
 export async function getBlotterCount(): Promise<number> {
   try {
     // Create a query to filter users with the role "user"
-    const reportsCollection = query(collection(db, "reports"));
+    const reportsCollection = query(collection(db, "blotter_reports"));
     // Execute the query
     const querySnapshot = await getDocs(reportsCollection);
 
@@ -50,7 +50,7 @@ export async function getBlotterCount(): Promise<number> {
     const reportsCount = querySnapshot.size;
     return reportsCount;
   } catch (error) {
-    console.error("Error getting user count: ", error);
+    console.error("Error getting blotter count: ", error);
     return 0;
   }
 }
@@ -66,7 +66,7 @@ export async function getRequestsCount(): Promise<number> {
     const requestsCount = querySnapshot.size;
     return requestsCount;
   } catch (error) {
-    console.error("Error getting user count: ", error);
+    console.error("Error getting requests count: ", error);
     return 0;
   }
 }
@@ -82,7 +82,7 @@ export async function getEventsCount(): Promise<number> {
     const eventsCount = querySnapshot.size;
     return eventsCount;
   } catch (error) {
-    console.error("Error getting user count: ", error);
+    console.error("Error getting events count: ", error);
     return 0;
   }
 }
