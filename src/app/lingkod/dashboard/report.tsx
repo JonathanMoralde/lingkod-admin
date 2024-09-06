@@ -18,7 +18,7 @@ type Props = {
 
 const ReportCard = (props: Props) => {
   return (
-    <Card className=" rounded-xl dark:bg-[#4844B4]">
+    <Card className=" rounded-xl dark:bg-[#4844B4] z-10 shadow-md">
       <CardHeader>
         <CardTitle>{props.title}</CardTitle>
       </CardHeader>

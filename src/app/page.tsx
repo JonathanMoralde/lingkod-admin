@@ -24,6 +24,12 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 export default function Home() {
   const router = useRouter();
@@ -96,6 +102,8 @@ export default function Home() {
     }
   };
 
+  const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
+
   return user ? (
     <main className="grid place-items-center min-h-screen">
       <Loader2 className="h-10 w-10 animate-spin" />
@@ -134,15 +142,37 @@ export default function Home() {
         <div className="flex justify-between items-center h-3/4 w-full bg-[#4844B4] rounded-3xl border-2 border-white shadow-lg">
           {/* logo */}
           <div className="bg-white h-full w-1/2 rounded-2xl flex flex-col justify-center items-center">
-            <div className="relative w-[18.75rem] h-[18.75rem] mb-10 rounded-full shadow-lg">
-              <Image
-                src="/linkod_logo.png"
-                alt="Lingkod Logo"
-                fill
-                sizes="w-auto h-auto"
-                priority
-              />
-            </div>
+            <Carousel
+              className="w-full "
+              plugins={[plugin.current]}
+              onMouseEnter={plugin.current.stop}
+              onMouseLeave={plugin.current.reset}
+            >
+              <CarouselContent>
+                <CarouselItem className="p-0 grid place-items-center">
+                  <div className="relative w-[18.75rem] h-[18.75rem] mb-10 rounded-full shadow-lg">
+                    <Image
+                      src="/linkod_logo.png"
+                      alt="Lingkod Logo"
+                      fill
+                      sizes="w-auto h-auto"
+                      priority
+                    />
+                  </div>
+                </CarouselItem>
+                <CarouselItem className="p-0 grid place-items-center">
+                  <div className="relative w-[18.75rem] h-[18.75rem] mb-10 rounded-full shadow-lg">
+                    <Image
+                      src="/28d74124c3365e8a66a995661eaa8724.png"
+                      alt="Lingkod Logo"
+                      fill
+                      sizes="w-auto h-auto"
+                      priority
+                    />
+                  </div>
+                </CarouselItem>
+              </CarouselContent>
+            </Carousel>
             <h1 className="scroll-m-20 text-2xl font-bold tracking-wide uppercase text-indigo-900">
               Serving Local Communities
             </h1>

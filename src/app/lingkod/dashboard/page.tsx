@@ -13,6 +13,8 @@ import {
   getResidentCount,
 } from "./action";
 
+import Image from "next/image";
+
 export const dynamic = "force-dynamic";
 
 const Dashboard = async () => {
@@ -27,7 +29,7 @@ const Dashboard = async () => {
         Welcome, Admin!
       </h3>
 
-      <div className="grid grid-cols-2 w-3/4 gap-4 mx-auto">
+      <div className="relative grid grid-cols-2 w-3/4 gap-4 mx-auto">
         <ReportCard
           title="Profiles"
           description="Total Residents"
@@ -52,6 +54,18 @@ const Dashboard = async () => {
           data={eventsCount}
           icon={<FaCalendar size={50} />}
         />
+
+        <div className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] opacity-50 z-0">
+          <div className="relative w-[20rem] h-[20rem] mb-10 rounded-full shadow-lg">
+            <Image
+              src="/28d74124c3365e8a66a995661eaa8724.png"
+              alt="Lingkod Logo"
+              fill
+              sizes="w-auto h-auto"
+              priority
+            />
+          </div>
+        </div>
       </div>
     </section>
   );
