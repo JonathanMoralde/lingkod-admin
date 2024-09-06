@@ -23,9 +23,10 @@ import { handleApprove, handleReject } from "./actions";
 // You can use a Zod schema here if you want.
 export type DocRequest = {
   id: string;
+  uid: string;
   full_name: string;
   type: string;
-  date_requested: number;
+  date_requested: string;
   status: "pending" | "accepted" | "declined";
 };
 
@@ -87,14 +88,14 @@ export const columns: ColumnDef<DocRequest>[] = [
                 <>
                   <DropdownMenuItem
                     onClick={async () => {
-                      await handleApprove(data.id);
+                      await handleApprove(data.id, data.uid, data.type);
                     }}
                   >
                     Accept
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={async () => {
-                      await handleReject(data.id);
+                      await handleReject(data.id, data.uid, data.type);
                     }}
                   >
                     Decline

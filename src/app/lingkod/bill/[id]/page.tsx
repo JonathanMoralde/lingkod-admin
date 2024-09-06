@@ -21,23 +21,19 @@ const BillDetails = async (props: Props) => {
 
         <h3 className="text-xl font-semibold w-full">BAPA Consumption Bill</h3>
       </div>
-      <div className="w-1/2">
-        <div className="mb-4">
-          <h3>
-            BAPA Member Name:
-            <span className="ms-4 font-light">{billDetail.bapa_name}</span>
-          </h3>
-          <h3>
-            Meter no.:
-            <span className="ms-4 font-light">{billDetail.meter_no}</span>
-          </h3>
-          <h3>
-            Month/Year:
-            <span className="ms-4 font-light">
-              {format(new Date(billDetail.month_year), "MMMM yyyy")}
-            </span>
-          </h3>
-        </div>
+      <div className="w-1/2 text-gray-50">
+        <article className="mb-4 flex gap-4">
+          <div>
+            <h3>BAPA Member Name:</h3>
+            <h3>Meter no.:</h3>
+            <h3>Month/Year:</h3>
+          </div>
+          <div className=" text-gray-300">
+            <h3>{billDetail.bapa_name}</h3>
+            <h3>{billDetail.meter_no}</h3>
+            <h3>{format(new Date(billDetail.month_year), "MMMM yyyy")}</h3>
+          </div>
+        </article>
         <div className="grid grid-cols-3">
           <h3>Billed</h3>
           <h3>Present</h3>
@@ -45,13 +41,13 @@ const BillDetails = async (props: Props) => {
         </div>
         <div className="grid grid-cols-3">
           <h3>MTR RDG:</h3>
-          <h3 className="font-light">{billDetail.present_reading}</h3>
-          <h3 className="font-light">{billDetail.previous_reading}</h3>
+          <h3 className="text-gray-300">{billDetail.present_reading}</h3>
+          <h3 className="text-gray-300">{billDetail.previous_reading}</h3>
         </div>
 
-        <h3 className="my-8">
-          Total Amount:{" "}
-          <span className="ms-4 font-light">
+        <h3 className="my-8 flex gap-4">
+          <span>Total Amount:</span>
+          <span className=" text-gray-300">
             {new Intl.NumberFormat("en-PH", {
               style: "currency",
               currency: "PHP",
@@ -60,26 +56,22 @@ const BillDetails = async (props: Props) => {
           </span>
         </h3>
 
-        <div>
-          <h3>
-            Date Released:{" "}
-            <span className="ms-4 font-light">
+        <article className="flex gap-4">
+          <div>
+            <h3>Date Released: </h3>
+            <h3>Due Date:</h3>
+            <h3>Disconnection Date:</h3>
+          </div>
+          <div className=" text-gray-300">
+            <h3>
               {format(new Date(billDetail.date_released), "MMMM dd, yyyy")}
-            </span>
-          </h3>
-          <h3>
-            Due Date:
-            <span className="ms-4 font-light">
-              {format(new Date(billDetail.due_date), "MMMM dd, yyyy")}
-            </span>
-          </h3>
-          <h3>
-            Disconnection Date:{" "}
-            <span className="ms-4 font-light">
+            </h3>
+            <h3>{format(new Date(billDetail.due_date), "MMMM dd, yyyy")}</h3>
+            <h3>
               {format(new Date(billDetail.disconnection_date), "MMMM dd, yyyy")}
-            </span>
-          </h3>
-        </div>
+            </h3>
+          </div>
+        </article>
       </div>
     </section>
   );

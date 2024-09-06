@@ -108,7 +108,7 @@ const PostBill = (props: Props) => {
         data.due_date,
         data.disconnection_date
       );
-      toast.success("Event posted successfully!");
+      toast.success("Bill posted successfully!");
       form.reset({
         bapa_name: "",
         uid: "",

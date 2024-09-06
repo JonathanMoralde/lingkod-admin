@@ -15,9 +15,11 @@ import {
   orderBy,
   deleteDoc,
   getDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
 import { ElectricBill } from "./columns";
+import { format } from "date-fns";
 
 export async function getData(): Promise<ElectricBill[]> {
   // Fetch data from your API here.
@@ -32,8 +34,14 @@ export async function getData(): Promise<ElectricBill[]> {
       id: doc.id,
       full_name: docData.bapa_name as string, // Omit 'id' from the User type to avoid conflicts
       total_due: docData.total_due as number,
-      due_date: (docData.due_date as Timestamp).toMillis(),
-      disconnection_date: (docData.disconnection_date as Timestamp).toMillis(),
+      due_date: format(
+        (docData.due_date as Timestamp).toDate(),
+        "MMMM dd, yyyy"
+      ),
+      disconnection_date: format(
+        (docData.disconnection_date as Timestamp).toDate(),
+        "MMMM dd,yyyy"
+      ),
     };
   });
 
@@ -48,7 +56,11 @@ type InputUser = {
 export async function getUsersList(): Promise<InputUser[]> {
   // Fetch data from your API here.
 
-  const userRef = query(collection(db, "users"), where("role", "==", "user"));
+  const userRef = query(
+    collection(db, "users"),
+    where("role", "==", "user"),
+    where("status", "==", "approved")
+  );
   const userSnapshot = await getDocs(userRef);
 
   const data: InputUser[] = userSnapshot.docs.map((doc) => {
@@ -94,12 +106,25 @@ export async function handleSubmit(
 
     await addDoc(collectionRef, eventData);
 
+    const notificationRef = collection(db, "notifications");
+    const notificationData: any = {
+      receiver_uid: uid,
+      notif_msg: `Your electric bill for ${format(
+        month,
+        "MMMM"
+      )} has been posted!`,
+      type: "bill",
+      timestamp: serverTimestamp(),
+    };
+
+    await addDoc(notificationRef, notificationData);
+
     revalidatePath("/lingkod/bill");
 
     return { success: true };
   } catch (error) {
-    console.error("Error posting event:", error);
-    return { success: false, error: "Error posting event" };
+    console.error("Error posting bill:", error);
+    return { success: false, error: "Error posting bill" };
   }
 }
 

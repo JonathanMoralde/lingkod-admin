@@ -15,9 +15,10 @@ import {
   orderBy,
   deleteDoc,
   getDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
-import { isEqual } from "date-fns";
+import { format, isEqual } from "date-fns";
 
 export type Event = {
   id: string;
@@ -122,6 +123,7 @@ export async function handleSubmit(
 ) {
   try {
     const collectionRef = collection(db, "events");
+    const notificationRef = collection(db, "notifications");
 
     //   upload image first in firebase storage
     const fileBlob = base64ToBlob(JSON.parse(fileBase64));
@@ -148,6 +150,35 @@ export async function handleSubmit(
       eventData.event_time = time;
     }
     await addDoc(collectionRef, eventData);
+
+    if (category == "Events") {
+      const userRef = query(
+        collection(db, "users"),
+        where("role", "==", "user"),
+        where("status", "==", "approved")
+      );
+      const userSnapshot = await getDocs(userRef);
+
+      const data: { uid: string }[] = userSnapshot.docs.map((doc) => {
+        return {
+          uid: doc.id,
+        };
+      });
+
+      data.forEach(async (uid) => {
+        const notificationData: any = {
+          receiver_uid: uid,
+          notif_msg: `${title} on ${format(
+            new Date(date),
+            "MMMM dd, yyyy"
+          )}. Click for more details!`,
+          type: "event",
+          timestamp: serverTimestamp(),
+        };
+
+        await addDoc(notificationRef, notificationData);
+      });
+    }
 
     revalidatePath("/lingkod/events");
 

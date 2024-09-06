@@ -21,11 +21,18 @@ import { format } from "date-fns";
 // You can use a Zod schema here if you want.
 export type HouseholdDetail = {
   id: string;
+  uid?: string;
   household_head: string;
   address: string;
   member_no: number;
   contact_no: string;
-  date_submitted: number;
+  date_submitted: string;
+  members?: HouseholdMember[];
+};
+
+export type HouseholdMember = {
+  name: string;
+  age: string;
 };
 
 export const columns: ColumnDef<HouseholdDetail>[] = [

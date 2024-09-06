@@ -123,11 +123,11 @@ const EventCard = (props: Props) => {
         <h3 className="truncate">{props.title}</h3>
 
         {/* Content */}
-        <p className="text-sm font-light line-clamp-3 break-words">
+        <p className="text-sm font-light line-clamp-3 break-words text-gray-400">
           {props.description}
         </p>
 
-        <p className="text-sm italic">
+        <p className="text-sm italic text-gray-300">
           {format(new Date(props.event_date), "MMMM dd, yyyy")}
         </p>
       </CardContent>

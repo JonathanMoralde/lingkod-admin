@@ -24,8 +24,8 @@ export type ElectricBill = {
   id: string;
   full_name: string;
   total_due: number;
-  due_date: number;
-  disconnection_date: number;
+  due_date: string;
+  disconnection_date: string;
 };
 
 export const columns: ColumnDef<ElectricBill>[] = [

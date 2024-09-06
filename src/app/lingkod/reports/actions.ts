@@ -11,10 +11,13 @@ import {
   doc,
   Timestamp,
   getDoc,
+  serverTimestamp,
+  addDoc,
 } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
 
 import { Report } from "./columns";
+import { string } from "zod";
 
 export async function getData(): Promise<Report[]> {
   // Fetch data from your API here.
@@ -27,6 +30,7 @@ export async function getData(): Promise<Report[]> {
 
     let details: Report = {
       id: doc.id,
+      uid: docData.uid,
       complainant: docData.complainant,
       date_reported: docData.reported_date,
       time_reported: docData.reported_time,
@@ -44,16 +48,44 @@ export async function getData(): Promise<Report[]> {
   return data;
 }
 
-export async function handleStatus(id: string, status: string): Promise<void> {
+export async function handleStatus(
+  id: string,
+  status: string,
+  uid: string
+): Promise<void> {
   const documentRef = doc(db, "blotter_reports", id);
   await updateDoc(documentRef, { status: status });
+
+  const notificationRef = collection(db, "notifications");
+  const notificationData: any = {
+    receiver_uid: uid,
+    notif_msg: `Your blotter report status is now ${status}.`,
+    type: "report",
+    timestamp: serverTimestamp(),
+  };
+
+  await addDoc(notificationRef, notificationData);
 
   // Trigger revalidation for the specific path
   revalidatePath(`/lingkod/reports`);
 }
-export async function assignCaseNo(id: string, caseNo: number): Promise<void> {
+export async function assignCaseNo(
+  id: string,
+  caseNo: number,
+  uid: string
+): Promise<void> {
   const documentRef = doc(db, "blotter_reports", id);
   await updateDoc(documentRef, { case_no: caseNo });
+
+  const notificationRef = collection(db, "notifications");
+  const notificationData: any = {
+    receiver_uid: uid,
+    notif_msg: `Your blotter report have been assigned with a case number: ${caseNo}.`,
+    type: "report",
+    timestamp: serverTimestamp(),
+  };
+
+  await addDoc(notificationRef, notificationData);
 
   // Trigger revalidation for the specific path
   revalidatePath(`/lingkod/reports`);

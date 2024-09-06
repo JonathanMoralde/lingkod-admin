@@ -11,10 +11,13 @@ import {
   doc,
   Timestamp,
   getDoc,
+  serverTimestamp,
+  addDoc,
 } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
 
 import { DocRequest } from "./columns";
+import { format } from "date-fns";
 
 export async function getData(): Promise<DocRequest[]> {
   // Fetch data from your API here.
@@ -27,8 +30,12 @@ export async function getData(): Promise<DocRequest[]> {
 
     return {
       id: doc.id,
+      uid: docData.uid,
       full_name: docData.full_name,
-      date_requested: (docData.date_requested as Timestamp).toMillis(),
+      date_requested: format(
+        (docData.date_requested as Timestamp).toDate(),
+        "MMMM dd, yyyy"
+      ),
       status: docData.status,
       type: docData.type,
     };
@@ -37,16 +44,45 @@ export async function getData(): Promise<DocRequest[]> {
   return data;
 }
 
-export async function handleApprove(id: string): Promise<void> {
+export async function handleApprove(
+  id: string,
+  uid: string,
+  type: string
+): Promise<void> {
   const documentRef = doc(db, "requests", id);
   await updateDoc(documentRef, { status: "approved" });
+
+  const notificationRef = collection(db, "notifications");
+  const notificationData: any = {
+    receiver_uid: uid,
+    notif_msg: `Your request for ${type} has been approved and is ready to be claimed at the Barangay Hall.`,
+    type: "request",
+    timestamp: serverTimestamp(),
+  };
+
+  await addDoc(notificationRef, notificationData);
 
   // Trigger revalidation for the specific path
   revalidatePath(`/lingkod/request`);
 }
-export async function handleReject(id: string): Promise<void> {
+
+export async function handleReject(
+  id: string,
+  uid: string,
+  type: string
+): Promise<void> {
   const documentRef = doc(db, "requests", id);
   await updateDoc(documentRef, { status: "rejected" });
+
+  const notificationRef = collection(db, "notifications");
+  const notificationData: any = {
+    receiver_uid: uid,
+    notif_msg: `Your request for ${type} has been rejected`,
+    type: "request",
+    timestamp: serverTimestamp(),
+  };
+
+  await addDoc(notificationRef, notificationData);
 
   // Trigger revalidation for the specific path
   revalidatePath(`/lingkod/request`);

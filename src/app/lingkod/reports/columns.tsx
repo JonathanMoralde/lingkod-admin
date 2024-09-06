@@ -22,6 +22,7 @@ import Link from "next/link";
 // You can use a Zod schema here if you want.
 export type Report = {
   id: string;
+  uid: string;
   case_no?: number;
   complainant: string;
   date_reported: string;
@@ -86,11 +87,15 @@ export const columns: ColumnDef<Report>[] = [
             <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <Link href={`/lingkod/reports/edit/case-no/${data.id}`}>
+              <Link
+                href={`/lingkod/reports/edit/case-no/${data.id}/${data.uid}`}
+              >
                 <DropdownMenuItem>Assign Case No.</DropdownMenuItem>
               </Link>
 
-              <Link href={`/lingkod/reports/edit/status/${data.id}`}>
+              <Link
+                href={`/lingkod/reports/edit/status/${data.id}/${data.uid}`}
+              >
                 <DropdownMenuItem>Update Status</DropdownMenuItem>
               </Link>
               <Link href={`/pdf/blotter/${data.id}`} target="_blank">

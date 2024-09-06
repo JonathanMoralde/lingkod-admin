@@ -26,17 +26,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { handleStatus } from "../../../actions";
+import { handleStatus } from "../../../../actions";
 import { useRouter } from "next/navigation";
 
-type Props = { params: { id: string } };
+type Props = { params: { id: string; uid: string } };
 
 const FormSchema = z.object({
   status: z.string(),
 });
 
 const EditStatus = (props: Props) => {
-  const { id }: { id: string } = props.params;
+  const { id, uid }: { id: string; uid: string } = props.params;
 
   const router = useRouter();
 
@@ -48,7 +48,7 @@ const EditStatus = (props: Props) => {
     data: z.infer<typeof FormSchema>
   ) => {
     try {
-      await handleStatus(id, data.status);
+      await handleStatus(id, data.status, uid);
       toast.success(`Successfully updated the status`);
       router.back();
     } catch (error) {

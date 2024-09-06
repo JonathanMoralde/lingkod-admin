@@ -26,18 +26,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { assignCaseNo, handleStatus } from "../../../actions";
+import { assignCaseNo, handleStatus } from "../../../../actions";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 
-type Props = { params: { id: string } };
+type Props = { params: { id: string; uid: string } };
 
 const FormSchema = z.object({
   case_no: z.number(),
 });
 
 const EditCaseNo = (props: Props) => {
-  const { id }: { id: string } = props.params;
+  const { id, uid }: { id: string; uid: string } = props.params;
 
   const router = useRouter();
 
@@ -49,7 +49,7 @@ const EditCaseNo = (props: Props) => {
     data: z.infer<typeof FormSchema>
   ) => {
     try {
-      await assignCaseNo(id, data.case_no);
+      await assignCaseNo(id, data.case_no, uid);
       toast.success(`Successfully assigned a case number`);
       router.back();
     } catch (error) {
