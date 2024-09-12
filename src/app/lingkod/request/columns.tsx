@@ -18,6 +18,7 @@ import {
 import { format } from "date-fns";
 import Link from "next/link";
 import { handleApprove, handleReject } from "./actions";
+import ApproveRejectContainer from "./approve-reject-btn-container";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -85,22 +86,7 @@ export const columns: ColumnDef<DocRequest>[] = [
               </DropdownMenuItem> */}
               <DropdownMenuSeparator />
               {data.status == "pending" && (
-                <>
-                  <DropdownMenuItem
-                    onClick={async () => {
-                      await handleApprove(data.id, data.uid, data.type);
-                    }}
-                  >
-                    Accept
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={async () => {
-                      await handleReject(data.id, data.uid, data.type);
-                    }}
-                  >
-                    Decline
-                  </DropdownMenuItem>
-                </>
+                <ApproveRejectContainer data={data} />
               )}
               {data.type == "Barangay Clearance" ||
               data.type == "Business Permit" ? (

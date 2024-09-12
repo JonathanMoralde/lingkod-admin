@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -98,6 +98,7 @@ const NewEvent = (props: Props) => {
   const [imagePreview, setImagePreview] = React.useState<string | null>(null);
   const [time, setTime] = React.useState<Date | null>(null);
   const [category, setCategory] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Set up React Hook Form with Zod validation
   const form = useForm<FormData>({
@@ -108,6 +109,7 @@ const NewEvent = (props: Props) => {
   const onSubmit: SubmitHandler<FormData> = async (
     data: z.infer<typeof formSchema>
   ) => {
+    setLoading(true);
     console.log(data);
     // Handle form submission logic here
     try {
@@ -151,6 +153,8 @@ const NewEvent = (props: Props) => {
       } else {
         console.error("Unknown error:", error);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -440,7 +444,11 @@ const NewEvent = (props: Props) => {
                   variant="default"
                   className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/2"
                 >
-                  SUBMIT
+                  {loading ? (
+                    <Loader2 className="h-10 w-10 animate-spin" />
+                  ) : (
+                    "SUBMIT"
+                  )}
                 </Button>
               </div>
             </form>

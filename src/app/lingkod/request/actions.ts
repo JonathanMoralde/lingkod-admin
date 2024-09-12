@@ -55,7 +55,7 @@ export async function handleApprove(
   const notificationRef = collection(db, "notifications");
   const notificationData: any = {
     receiver_uid: uid,
-    notif_msg: `Your request for ${type} has been approved and is ready to be claimed at the Barangay Hall.`,
+    notif_msg: `${type} is ready to be claimed at the Barangay Hall.`,
     type: "request",
     timestamp: serverTimestamp(),
   };

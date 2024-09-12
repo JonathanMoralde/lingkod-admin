@@ -59,7 +59,7 @@ export async function handleStatus(
   const notificationRef = collection(db, "notifications");
   const notificationData: any = {
     receiver_uid: uid,
-    notif_msg: `Your blotter report status is now ${status}.`,
+    notif_msg: `Blotter report status is now ${status}.`,
     type: "report",
     timestamp: serverTimestamp(),
   };
@@ -80,7 +80,7 @@ export async function assignCaseNo(
   const notificationRef = collection(db, "notifications");
   const notificationData: any = {
     receiver_uid: uid,
-    notif_msg: `Your blotter report have been assigned with a case number: ${caseNo}.`,
+    notif_msg: `Blotter report have been assigned with a case number: ${caseNo}.`,
     type: "report",
     timestamp: serverTimestamp(),
   };

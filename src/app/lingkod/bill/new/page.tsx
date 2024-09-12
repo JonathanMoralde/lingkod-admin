@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CalendarIcon } from "lucide-react";
+import { ArrowLeft, CalendarIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { z } from "zod";
@@ -78,6 +78,8 @@ const PostBill = (props: Props) => {
   const [value, setValue] = React.useState("");
   const [users, setUsers] = useState<{ value: string; label: string }[]>([]);
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   // Fetch users from Firestore
   useEffect(() => {
     const fetchUsers = async () => {
@@ -95,6 +97,7 @@ const PostBill = (props: Props) => {
   const onSubmit: SubmitHandler<FormSchema> = async (
     data: z.infer<typeof formSchema>
   ) => {
+    setLoading(true);
     try {
       await handleSubmit(
         data.bapa_name,
@@ -134,6 +137,8 @@ const PostBill = (props: Props) => {
       } else {
         console.error("Unknown error:", error);
       }
+    } finally {
+      setLoading(false);
     }
     console.log(data);
   };
@@ -493,7 +498,11 @@ const PostBill = (props: Props) => {
                 variant="default"
                 className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/2"
               >
-                SUBMIT
+                {loading ? (
+                  <Loader2 className="h-10 w-10 animate-spin" />
+                ) : (
+                  "SUBMIT"
+                )}
               </Button>
             </div>
           </form>

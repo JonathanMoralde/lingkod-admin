@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { z } from "zod";
@@ -74,9 +74,12 @@ const NewOfficer = (props: Props) => {
   const [position, setPosition] = useState<string>("");
   const [gender, setGender] = useState<string>("");
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const onSubmit: SubmitHandler<FormSchema> = async (
     data: z.infer<typeof formSchema>
   ) => {
+    setLoading(true);
     try {
       await handleSubmit(
         data.first_name,
@@ -106,6 +109,8 @@ const NewOfficer = (props: Props) => {
       } else {
         console.error("Unknown error:", error);
       }
+    } finally {
+      setLoading(false);
     }
     console.log(data);
   };
@@ -330,7 +335,11 @@ const NewOfficer = (props: Props) => {
                 variant="default"
                 className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/4"
               >
-                SUBMIT
+                {loading ? (
+                  <Loader2 className="h-10 w-10 animate-spin" />
+                ) : (
+                  "SUBMIT"
+                )}
               </Button>
             </div>
           </form>

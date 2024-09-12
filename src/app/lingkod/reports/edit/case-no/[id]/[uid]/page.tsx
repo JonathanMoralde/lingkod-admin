@@ -1,8 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -39,6 +39,8 @@ const FormSchema = z.object({
 const EditCaseNo = (props: Props) => {
   const { id, uid }: { id: string; uid: string } = props.params;
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const router = useRouter();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -48,6 +50,7 @@ const EditCaseNo = (props: Props) => {
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (
     data: z.infer<typeof FormSchema>
   ) => {
+    setLoading(true);
     try {
       await assignCaseNo(id, data.case_no, uid);
       toast.success(`Successfully assigned a case number`);
@@ -60,6 +63,8 @@ const EditCaseNo = (props: Props) => {
       } else {
         console.error("Unknown error:", error);
       }
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -104,7 +109,11 @@ const EditCaseNo = (props: Props) => {
               variant="default"
               className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/2"
             >
-              SUBMIT
+              {loading ? (
+                <Loader2 className="h-10 w-10 animate-spin" />
+              ) : (
+                "SUBMIT"
+              )}
             </Button>
           </div>
         </form>

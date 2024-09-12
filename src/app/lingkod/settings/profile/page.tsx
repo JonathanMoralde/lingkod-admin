@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { z } from "zod";
@@ -60,6 +60,7 @@ const Profile = (props: Props) => {
   const [position, setPosition] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUserDetail = async () => {
@@ -85,6 +86,7 @@ const Profile = (props: Props) => {
   const onSubmit: SubmitHandler<FormSchema> = async (
     data: z.infer<typeof formSchema>
   ) => {
+    setLoading(true);
     try {
       await handleEdit(
         user!.uid,
@@ -104,8 +106,9 @@ const Profile = (props: Props) => {
       } else {
         console.error("Unknown error:", error);
       }
+    } finally {
+      setLoading(false);
     }
-    console.log(data);
   };
 
   return (
@@ -315,7 +318,11 @@ const Profile = (props: Props) => {
                 isEdit ? "" : "hidden"
               }`}
             >
-              SUBMIT
+              {loading ? (
+                <Loader2 className="h-10 w-10 animate-spin" />
+              ) : (
+                "SUBMIT"
+              )}
             </Button>
           </div>
         </form>

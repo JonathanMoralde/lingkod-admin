@@ -1,10 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { Calendar as CalendarIcon } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 import { Calendar } from "@/components/ui/calendar";
 
@@ -46,6 +46,8 @@ const AssignOR = (props: Props) => {
 
   const [date, setDate] = React.useState<Date>();
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -53,6 +55,7 @@ const AssignOR = (props: Props) => {
   const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (
     data: z.infer<typeof FormSchema>
   ) => {
+    setLoading(true);
     try {
       await assignORNo(
         id,
@@ -69,6 +72,8 @@ const AssignOR = (props: Props) => {
       } else {
         console.error("Unknown error:", error);
       }
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -152,7 +157,11 @@ const AssignOR = (props: Props) => {
               variant="default"
               className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/2"
             >
-              SUBMIT
+              {loading ? (
+                <Loader2 className="h-10 w-10 animate-spin" />
+              ) : (
+                "SUBMIT"
+              )}
             </Button>
           </div>
         </form>
