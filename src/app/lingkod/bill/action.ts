@@ -108,6 +108,7 @@ export async function handleSubmit(
 
     const notificationRef = collection(db, "notifications");
     const notificationData: any = {
+      is_read: false,
       receiver_uid: uid,
       notif_msg: `Your electric bill for ${format(
         month,

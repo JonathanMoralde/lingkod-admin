@@ -58,6 +58,7 @@ export async function handleStatus(
 
   const notificationRef = collection(db, "notifications");
   const notificationData: any = {
+    is_read: false,
     receiver_uid: uid,
     notif_msg: `Blotter report status is now ${status}.`,
     type: "report",
@@ -79,6 +80,7 @@ export async function assignCaseNo(
 
   const notificationRef = collection(db, "notifications");
   const notificationData: any = {
+    is_read: false,
     receiver_uid: uid,
     notif_msg: `Blotter report have been assigned with a case number: ${caseNo}.`,
     type: "report",

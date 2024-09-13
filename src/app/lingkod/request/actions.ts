@@ -54,6 +54,7 @@ export async function handleApprove(
 
   const notificationRef = collection(db, "notifications");
   const notificationData: any = {
+    is_read: false,
     receiver_uid: uid,
     notif_msg: `${type} is ready to be claimed at the Barangay Hall.`,
     type: "request",
@@ -76,6 +77,7 @@ export async function handleReject(
 
   const notificationRef = collection(db, "notifications");
   const notificationData: any = {
+    is_read: false,
     receiver_uid: uid,
     notif_msg: `Your request for ${type} has been rejected`,
     type: "request",

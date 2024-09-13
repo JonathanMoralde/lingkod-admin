@@ -167,6 +167,7 @@ export async function handleSubmit(
 
       data.forEach(async (uid) => {
         const notificationData: any = {
+          is_read: false,
           receiver_uid: uid,
           notif_msg: `${title} on ${format(
             new Date(date),
