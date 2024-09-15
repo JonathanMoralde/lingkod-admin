@@ -281,8 +281,6 @@ const EditEvent = (props: Props) => {
                           <SelectItem value="news">News</SelectItem>
                           <SelectItem value="event">Event</SelectItem>
                           <SelectItem value="update">Update</SelectItem>
-                          <SelectItem value="alert">Alert</SelectItem>
-                          <SelectItem value="reminder">Reminders</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

@@ -272,11 +272,6 @@ const NewEvent = (props: Props) => {
                           <SelectItem value="News">News</SelectItem>
                           <SelectItem value="Events">Events</SelectItem>
                           <SelectItem value="Updates">Updates</SelectItem>
-                          <SelectItem value="Alerts">Alerts</SelectItem>
-                          <SelectItem value="Notifications">
-                            Notifications
-                          </SelectItem>
-                          <SelectItem value="Reminders">Reminders</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
