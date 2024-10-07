@@ -76,6 +76,10 @@ export async function handleEdit(
       last_name,
       position,
       gender,
+      joined_full_name: `${first_name} ${middle_name.charAt(0)}. ${last_name}`,
+      joined_full_name_lowercase: `${first_name.toLocaleLowerCase()} ${middle_name
+        .charAt(0)
+        .toLocaleLowerCase()}. ${last_name.toLocaleLowerCase()}`,
     };
 
     await updateDoc(userDocRef, eventData);
