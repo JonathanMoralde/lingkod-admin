@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-import { MoreHorizontal, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { handleApprove } from "./actions";
 import Link from "next/link";
 
 // This type is used to define the shape of our data.
@@ -59,16 +58,6 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const data = row.original;
 
-      // const handleApproveClick = async (id: string) => {
-      //   const result = await handleApprove(id);
-      //   if (result.success) {
-      //     // Optionally, trigger a client-side update or refresh
-      //   } else {
-      //     // Handle error
-      //     console.error(result.error);
-      //   }
-      // };
-
       return (
         <div className="text-center">
           <DropdownMenu>
@@ -80,23 +69,7 @@ export const columns: ColumnDef<User>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              {/* <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
-              >
-                Copy payment ID
-              </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              {
-                // data.status == "pending" && (
-                //   <DropdownMenuItem
-                //   // onClick={async () => await handleApprove(data.id)}
-                //   >
-                //     <Link href={`/lingkod/residents/verify/${data.id}`}>
-                //       Verify User
-                //     </Link>
-                //   </DropdownMenuItem>
-                // )
-              }
               <Link href={`/lingkod/residents/${data.id}`}>
                 <DropdownMenuItem>
                   {data.status == "pending" ? "Verify Account" : "View details"}

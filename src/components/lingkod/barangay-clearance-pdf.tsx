@@ -8,17 +8,9 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
-// import {
-//   BrgyClearance,
-//   BrgyIndigency,
-//   BusinessPermit,
-//   DocDetails,
-//   EventPermit,
-// } from "@/app/pdf/actions";
 import { format } from "date-fns";
 import { BrgyClearance, DocDetails } from "@/app/pdf/[id]/page";
 import { BarangayOfficial } from "@/utils/firebaseUtils";
-// import { BarangayOfficial } from "@/app/pdf/actions";
 
 type Props = {
   data: DocDetails;

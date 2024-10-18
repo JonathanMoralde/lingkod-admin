@@ -3,17 +3,13 @@ import React, { useEffect, useState } from "react";
 
 import { User, columns } from "./columns";
 import { DataTable } from "../../../components/lingkod/data-table";
-// import { getData } from "./actions";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
 import { db } from "@/config/firebase";
 import { collection, getDocs, where, query } from "firebase/firestore";
 
-// export const dynamic = "force-dynamic";
-
 const Residents = () => {
-  // const data: User[] = await getData();
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 

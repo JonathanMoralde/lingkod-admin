@@ -4,15 +4,11 @@ import React, { useEffect, useState } from "react";
 import { columns, Report } from "./columns";
 import { DataTable } from "@/components/lingkod/data-table";
 import { toast } from "sonner";
-// import { getData } from "./actions";
 import { db } from "@/config/firebase";
 import { collection, getDocs, query } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 
-// export const dynamic = "force-dynamic";
-
 const Reports = () => {
-  // const reports: Report[] = await getData();
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 

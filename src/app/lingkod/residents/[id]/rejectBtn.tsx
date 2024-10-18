@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
-// import { handleReject } from "../actions";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import EventCard from "./eventCard";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-// import { Event, getData } from "../actions";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import FilterBtn from "./filterBtn";
 
@@ -27,14 +26,6 @@ type Props = {
   };
 };
 
-// export type Event = {
-//   id: string;
-//   event_title: string;
-//   description: string;
-//   event_date: number;
-//   event_pic: string;
-// };
-
 export interface EventDetails {
   id: string;
   event_title: string;
@@ -46,11 +37,8 @@ export interface EventDetails {
   event_location?: string;
 }
 
-// export const dynamic = "force-dynamic";
-
 const Events = ({ params }: Props) => {
   const { category } = params;
-  // const data: Event[] = await getData(props.params.category);
   const [data, setData] = useState<EventDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
@@ -149,7 +137,6 @@ const Events = ({ params }: Props) => {
                 key={index}
               />
             ))}
-            {/* <EventCard title="" /> */}
           </div>
         </div>
       )}

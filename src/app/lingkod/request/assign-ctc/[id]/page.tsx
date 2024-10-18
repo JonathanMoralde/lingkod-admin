@@ -29,7 +29,6 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-// import { assignCTCNo } from "../../actions";
 import { db } from "@/config/firebase";
 import { updateDoc, doc, Timestamp } from "firebase/firestore";
 
@@ -59,13 +58,6 @@ const AssignCTC = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      // await assignCTCNo(
-      //   id,
-      //   data.ctc_no,
-      //   data.ctc_issued_at,
-      //   Timestamp.fromDate(data.ctc_issued_on).toMillis()
-      // );
-
       const documentRef = doc(db, "requests", id);
       await updateDoc(documentRef, {
         "details.ctc_no": data.ctc_no,

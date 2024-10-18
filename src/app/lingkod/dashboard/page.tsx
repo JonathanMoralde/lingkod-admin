@@ -8,22 +8,13 @@ import {
   FaFileDownload,
   FaCalendar,
 } from "react-icons/fa";
-// import {
-//   getBlotterCount,
-//   getEventsCount,
-//   getRequestsCount,
-//   getResidentCount,
-// } from "./action";
 
 import { db } from "@/config/firebase";
-// import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, getDocs, where, query } from "firebase/firestore";
 
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-
-// export const dynamic = "force-dynamic";
 
 interface dashboardCount {
   residentCount: number;
@@ -33,10 +24,6 @@ interface dashboardCount {
 }
 
 const Dashboard = () => {
-  // const residentCount = await getResidentCount();
-  // const reportsCount = await getBlotterCount();
-  // const requestsCount = await getRequestsCount();
-  // const eventsCount = await getEventsCount();
   const [dashboardCount, setDashboardCount] = useState<dashboardCount>({
     residentCount: 0,
     reportCount: 0,

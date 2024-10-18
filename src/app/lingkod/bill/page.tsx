@@ -6,8 +6,7 @@ import { DataTable } from "@/components/lingkod/data-table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-// import { getData } from "./action";
-import { db, storage } from "@/config/firebase";
+import { db } from "@/config/firebase";
 import {
   collection,
   getDocs,

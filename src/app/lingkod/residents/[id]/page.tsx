@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-// import { getUserData, UserDetails, handleApprove } from "../actions";
-import { format } from "date-fns";
 import Image from "next/image";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -83,8 +81,6 @@ const ResidentDetail = (props: Props) => {
     };
     fetchUserData();
   }, []);
-
-  // const data: UserDetails = await getUserData(id);
 
   const changeStatus = (status: "pending" | "approved" | "not approved") => {
     if (data) {
@@ -178,9 +174,7 @@ const ResidentDetail = (props: Props) => {
               <h3 className="text-xl font-semibold text-center w-full mb-10">
                 Submitted ID
               </h3>
-              {/* <div> */}
               <div className="relative mx-auto w-[600px] h-80 mb-10">
-                {/* <AspectRatio ratio={16 / 9}> */}
                 <Image
                   src={data?.valid_id ?? ""}
                   alt="Background Image"
@@ -188,7 +182,6 @@ const ResidentDetail = (props: Props) => {
                   sizes="w-auto h-auto"
                   objectFit="contain"
                 />
-                {/* </AspectRatio> */}
               </div>
 
               <div className="flex justify-center">

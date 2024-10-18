@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/form";
 import Image from "next/image";
 import { loginSchema } from "@/models/loginSchema";
-// import { onSubmitAction } from "./action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -35,10 +34,6 @@ export default function Home() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // const [state, formAction] = useFormState(onSubmitAction, {
-  //   message: "",
-  // });
-
   useEffect(() => {
     if (user) {
       router.push("/lingkod/dashboard");
@@ -54,33 +49,6 @@ export default function Home() {
     },
   });
 
-  // const formRef = useRef<HTMLFormElement>(null);
-
-  // // Handle toast notifications and navigation based on state changes
-  // useEffect(() => {
-  //   console.log("rerender");
-  //   if (state?.success) {
-  //     // Show success toast
-
-  //     setTimeout(() => {
-  //       toast.success("User signed in successfully!");
-  //     });
-  //     // Navigate to a different page when the sign-in is successful
-  //     router.push("/lingkod/dashboard"); // Change "/dashboard" to your desired route
-  //   } else {
-  //     // Show error toast
-  //     setTimeout(() => {
-  //       if (
-  //         state?.success != null &&
-  //         !state?.success &&
-  //         state?.issues != null &&
-  //         state?.issues?.length
-  //       ) {
-  //         toast.error(state.issues.join(", "));
-  //       }
-  //     });
-  //   }
-  // }, [state?.success, state?.issues, toast, router]); // Only run when state.success or state.issues changes
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     setIsLoading(true);
     try {

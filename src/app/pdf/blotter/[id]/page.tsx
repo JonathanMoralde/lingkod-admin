@@ -1,12 +1,6 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-// import {
-//   barangayOfficial,
-//   BarangayOfficial,
-//   BlotterDocDetails,
-//   getDocBlotterDetails,
-// } from "../../actions";
 import BlotterPdfView from "./pdf-viewer";
 import { BarangayOfficial, fetchBarangayOfficial } from "@/utils/firebaseUtils";
 import { toast } from "sonner";
@@ -32,14 +26,6 @@ type Props = { params: { id: string } };
 
 const BlotterPdfPreview = ({ params }: Props) => {
   const { id } = params;
-  // const docDetails: DocDetails = await getDocRequestDetails(props.params.id);
-  // const barangayCaptain: BarangayOfficial = await barangayOfficial("Captain");
-  // const barangaySecretary: BarangayOfficial = await barangayOfficial(
-  //   "Secretary"
-  // );
-  // const blotterDetails: BlotterDocDetails = await getDocBlotterDetails(
-  //   props.params.id
-  // );
   const [blotterDetails, setBlotterDetails] = useState<BlotterDocDetails>();
   const [barangayCaptain, setBarangayCaptain] = useState<BarangayOfficial>();
   const [barangaySecretary, setBarangaySecretary] =

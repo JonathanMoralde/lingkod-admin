@@ -22,7 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { handleStatus } from "../../../../actions";
 import { useRouter } from "next/navigation";
 import { db } from "@/config/firebase";
 import {
@@ -55,7 +54,6 @@ const EditStatus = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      // await handleStatus(id, data.status, uid);
       const documentRef = doc(db, "blotter_reports", id);
       await updateDoc(documentRef, { status: data.status });
 

@@ -11,7 +11,6 @@ import {
 } from "@react-pdf/renderer";
 import { BarangayOfficial } from "@/utils/firebaseUtils";
 import { BlotterDocDetails } from "@/app/pdf/blotter/[id]/page";
-// import { BarangayOfficial, BlotterDocDetails } from "@/app/pdf/actions";
 
 type Props = {
   barangayCaptain: BarangayOfficial;

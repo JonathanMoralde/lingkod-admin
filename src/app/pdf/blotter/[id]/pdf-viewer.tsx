@@ -2,7 +2,6 @@
 
 import React from "react";
 import { PDFViewer } from "@react-pdf/renderer";
-// import { BarangayOfficial, BlotterDocDetails } from "@/app/pdf/actions";
 import BlotterReportPdf from "@/components/lingkod/blotter-report-pdf";
 import { BarangayOfficial } from "@/utils/firebaseUtils";
 import { BlotterDocDetails } from "./page";

@@ -1,6 +1,5 @@
 import { db } from "@/config/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { useCallback } from "react";
 
 // Define the type for the BarangayOfficial
 export type BarangayOfficial = {

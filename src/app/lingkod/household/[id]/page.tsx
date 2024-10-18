@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import { columns } from "./columns";
 import { DataTable } from "@/components/lingkod/data-table";
 import { HouseholdDetail, HouseholdMember } from "../columns";
-// import { getHouseholdData } from "../actions";
 import { format } from "date-fns";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
@@ -58,8 +57,6 @@ const HouseholdDetails = (props: Props) => {
     fetchData();
   }, []);
 
-  // const householdData: HouseholdDetail = await getHouseholdData(id);
-  // const members: HouseholdMember[] = householdData.members ?? [];
   return (
     <ScrollArea className="bg-indigo-950 rounded-xl px-4   h-[80vh]">
       {loading ? (

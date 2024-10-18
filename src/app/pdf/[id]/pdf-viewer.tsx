@@ -2,20 +2,12 @@
 
 import React from "react";
 import { PDFViewer } from "@react-pdf/renderer";
-// import {
-//   BrgyClearance,
-//   BrgyIndigency,
-//   BusinessPermit,
-//   DocDetails,
-//   EventPermit,
-// } from "../actions";
 import BarangayClearancePDF from "@/components/lingkod/barangay-clearance-pdf";
 import BarangayIndigency from "@/components/lingkod/barangay-indigency-pdf";
 import BusinessPermitPdf from "@/components/lingkod/business-permit-pdf";
 import EventPermitPdf from "@/components/lingkod/event-permit-pdf";
 import { BarangayOfficial } from "@/utils/firebaseUtils";
 import { DocDetails } from "./page";
-// import { BarangayOfficial } from "@/app/pdf/actions";
 
 type Props = {
   data: DocDetails;
@@ -39,7 +31,6 @@ const PdfView = (props: Props) => {
       break;
     case "Event Permit":
       PdfComponent = EventPermitPdf;
-      break;
       break;
     default:
       return <div>Unknown Document Type</div>;

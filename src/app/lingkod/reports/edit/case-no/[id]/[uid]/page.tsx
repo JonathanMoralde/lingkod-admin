@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-// import { assignCaseNo, handleStatus } from "../../../../actions";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { db } from "@/config/firebase";
@@ -50,7 +49,6 @@ const EditCaseNo = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      // await assignCaseNo(id, data.case_no, uid);
       const documentRef = doc(db, "blotter_reports", id);
       await updateDoc(documentRef, { case_no: data.case_no });
 

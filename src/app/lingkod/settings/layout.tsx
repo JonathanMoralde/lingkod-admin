@@ -1,8 +1,5 @@
 "use client";
-import HeaderBar from "@/components/lingkod/headerbar";
-import Sidebar from "@/components/lingkod/sidebar";
-import React, { Children, useEffect } from "react";
-import { Loader2 } from "lucide-react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";

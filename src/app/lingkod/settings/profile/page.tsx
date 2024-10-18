@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/select";
 
 import { useRouter } from "next/navigation";
-// import { CurrentAdmin, getCurrentAdminData, handleEdit } from "../actions";
 import { db } from "@/config/firebase";
 import {
   collection,
@@ -78,7 +77,6 @@ const Profile = () => {
     const fetchUserDetail = async () => {
       try {
         setIsFetching(true);
-        // const userData: CurrentAdmin = await getCurrentAdminData(user!.uid);
         const userRef = query(
           collection(db, "users"),
           where("uid", "==", user!.uid)
@@ -124,14 +122,6 @@ const Profile = () => {
   ) => {
     setLoading(true);
     try {
-      // await handleEdit(
-      //   user!.uid,
-      //   data.first_name,
-      //   data.middle_name,
-      //   data.last_name,
-      //   data.position,
-      //   data.gender
-      // );
       const userDocRef = doc(db, "users", user!.uid);
 
       const eventData: any = {
@@ -293,52 +283,6 @@ const Profile = () => {
                       )}
                     />
                   )}
-
-                  {/* <FormField
-                control={form.control}
-                name="position" // Make sure this matches your schema field name
-                render={({ field }) => (
-                  <FormItem className={`${isEdit ? "" : "hidden"}`}>
-                    <FormLabel>Position</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                          setPosition(value);
-                        }} // Update the form state
-                        value={field.value} // Controlled input
-                      >
-                        <SelectTrigger
-                          className={`w-full dark:bg-transparent dark:border-gray-300 rounded dark:focus:outline-none ${
-                            !position ? "text-gray-400" : "text-white"
-                          }`}
-                        >
-                          <SelectValue placeholder="Edit position" />
-                        </SelectTrigger>
-                        <SelectContent className=" rounded dark:bg-[#4844b4] bg-[#4844b4]">
-                          <SelectItem value="Captain">
-                            Barangay Captain
-                          </SelectItem>
-                          <SelectItem value="Secretary">
-                            Barangay Secretary
-                          </SelectItem>
-                          <SelectItem value="Treasurer">
-                            Barangay Treasurer
-                          </SelectItem>
-                          <SelectItem value="Councilor">
-                            Barangay Councilor
-                          </SelectItem>
-                          <SelectItem value="Health Worker">
-                            Barangay Health Worker
-                          </SelectItem>
-                          <SelectItem value="Tanod">Barangay Tanod</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
 
                   <FormField
                     control={form.control}

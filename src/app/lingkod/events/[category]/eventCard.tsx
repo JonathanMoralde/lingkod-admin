@@ -41,7 +41,6 @@ import {
   getDoc,
   Timestamp,
 } from "firebase/firestore";
-// import { handleDelete } from "../actions";
 import { toast } from "sonner";
 
 type Props = {
@@ -124,9 +123,6 @@ const EventCard = (props: Props) => {
               <Link href={`/lingkod/events/new/${props.id}`}>
                 <DropdownMenuItem>Edit Event</DropdownMenuItem>
               </Link>
-              {/* <DropdownMenuItem onClick={() => deleteEvent(props.id)}>
-              Delete Event
-            </DropdownMenuItem> */}
               <AlertDialog>
                 <AlertDialogTrigger className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-slate-100 focus:text-slate-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-slate-800 dark:focus:text-slate-50 dark:hover:bg-slate-800 w-full">
                   {" "}

@@ -42,7 +42,6 @@ import {
 import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
 // If you are using date-fns v3.x, please import the v3 adapter
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-// import { getEventData, handleEdit, handleSubmit } from "../actions";
 import { db, storage } from "@/config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
@@ -105,34 +104,9 @@ const NewEvent = () => {
     data: z.infer<typeof formSchema>
   ) => {
     setLoading(true);
-    console.log(data);
-    // Handle form submission logic here
     try {
-      // const fileBase64 = await fileToBase64(data.image);
-      // console.log(
-      //   fileBase64,
-      //   data.title,
-      //   data.body,
-      //   Timestamp.fromDate(data.date).toMillis(),
-      //   category,
-      //   data.location ? data.location : undefined,
-      //   data.time ? format(data.time, "hh:mm aa") : undefined
-      // );
-      // await handleSubmit(
-      //   JSON.stringify(fileBase64),
-      //   data.title,
-      //   data.body,
-      //   Timestamp.fromDate(data.date).toMillis(),
-      //   data.category,
-      //   data.location ? data.location : undefined,
-      //   data.time ? format(data.time, "hh:mm aa") : undefined
-      // );
-
       const collectionRef = collection(db, "events");
       const notificationRef = collection(db, "notifications");
-
-      //   upload image first in firebase storage
-      //  const fileBlob = base64ToBlob(JSON.parse(fileBase64));
 
       const storageRef = ref(
         storage,
@@ -447,50 +421,6 @@ const NewEvent = () => {
                 )}
               />
 
-              {/* <FormField
-                control={form.control}
-                name="time"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col mb-6">
-                    <FormLabel>Event Time</FormLabel>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <MobileTimePicker
-                        className="border-gray-300"
-                        slotProps={{
-                          textField: {
-                            sx: {
-                              "& .MuiOutlinedInput-root": {
-                                "& fieldset": {
-                                  borderColor: "#d1d5db", // Border color
-                                },
-                                "&:hover fieldset": {
-                                  borderColor: "#d1d5db", // Border color on hover
-                                },
-                                "&.Mui-focused fieldset": {
-                                  borderColor: "#d1d5db", // Border color when focused
-                                },
-                              },
-                              "& .MuiInputBase-input": {
-                                color: "#d1d5db", // Font color
-                              },
-                              "& .MuiInputLabel-root": {
-                                color: "#d1d5db", // Label color
-                              },
-                            },
-                          },
-                        }}
-                        value={time}
-                        onChange={(newValue) => {
-                          setTime(newValue);
-                          field.onChange(newValue);
-                        }}
-                      />
-                    </LocalizationProvider>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
-
               <div className="grid place-items-center">
                 <Button
                   type="submit"
@@ -519,11 +449,6 @@ const NewEvent = () => {
               />
             </div>
           ) : (
-            // <img
-            //   src={imagePreview}
-            //   alt="Preview"
-            //   className="max-w-xs max-h-80 object-cover mt-4"
-            // />
             <p className="text-gray-400 text-center">No image selected</p>
           )}
         </div>

@@ -1,11 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
-// import { Admin, columns } from "./columns";
 import { DataTable } from "../../../components/lingkod/data-table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-// import { getData } from "./actions";
 import { Loader2 } from "lucide-react";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -56,10 +54,7 @@ export type Admin = {
   email: string;
 };
 
-// export const dynamic = "force-dynamic";
-
 const OfficerManagement = () => {
-  // const data: Admin[] = await getData();
   const [admin, setAdmin] = useState<Admin[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -138,7 +133,6 @@ const OfficerManagement = () => {
                 <Link href={`/lingkod/officer-management/new/${data.id}`}>
                   <DropdownMenuItem>Edit details</DropdownMenuItem>
                 </Link>
-                {/* <DropdownMenuItem> */}
                 <AlertDialog>
                   <AlertDialogTrigger className="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-slate-100 focus:text-slate-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-slate-800 dark:focus:text-slate-50 dark:hover:bg-slate-800">
                     {" "}
@@ -161,8 +155,6 @@ const OfficerManagement = () => {
                       <AlertDialogAction
                         className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950"
                         onClick={async () => {
-                          // disableAccount(data.id);
-
                           try {
                             const documentRef = doc(db, "users", data.id);
                             await updateDoc(documentRef, {
@@ -190,7 +182,6 @@ const OfficerManagement = () => {
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
-                {/* </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

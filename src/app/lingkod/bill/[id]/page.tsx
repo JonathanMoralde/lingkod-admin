@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-// import { BillDetail, getBillData } from "../action";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { db } from "@/config/firebase";
@@ -26,7 +25,6 @@ export type BillDetail = {
 };
 
 const BillDetails = (props: Props) => {
-  // const billDetail: BillDetail = await getBillData(props.params.id);
   const [billDetail, setBillDetail] = useState<BillDetail>();
   const [loading, setLoading] = useState<boolean>(false);
 

@@ -29,7 +29,6 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-// import { assignORNo } from "../../actions";
 import { db } from "@/config/firebase";
 import { updateDoc, doc, Timestamp } from "firebase/firestore";
 
@@ -57,11 +56,6 @@ const AssignOR = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      // await assignORNo(
-      //   id,
-      //   data.or_no,
-      //   Timestamp.fromDate(data.or_issued_on).toMillis()
-      // );
       const documentRef = doc(db, "requests", id);
       await updateDoc(documentRef, {
         "details.or_no": data.or_no,

@@ -20,7 +20,6 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
-// import { sendPasswordReset } from "./action";
 import { auth } from "@/config/firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
 
@@ -45,7 +44,6 @@ const ForgotPassword = () => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
-      // await sendPasswordReset(data.email);
       await sendPasswordResetEmail(auth, data.email);
       toast.success("Password reset link was sent to your email");
       router.push("/");

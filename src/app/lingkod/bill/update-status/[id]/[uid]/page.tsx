@@ -33,7 +33,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { assignCTCNo } from "../../actions";
 
 type Props = { params: { id: string; uid: string } };
 
@@ -57,7 +56,6 @@ const UpdateStatus = ({ params }: Props) => {
   ) => {
     setLoading(true);
     try {
-      // await handleStatus(id, data.status, uid);
       const documentRef = doc(db, "bills", id);
       await updateDoc(documentRef, { status: data.status });
 

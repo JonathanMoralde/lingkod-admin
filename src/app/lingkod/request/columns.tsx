@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-import { MoreHorizontal, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,8 +16,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import Link from "next/link";
-// import { handleApprove, handleReject } from "./actions";
-import ApproveRejectContainer from "./approve-reject-btn-container";
 import { format } from "date-fns";
 
 export type DocRequest = {
@@ -77,18 +75,7 @@ export const columns: ColumnDef<DocRequest>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              {/* <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
-              >
-                Copy payment ID
-              </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              {/* {data.status == "pending" && (
-                <ApproveRejectContainer
-                  data={data}
-                  changeStatus={changeStatus}
-                />
-              )} */}
               <Link
                 href={`/lingkod/request/update-status/${data.id}/${data.uid}/${data.type}`}
               >

@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  FaTachometerAlt,
-  FaUser,
-  FaEnvelope,
-  FaFileAlt,
-  FaCalendarAlt,
-  FaBolt,
-  FaHome,
-} from "react-icons/fa";
+import { FaUser, FaEnvelope, FaFileAlt, FaBolt, FaHome } from "react-icons/fa";
 import { NotificationData } from "./headerbar";
 import { useRouter } from "next/navigation";
 

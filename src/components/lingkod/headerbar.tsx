@@ -9,11 +9,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -30,7 +26,6 @@ import { FaCalendarAlt, FaUserCircle, FaBell } from "react-icons/fa";
 
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-// import { deleteAuthCookie } from "@/app/action";
 import { useAuth } from "@/app/context/AuthContext";
 import Link from "next/link";
 import { ScrollArea } from "../ui/scroll-area";

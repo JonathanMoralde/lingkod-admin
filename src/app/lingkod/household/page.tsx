@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { columns, HouseholdDetail } from "./columns";
 import { DataTable } from "@/components/lingkod/data-table";
-// import { getData } from "./actions";
 import { db } from "@/config/firebase";
 import { collection, getDocs, query, Timestamp } from "firebase/firestore";
 import { format } from "date-fns";
@@ -11,7 +10,6 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 const Household = () => {
-  // const data: HouseholdDetail[] = await getData();
   const [data, setData] = useState<HouseholdDetail[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 

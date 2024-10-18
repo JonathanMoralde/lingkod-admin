@@ -19,8 +19,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-// import { CurrentAdmin, getCurrentAdminData, handleEdit } from "../actions";
-
 import { useAuth } from "../../../context/AuthContext";
 import {
   EmailAuthProvider,
@@ -68,7 +66,6 @@ const ChangePassword = () => {
   ) => {
     setLoading(true);
     try {
-      // console.log(user);
       const credential = EmailAuthProvider.credential(
         user!.email!,
         data.oldPassword

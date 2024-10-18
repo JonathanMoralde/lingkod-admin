@@ -1,9 +1,7 @@
 "use client";
 
-// import { DocRequest, columns } from "./columns";
 import { DataTable } from "@/components/lingkod/data-table";
 import React, { useEffect, useState } from "react";
-// import { getData } from "./actions";
 import { toast } from "sonner";
 import { db } from "@/config/firebase";
 import { collection, getDocs, query, Timestamp } from "firebase/firestore";
@@ -11,10 +9,7 @@ import { format } from "date-fns";
 import { Loader2 } from "lucide-react";
 import { columns, DocRequest } from "./columns";
 
-// export const dynamic = "force-dynamic";
-
 const Request = () => {
-  // const requests: DocRequest[] = await getData();
   const [requests, setRequests] = useState<DocRequest[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 

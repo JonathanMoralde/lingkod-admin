@@ -8,14 +8,6 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
-// import {
-//   BrgyClearance,
-//   BrgyIndigency,
-//   BusinessPermit,
-//   DocDetails,
-//   EventPermit,
-// } from "@/app/pdf/actions";
-// import { BarangayOfficial } from "@/app/pdf/actions";
 
 import { format } from "date-fns";
 import { BrgyIndigency, DocDetails } from "@/app/pdf/[id]/page";

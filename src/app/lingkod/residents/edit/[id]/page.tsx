@@ -30,7 +30,6 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-// import { getUserData, handleEdit } from "../../actions";
 import { db } from "@/config/firebase";
 import {
   collection,
@@ -135,19 +134,6 @@ const EditUser = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      // await handleEdit(
-      //   id,
-      //   data.first_name,
-      //   data.middle_name,
-      //   data.last_name,
-      //   data.zone,
-      //   data.email,
-      //   data.age,
-      //   data.birthday,
-      //   data.civil_status,
-      //   data.gender,
-      //   data.contact_number
-      // );
       const documentRef = doc(collection(db, "users"), id);
 
       const eventData: any = {

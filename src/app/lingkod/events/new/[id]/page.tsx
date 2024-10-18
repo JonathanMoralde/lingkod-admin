@@ -42,7 +42,6 @@ import {
 import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
 // If you are using date-fns v3.x, please import the v3 adapter
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-// import { getEventData, handleEdit } from "../../actions";
 import { db, storage } from "@/config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
@@ -124,9 +123,6 @@ const EditEvent = (props: Props) => {
           form.setValue("body", docData.description);
           form.setValue("location", docData.event_location);
           form.setValue("date", new Date(docData.event_date)); // Convert the timestamp to a Date object
-          // form.setValue("category", docData.category); // Convert the timestamp to a Date object
-          // setDate(new Date((docData.event_date as Timestamp).toMillis()));
-          // setCategory(docData.category);
 
           // Set the image preview if there's an event_pic URL
           if (docData.event_pic) {
@@ -152,22 +148,7 @@ const EditEvent = (props: Props) => {
     console.log(data);
     // Handle form submission logic here
     try {
-      // const fileBase64 = await fileToBase64(data.image);
-
-      // await handleEdit(
-      //   id,
-      //   JSON.stringify(fileBase64),
-      //   data.title,
-      //   data.body,
-      //   Timestamp.fromDate(data.date).toMillis(),
-      //   data.category,
-      //   data.location ? data.location : undefined,
-      //   data.time ? format(data.time, "hh:mm aa") : undefined
-      // );
       const documentRef = doc(collection(db, "events"), id);
-
-      //   upload image first in firebase storage
-      // const fileBlob = base64ToBlob(JSON.parse(fileBase64));
 
       const storageRef = ref(
         storage,
@@ -220,15 +201,6 @@ const EditEvent = (props: Props) => {
       setLoading(false);
     }
   };
-
-  // const fileToBase64 = (file: File): Promise<string> => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result as string);
-  //     reader.onerror = (error) => reject(error);
-  //   });
-  // };
 
   return (
     <ScrollArea className="bg-indigo-950 rounded-xl px-4 py-10 h-[80vh]">
@@ -461,50 +433,6 @@ const EditEvent = (props: Props) => {
                       </FormItem>
                     )}
                   />
-
-                  {/* <FormField
-                control={form.control}
-                name="time"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col mb-6">
-                    <FormLabel>Event Time</FormLabel>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <MobileTimePicker
-                        className="border-gray-300"
-                        slotProps={{
-                          textField: {
-                            sx: {
-                              "& .MuiOutlinedInput-root": {
-                                "& fieldset": {
-                                  borderColor: "#d1d5db", // Border color
-                                },
-                                "&:hover fieldset": {
-                                  borderColor: "#d1d5db", // Border color on hover
-                                },
-                                "&.Mui-focused fieldset": {
-                                  borderColor: "#d1d5db", // Border color when focused
-                                },
-                              },
-                              "& .MuiInputBase-input": {
-                                color: "#d1d5db", // Font color
-                              },
-                              "& .MuiInputLabel-root": {
-                                color: "#d1d5db", // Label color
-                              },
-                            },
-                          },
-                        }}
-                        value={time}
-                        onChange={(newValue) => {
-                          setTime(newValue);
-                          field.onChange(newValue);
-                        }}
-                      />
-                    </LocalizationProvider>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
 
                   <div className="grid place-items-center">
                     <Button

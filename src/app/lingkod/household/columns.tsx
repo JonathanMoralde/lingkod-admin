@@ -1,9 +1,8 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
 
-import { MoreHorizontal, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -65,16 +64,6 @@ export const columns: ColumnDef<HouseholdDetail>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
-
-      // const handleApproveClick = async (id: string) => {
-      //   const result = await handleApprove(id);
-      //   if (result.success) {
-      //     // Optionally, trigger a client-side update or refresh
-      //   } else {
-      //     // Handle error
-      //     console.error(result.error);
-      //   }
-      // };
 
       return (
         <div className="text-center">

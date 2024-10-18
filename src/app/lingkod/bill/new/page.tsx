@@ -38,7 +38,6 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-// import { getUsersList, handleSubmit } from "../action";
 import { toast } from "sonner";
 import { db } from "@/config/firebase";
 import {
@@ -125,18 +124,6 @@ const PostBill = () => {
   ) => {
     setLoading(true);
     try {
-      // await handleSubmit(
-      //   data.bapa_name,
-      //   data.uid,
-      //   data.meter_no,
-      //   data.present_reading,
-      //   data.previous_reading,
-      //   data.total_due,
-      //   data.date_released,
-      //   data.month,
-      //   data.due_date,
-      //   data.disconnection_date
-      // );
       const collectionRef = collection(db, "bills");
 
       // insert the event details in the events collection

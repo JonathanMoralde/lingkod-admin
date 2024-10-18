@@ -17,7 +17,6 @@ import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import Link from "next/link";
 
-// export const dynamic = "force-dynamic";
 export type ElectricBill = {
   id: string;
   full_name: string;
@@ -103,11 +102,6 @@ export const columns: ColumnDef<ElectricBill>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="dark:bg-[#4844B4]">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              {/* <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
-              >
-                Copy payment ID
-              </DropdownMenuItem> */}
               <DropdownMenuSeparator />
               <Link href={`/lingkod/bill/${data.id}`}>
                 <DropdownMenuItem>View details</DropdownMenuItem>

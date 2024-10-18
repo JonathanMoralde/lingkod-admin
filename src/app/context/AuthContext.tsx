@@ -18,10 +18,6 @@ import {
   where,
 } from "firebase/firestore";
 
-// interface User {
-//   uid: string;
-//   email: string;
-// }
 interface AuthContextType {
   user: User | null;
   userDetails: AdminUserDetails | null;
@@ -63,10 +59,6 @@ export const AuthContextProvider = ({
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        // setUser({
-        //   uid: user.uid,
-        //   email: user.email!,
-        // });
       } else {
         setUser(null);
       }
