@@ -32,7 +32,7 @@ export type HouseholdDetail = {
 
 export type HouseholdMember = {
   name: string;
-  age: string;
+  age: number;
 };
 
 export const columns: ColumnDef<HouseholdDetail>[] = [
@@ -90,6 +90,12 @@ export const columns: ColumnDef<HouseholdDetail>[] = [
               <DropdownMenuSeparator />
               <Link href={`/lingkod/household/${data.id}`}>
                 <DropdownMenuItem>View details</DropdownMenuItem>
+              </Link>
+              <Link href={`/lingkod/household/edit/${data.id}`}>
+                <DropdownMenuItem>Edit details</DropdownMenuItem>
+              </Link>
+              <Link href={`/lingkod/household/edit/members/${data.id}`}>
+                <DropdownMenuItem>Edit Members</DropdownMenuItem>
               </Link>
             </DropdownMenuContent>
           </DropdownMenu>

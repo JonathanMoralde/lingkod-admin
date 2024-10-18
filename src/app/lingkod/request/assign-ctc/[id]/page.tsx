@@ -15,7 +15,6 @@ import { toast } from "sonner";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,8 +29,9 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { assignCTCNo } from "../../actions";
-import { Timestamp } from "firebase/firestore";
+// import { assignCTCNo } from "../../actions";
+import { db } from "@/config/firebase";
+import { updateDoc, doc, Timestamp } from "firebase/firestore";
 
 type Props = { params: { id: string } };
 
@@ -59,12 +59,20 @@ const AssignCTC = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      await assignCTCNo(
-        id,
-        data.ctc_no,
-        data.ctc_issued_at,
-        Timestamp.fromDate(data.ctc_issued_on).toMillis()
-      );
+      // await assignCTCNo(
+      //   id,
+      //   data.ctc_no,
+      //   data.ctc_issued_at,
+      //   Timestamp.fromDate(data.ctc_issued_on).toMillis()
+      // );
+
+      const documentRef = doc(db, "requests", id);
+      await updateDoc(documentRef, {
+        "details.ctc_no": data.ctc_no,
+        "details.ctc_issued_at": data.ctc_issued_at,
+        "details.ctc_issued_on": Timestamp.fromDate(data.ctc_issued_on),
+      });
+
       toast.success(`Successfully assigned a CTC`);
       router.back();
     } catch (error) {

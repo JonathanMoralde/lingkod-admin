@@ -4,6 +4,10 @@ import { AdminUserDetails } from "./app/context/AuthContext";
 
 // List of protected routes with allowed positions
 const protectedRoutes = [
+  {
+    path: "/lingkod/officer-management",
+    allowedPositions: ["Captain", "Secretary"],
+  },
   { path: "/lingkod/residents", allowedPositions: ["Captain", "Secretary"] },
   { path: "/lingkod/household", allowedPositions: ["Captain", "Secretary"] },
   { path: "/lingkod/request", allowedPositions: ["Captain", "Secretary"] },

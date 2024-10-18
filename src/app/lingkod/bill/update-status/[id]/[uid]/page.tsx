@@ -1,8 +1,18 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
+
+import { db } from "@/config/firebase";
+import {
+  collection,
+  updateDoc,
+  doc,
+  serverTimestamp,
+  addDoc,
+} from "firebase/firestore";
 
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -15,6 +25,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { useRouter } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -22,16 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { handleStatus } from "../../../../actions";
-import { useRouter } from "next/navigation";
-import { db } from "@/config/firebase";
-import {
-  collection,
-  updateDoc,
-  doc,
-  serverTimestamp,
-  addDoc,
-} from "firebase/firestore";
+// import { assignCTCNo } from "../../actions";
 
 type Props = { params: { id: string; uid: string } };
 
@@ -39,8 +41,8 @@ const FormSchema = z.object({
   status: z.string(),
 });
 
-const EditStatus = (props: Props) => {
-  const { id, uid }: { id: string; uid: string } = props.params;
+const UpdateStatus = ({ params }: Props) => {
+  const { id, uid } = params;
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -56,15 +58,15 @@ const EditStatus = (props: Props) => {
     setLoading(true);
     try {
       // await handleStatus(id, data.status, uid);
-      const documentRef = doc(db, "blotter_reports", id);
+      const documentRef = doc(db, "bills", id);
       await updateDoc(documentRef, { status: data.status });
 
       const notificationRef = collection(db, "notifications");
       const notificationData: any = {
         is_read: false,
         receiver_uid: uid,
-        notif_msg: `Blotter report status is now ${data.status}.`,
-        type: "report",
+        notif_msg: `Bill payment status is now ${data.status}.`,
+        type: "bill",
         timestamp: serverTimestamp(),
       };
 
@@ -88,7 +90,7 @@ const EditStatus = (props: Props) => {
     <section className="bg-indigo-950 rounded-xl px-4 py-10  h-[80vh]">
       <div className="flex items-center  mb-10">
         <Button variant="ghost" size="icon" className=" justify-start">
-          <Link href="/lingkod/reports">
+          <Link href="/lingkod/bill">
             <ArrowLeft />
           </Link>
         </Button>
@@ -116,12 +118,8 @@ const EditStatus = (props: Props) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="dark:bg-[#4844b4] bg-[#4844b4]">
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="ongoing">Ongoing</SelectItem>
-                    <SelectItem value="resolved">Resolved Issue</SelectItem>
-                    <SelectItem value="filed to action">
-                      Filed to action
-                    </SelectItem>
+                    <SelectItem value="unpaid">Unpaid</SelectItem>
+                    <SelectItem value="paid">Paid</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -146,5 +144,4 @@ const EditStatus = (props: Props) => {
     </section>
   );
 };
-
-export default EditStatus;
+export default UpdateStatus;

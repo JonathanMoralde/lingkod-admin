@@ -1,31 +1,39 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
-import { handleApprove } from "../actions";
+// import { handleApprove } from "../actions";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
+import { db } from "@/config/firebase";
+import { updateDoc, doc } from "firebase/firestore";
+
 type Props = {
   id: string;
+  changeStatus: (status: "pending" | "approved" | "not approved") => void;
 };
 
-const ApproveBtn = (props: Props) => {
+const ApproveBtn = ({ id, changeStatus }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleApprove = async () => {
+    setIsLoading(true);
+    try {
+      const documentRef = doc(db, "users", id);
+      await updateDoc(documentRef, { status: "approved" });
+      changeStatus("approved");
+      toast.success("Successfully approved the user!");
+    } catch (error) {
+      toast.error("failed to update user account status!");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <Button
       variant="default"
       className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/6"
-      onClick={async () => {
-        setIsLoading(true);
-        try {
-          await handleApprove(props.id);
-          toast.success("Successfully approved the user!");
-        } catch (error) {
-          toast.error("failed to update user account status!");
-        } finally {
-          setIsLoading(false);
-        }
-      }}
+      onClick={handleApprove}
     >
       {isLoading ? <Loader2 className="h-10 w-10 animate-spin" /> : "Approve"}
     </Button>

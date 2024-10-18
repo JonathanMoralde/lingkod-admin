@@ -3,9 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-import { MoreHorizontal, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,18 +13,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import Link from "next/link";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+// export const dynamic = "force-dynamic";
 export type ElectricBill = {
   id: string;
   full_name: string;
   total_due: number;
   due_date: string;
   disconnection_date: string;
+  status: string;
+  uid: string;
 };
 
 export const columns: ColumnDef<ElectricBill>[] = [
@@ -84,6 +84,10 @@ export const columns: ColumnDef<ElectricBill>[] = [
     },
   },
   {
+    accessorKey: "status",
+    header: "Payment Status",
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
@@ -107,6 +111,9 @@ export const columns: ColumnDef<ElectricBill>[] = [
               <DropdownMenuSeparator />
               <Link href={`/lingkod/bill/${data.id}`}>
                 <DropdownMenuItem>View details</DropdownMenuItem>
+              </Link>
+              <Link href={`/lingkod/bill/update-status/${data.id}/${data.uid}`}>
+                <DropdownMenuItem>Update Status</DropdownMenuItem>
               </Link>
             </DropdownMenuContent>
           </DropdownMenu>

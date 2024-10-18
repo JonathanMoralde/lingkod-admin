@@ -42,8 +42,24 @@ import {
 import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
 // If you are using date-fns v3.x, please import the v3 adapter
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { getEventData, handleEdit, handleSubmit } from "../actions";
-import { Timestamp } from "firebase/firestore";
+// import { getEventData, handleEdit, handleSubmit } from "../actions";
+import { db, storage } from "@/config/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  where,
+  query,
+  updateDoc,
+  doc,
+  Timestamp,
+  addDoc,
+  orderBy,
+  deleteDoc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 type Props = {};
 
@@ -67,7 +83,11 @@ type Props = {};
 const formSchema = z.object({
   image: z
     .instanceof(File)
-    .refine((file) => file.size <= 5000000, "Max file size is 5MB"),
+    .refine((file) => file.size <= 5000000, "Max file size is 5MB")
+    .refine(
+      (file) => ["image/png", "image/jpeg"].includes(file.type),
+      "Only PNG and JPG formats are allowed."
+    ),
   title: z.string().min(1, "Event title is required"),
   body: z.string().min(1, "Description is required"),
   location: z.string().optional(),
@@ -113,25 +133,88 @@ const NewEvent = (props: Props) => {
     console.log(data);
     // Handle form submission logic here
     try {
-      const fileBase64 = await fileToBase64(data.image);
-      console.log(
-        fileBase64,
-        data.title,
-        data.body,
-        Timestamp.fromDate(data.date).toMillis(),
-        category,
-        data.location ? data.location : undefined,
-        data.time ? format(data.time, "hh:mm aa") : undefined
+      // const fileBase64 = await fileToBase64(data.image);
+      // console.log(
+      //   fileBase64,
+      //   data.title,
+      //   data.body,
+      //   Timestamp.fromDate(data.date).toMillis(),
+      //   category,
+      //   data.location ? data.location : undefined,
+      //   data.time ? format(data.time, "hh:mm aa") : undefined
+      // );
+      // await handleSubmit(
+      //   JSON.stringify(fileBase64),
+      //   data.title,
+      //   data.body,
+      //   Timestamp.fromDate(data.date).toMillis(),
+      //   data.category,
+      //   data.location ? data.location : undefined,
+      //   data.time ? format(data.time, "hh:mm aa") : undefined
+      // );
+
+      const collectionRef = collection(db, "events");
+      const notificationRef = collection(db, "notifications");
+
+      //   upload image first in firebase storage
+      //  const fileBlob = base64ToBlob(JSON.parse(fileBase64));
+
+      const storageRef = ref(
+        storage,
+        `events/${data.title}/${format(data.date, "MM-dd-yyyy")}/event_image`
       );
-      await handleSubmit(
-        JSON.stringify(fileBase64),
-        data.title,
-        data.body,
-        Timestamp.fromDate(data.date).toMillis(),
-        data.category,
-        data.location ? data.location : undefined,
-        data.time ? format(data.time, "hh:mm aa") : undefined
-      );
+      const snapshot = await uploadBytes(storageRef, data.image);
+      const imageUrl = await getDownloadURL(snapshot.ref);
+
+      // insert the event details in the events collection
+      const eventData: any = {
+        title: data.title,
+        description: data.body,
+        event_date: Timestamp.fromDate(data.date),
+        event_pic: imageUrl,
+        category: data.category,
+      };
+
+      // Conditionally add optional fields
+      if (data.location) {
+        eventData.event_location = data.location;
+      }
+
+      if (data.time) {
+        eventData.event_time = format(data.time, "hh:mm aa");
+      }
+      await addDoc(collectionRef, eventData);
+
+      if (data.category == "Events") {
+        const userRef = query(
+          collection(db, "users"),
+          where("role", "==", "user"),
+          where("status", "==", "approved")
+        );
+        const userSnapshot = await getDocs(userRef);
+
+        const userResult: { uid: string }[] = userSnapshot.docs.map((doc) => {
+          return {
+            uid: doc.id,
+          };
+        });
+
+        userResult.forEach(async (uid) => {
+          const notificationData: any = {
+            is_read: false,
+            receiver_uid: uid,
+            notif_msg: `${data.title} on ${format(
+              new Date(data.date),
+              "MMMM dd, yyyy"
+            )}. Click for more details!`,
+            type: "event",
+            timestamp: serverTimestamp(),
+          };
+
+          await addDoc(notificationRef, notificationData);
+        });
+      }
+
       toast.success("Event posted successfully!");
       form.reset({
         image: undefined,

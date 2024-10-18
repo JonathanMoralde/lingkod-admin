@@ -26,38 +26,26 @@ import {
 } from "firebase/auth";
 import { revalidatePath } from "next/cache";
 
-export type CurrentAdmin = {
-  id: string;
-  first_name: string;
-  middle_name: string;
-  last_name: string;
-  joined_full_name_lowercase: string;
-  joined_full_name: string;
-  gender: string;
-  position: string;
-  email: string;
-};
+// export async function getCurrentAdminData(id: string): Promise<CurrentAdmin> {
+//   const userRef = query(collection(db, "users"), where("uid", "==", id));
+//   const userSnapshot = await getDocs(userRef);
 
-export async function getCurrentAdminData(id: string): Promise<CurrentAdmin> {
-  const userRef = query(collection(db, "users"), where("uid", "==", id));
-  const userSnapshot = await getDocs(userRef);
+//   const doc = userSnapshot.docs[0];
 
-  const doc = userSnapshot.docs[0];
+//   const docData = doc.data();
 
-  const docData = doc.data();
-
-  return {
-    id,
-    joined_full_name: docData.joined_full_name,
-    joined_full_name_lowercase: docData.joined_full_name_lowercase,
-    email: docData.email,
-    first_name: docData.first_name,
-    middle_name: docData.middle_name,
-    last_name: docData.last_name,
-    gender: docData.gender,
-    position: docData.position,
-  };
-}
+//   return {
+//     id,
+//     joined_full_name: docData.joined_full_name,
+//     joined_full_name_lowercase: docData.joined_full_name_lowercase,
+//     email: docData.email,
+//     first_name: docData.first_name,
+//     middle_name: docData.middle_name,
+//     last_name: docData.last_name,
+//     gender: docData.gender,
+//     position: docData.position,
+//   };
+// }
 
 export async function handleEdit(
   docId: string,

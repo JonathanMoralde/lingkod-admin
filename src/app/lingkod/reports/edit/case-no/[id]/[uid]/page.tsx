@@ -11,24 +11,22 @@ import { toast } from "sonner";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { assignCaseNo, handleStatus } from "../../../../actions";
+// import { assignCaseNo, handleStatus } from "../../../../actions";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
+import { db } from "@/config/firebase";
+import {
+  collection,
+  updateDoc,
+  doc,
+  serverTimestamp,
+  addDoc,
+} from "firebase/firestore";
 
 type Props = { params: { id: string; uid: string } };
 
@@ -52,7 +50,20 @@ const EditCaseNo = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      await assignCaseNo(id, data.case_no, uid);
+      // await assignCaseNo(id, data.case_no, uid);
+      const documentRef = doc(db, "blotter_reports", id);
+      await updateDoc(documentRef, { case_no: data.case_no });
+
+      const notificationRef = collection(db, "notifications");
+      const notificationData: any = {
+        is_read: false,
+        receiver_uid: uid,
+        notif_msg: `Blotter report have been assigned with a case number: ${data.case_no}.`,
+        type: "report",
+        timestamp: serverTimestamp(),
+      };
+
+      await addDoc(notificationRef, notificationData);
       toast.success(`Successfully assigned a case number`);
       router.back();
     } catch (error) {

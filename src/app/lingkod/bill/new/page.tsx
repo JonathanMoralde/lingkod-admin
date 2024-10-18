@@ -38,8 +38,25 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { getUsersList, handleSubmit } from "../action";
+// import { getUsersList, handleSubmit } from "../action";
 import { toast } from "sonner";
+import { db, storage } from "@/config/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  where,
+  query,
+  updateDoc,
+  doc,
+  Timestamp,
+  addDoc,
+  orderBy,
+  deleteDoc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 const formSchema = z.object({
   bapa_name: z.string(),
@@ -60,9 +77,12 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-type Props = {};
+type InputUser = {
+  uid: string;
+  full_name: string;
+};
 
-const PostBill = (props: Props) => {
+const PostBill = () => {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -83,7 +103,21 @@ const PostBill = (props: Props) => {
   // Fetch users from Firestore
   useEffect(() => {
     const fetchUsers = async () => {
-      const usersList = await getUsersList();
+      const userRef = query(
+        collection(db, "users"),
+        where("role", "==", "user"),
+        where("status", "==", "approved")
+      );
+      const userSnapshot = await getDocs(userRef);
+
+      const usersList: InputUser[] = userSnapshot.docs.map((doc) => {
+        const docData = doc.data();
+
+        return {
+          uid: doc.id,
+          full_name: docData.joined_full_name,
+        };
+      });
       setUsers(
         usersList.map((user) => {
           return { value: user.uid, label: user.full_name };
@@ -99,18 +133,51 @@ const PostBill = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      await handleSubmit(
-        data.bapa_name,
-        data.uid,
-        data.meter_no,
-        data.present_reading,
-        data.previous_reading,
-        data.total_due,
-        data.date_released,
-        data.month,
-        data.due_date,
-        data.disconnection_date
-      );
+      // await handleSubmit(
+      //   data.bapa_name,
+      //   data.uid,
+      //   data.meter_no,
+      //   data.present_reading,
+      //   data.previous_reading,
+      //   data.total_due,
+      //   data.date_released,
+      //   data.month,
+      //   data.due_date,
+      //   data.disconnection_date
+      // );
+      const collectionRef = collection(db, "bills");
+
+      // insert the event details in the events collection
+      const eventData: any = {
+        bapa_name: data.bapa_name,
+        uid: data.uid,
+        meter_no: parseInt(data.meter_no),
+        present_reading: parseInt(data.present_reading),
+        previous_reading: parseInt(data.previous_reading),
+        total_due: parseInt(data.total_due),
+        date_released: data.date_released,
+        month: data.month,
+        due_date: data.due_date,
+        disconnection_date: data.disconnection_date,
+        status: "unpaid",
+      };
+
+      await addDoc(collectionRef, eventData);
+
+      const notificationRef = collection(db, "notifications");
+      const notificationData: any = {
+        is_read: false,
+        receiver_uid: data.uid,
+        notif_msg: `Your electric bill for ${format(
+          data.month,
+          "MMMM"
+        )} has been posted!`,
+        type: "bill",
+        timestamp: serverTimestamp(),
+      };
+
+      await addDoc(notificationRef, notificationData);
+
       toast.success("Bill posted successfully!");
       form.reset({
         bapa_name: "",

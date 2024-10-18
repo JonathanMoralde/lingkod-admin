@@ -2,14 +2,7 @@
 
 import React, { useState } from "react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 import Image from "next/image";
 import { Loader2, MoreVertical } from "lucide-react";
@@ -18,8 +11,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -38,8 +29,19 @@ import {
 import { format } from "date-fns";
 
 import Link from "next/link";
-import { Timestamp } from "firebase/firestore";
-import { handleDelete } from "../actions";
+import { db, storage } from "@/config/firebase";
+import { ref, deleteObject } from "firebase/storage";
+import {
+  collection,
+  doc,
+  deleteDoc,
+  query,
+  where,
+  getDocs,
+  getDoc,
+  Timestamp,
+} from "firebase/firestore";
+// import { handleDelete } from "../actions";
 import { toast } from "sonner";
 
 type Props = {
@@ -48,6 +50,10 @@ type Props = {
   description: string;
   event_date: number;
   event_pic: string;
+  handleDel: (index: number) => void;
+  index: number;
+  event_time?: string;
+  event_location?: string;
 };
 
 const EventCard = (props: Props) => {
@@ -55,16 +61,51 @@ const EventCard = (props: Props) => {
   const deleteEvent = async (id: string) => {
     setIsLoading(true);
     try {
-      await handleDelete(id);
-      toast.success("Successfully deleted the event!");
+      const documentRef = doc(collection(db, "events"), id);
+
+      const docSnapshot = await getDoc(documentRef);
+      if (docSnapshot.exists()) {
+        const eventData = docSnapshot.data();
+
+        const formattedDate = format(
+          new Date((eventData?.event_date as Timestamp).toMillis()),
+          "MM-dd-yyyy"
+        );
+
+        await deleteDoc(documentRef);
+
+        // DELETE ALSO THE REMINDERS LINKED TO THIS EVENT
+        const reminderQuery = query(
+          collection(db, "reminders"),
+          where("event_doc_id", "==", id)
+        );
+
+        // Fetch the reminders that match the query
+        const querySnapshot = await getDocs(reminderQuery);
+
+        // Delete each document found in the query
+        const deletePromises = querySnapshot.docs.map((doc) =>
+          deleteDoc(doc.ref)
+        );
+        await Promise.all(deletePromises);
+
+        // Delete the image from Firebase Storage
+        const storagePath = `events/${eventData?.title}/${formattedDate}/event_image`;
+        const imageRef = ref(storage, storagePath); // Create a reference to the image
+
+        await deleteObject(imageRef); // Delete the image
+        props.handleDel(props.index);
+        toast.success("Successfully deleted the event!");
+      }
     } catch (error) {
+      console.log(error);
       toast.error("Failed to delete the event!");
     } finally {
       setIsLoading(false);
     }
   };
   return (
-    <Card className="w-[23%] h-80 rounded-xl overflow-hidden">
+    <Card className="w-[23%] h-96 rounded-xl overflow-hidden">
       <CardHeader className="relative w-full h-1/2 mt-0 space-y-0">
         {isLoading ? (
           <Loader2 className="h-10 w-10 animate-spin z-20 absolute right-0 top-0" />
@@ -139,9 +180,17 @@ const EventCard = (props: Props) => {
           {props.description}
         </p>
 
-        <p className="text-sm italic text-gray-300">
-          {format(new Date(props.event_date), "MMMM dd, yyyy")}
-        </p>
+        <div>
+          <p className="text-sm italic text-gray-300">
+            {format(new Date(props.event_date), "MMMM dd, yyyy")}
+            {props.event_time != null ? ` - ${props.event_time}` : ""}
+          </p>
+          {props.event_location != null ? (
+            <p className="text-sm text-gray-300">{props.event_location}</p>
+          ) : (
+            ""
+          )}
+        </div>
       </CardContent>
     </Card>
   );

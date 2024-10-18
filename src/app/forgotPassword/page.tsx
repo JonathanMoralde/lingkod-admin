@@ -17,23 +17,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Image from "next/image";
-import { loginSchema } from "@/models/loginSchema";
-import { useFormState } from "react-dom";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
-import { sendPasswordReset } from "./action";
+// import { sendPasswordReset } from "./action";
+import { auth } from "@/config/firebase";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 const formSchema = z.object({
   email: z.string().trim().email("Invalid email address"),
 });
 
-type FormSchema = z.infer<typeof formSchema>;
-
-type Props = {};
-
-const ForgotPassword = (props: Props) => {
+const ForgotPassword = () => {
   const router = useRouter();
   const { user } = useAuth();
 
@@ -50,7 +46,8 @@ const ForgotPassword = (props: Props) => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
-      await sendPasswordReset(data.email);
+      // await sendPasswordReset(data.email);
+      await sendPasswordResetEmail(auth, data.email);
       toast.success("Password reset link was sent to your email");
       router.push("/");
     } catch (error) {

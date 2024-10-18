@@ -15,7 +15,6 @@ import { toast } from "sonner";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,8 +29,9 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { assignORNo } from "../../actions";
-import { Timestamp } from "firebase/firestore";
+// import { assignORNo } from "../../actions";
+import { db } from "@/config/firebase";
+import { updateDoc, doc, Timestamp } from "firebase/firestore";
 
 type Props = { params: { id: string } };
 
@@ -57,11 +57,17 @@ const AssignOR = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      await assignORNo(
-        id,
-        data.or_no,
-        Timestamp.fromDate(data.or_issued_on).toMillis()
-      );
+      // await assignORNo(
+      //   id,
+      //   data.or_no,
+      //   Timestamp.fromDate(data.or_issued_on).toMillis()
+      // );
+      const documentRef = doc(db, "requests", id);
+      await updateDoc(documentRef, {
+        "details.or_no": data.or_no,
+        "details.or_issued_on": Timestamp.fromDate(data.or_issued_on),
+      });
+
       toast.success(`Successfully assigned a OR`);
       router.back();
     } catch (error) {

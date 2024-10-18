@@ -42,8 +42,24 @@ import {
 import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
 // If you are using date-fns v3.x, please import the v3 adapter
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { getEventData, handleEdit } from "../../actions";
-import { Timestamp } from "firebase/firestore";
+// import { getEventData, handleEdit } from "../../actions";
+import { db, storage } from "@/config/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  where,
+  query,
+  updateDoc,
+  doc,
+  Timestamp,
+  addDoc,
+  orderBy,
+  deleteDoc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
 type Props = { params: { id: string } };
@@ -53,7 +69,11 @@ type Props = { params: { id: string } };
 const formSchema = z.object({
   image: z
     .instanceof(File)
-    .refine((file) => file.size <= 5000000, "Max file size is 5MB"),
+    .refine((file) => file.size <= 5000000, "Max file size is 5MB")
+    .refine(
+      (file) => ["image/png", "image/jpeg"].includes(file.type),
+      "Only PNG and JPG formats are allowed."
+    ),
   title: z.string().min(1, "Event title is required"),
   body: z.string().min(1, "Description is required"),
   location: z.string().optional(),
@@ -89,6 +109,7 @@ const EditEvent = (props: Props) => {
   const [time, setTime] = React.useState<Date | null>(null);
   const [category, setCategory] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
   // Set up React Hook Form with Zod validation
   const form = useForm<FormData>({
@@ -98,23 +119,33 @@ const EditEvent = (props: Props) => {
   useEffect(() => {
     const fetchEventDetail = async () => {
       try {
-        const eventData = await getEventData(id);
+        setIsFetching(true);
+        const eventDoc = doc(collection(db, "events"), id);
 
-        // Set the form values using the fetched event data
-        form.setValue("title", eventData.title);
-        form.setValue("body", eventData.description);
-        form.setValue("location", eventData.event_location);
-        form.setValue("date", new Date(eventData.event_date)); // Convert the timestamp to a Date object
-        form.setValue("category", eventData.category); // Convert the timestamp to a Date object
-        setDate(new Date(eventData.event_date));
-        setCategory(eventData.category);
+        const eventDocSnap = await getDoc(eventDoc);
 
-        // Set the image preview if there's an event_pic URL
-        if (eventData.event_pic) {
-          setImagePreview(eventData.event_pic);
+        if (eventDocSnap.exists()) {
+          const docData = eventDocSnap.data();
+
+          // Set the form values using the fetched event data
+          form.setValue("title", docData.title);
+          form.setValue("body", docData.description);
+          form.setValue("location", docData.event_location);
+          form.setValue("date", new Date(docData.event_date)); // Convert the timestamp to a Date object
+          // form.setValue("category", docData.category); // Convert the timestamp to a Date object
+          // setDate(new Date((docData.event_date as Timestamp).toMillis()));
+          // setCategory(docData.category);
+
+          // Set the image preview if there's an event_pic URL
+          if (docData.event_pic) {
+            setImagePreview(docData.event_pic);
+          }
         }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching event data: ", error);
+        toast.error(`Error fetching event data`);
+      } finally {
+        setIsFetching(false);
       }
     };
 
@@ -129,18 +160,49 @@ const EditEvent = (props: Props) => {
     console.log(data);
     // Handle form submission logic here
     try {
-      const fileBase64 = await fileToBase64(data.image);
+      // const fileBase64 = await fileToBase64(data.image);
 
-      await handleEdit(
-        id,
-        JSON.stringify(fileBase64),
-        data.title,
-        data.body,
-        Timestamp.fromDate(data.date).toMillis(),
-        data.category,
-        data.location ? data.location : undefined,
-        data.time ? format(data.time, "hh:mm aa") : undefined
+      // await handleEdit(
+      //   id,
+      //   JSON.stringify(fileBase64),
+      //   data.title,
+      //   data.body,
+      //   Timestamp.fromDate(data.date).toMillis(),
+      //   data.category,
+      //   data.location ? data.location : undefined,
+      //   data.time ? format(data.time, "hh:mm aa") : undefined
+      // );
+      const documentRef = doc(collection(db, "events"), id);
+
+      //   upload image first in firebase storage
+      // const fileBlob = base64ToBlob(JSON.parse(fileBase64));
+
+      const storageRef = ref(
+        storage,
+        `events/${data.title}/${format(data.date, "MM-dd-yyyy")}/event_image`
       );
+      const snapshot = await uploadBytes(storageRef, data.image);
+      const imageUrl = await getDownloadURL(snapshot.ref);
+
+      const eventData: any = {
+        title: data.title,
+        description: data.body,
+        event_date: Timestamp.fromDate(data.date),
+        event_pic: imageUrl,
+        category: data.category,
+      };
+
+      // Conditionally add optional fields
+      if (data.location) {
+        eventData.event_location = data.location;
+      }
+
+      if (data.time) {
+        eventData.event_time = format(data.time, "hh:mm aa");
+      }
+
+      await updateDoc(documentRef, eventData);
+
       toast.success("Event was updated successfully!");
       form.reset({
         image: undefined,
@@ -167,139 +229,80 @@ const EditEvent = (props: Props) => {
     }
   };
 
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
+  // const fileToBase64 = (file: File): Promise<string> => {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => resolve(reader.result as string);
+  //     reader.onerror = (error) => reject(error);
+  //   });
+  // };
 
   return (
     <ScrollArea className="bg-indigo-950 rounded-xl px-4 py-10 h-[80vh]">
-      <div className="flex items-center  mb-10">
-        <Button variant="ghost" size="icon" className=" justify-start">
-          <Link href="/lingkod/events/all">
-            <ArrowLeft />
-          </Link>
-        </Button>
+      {isFetching ? (
+        <div className="w-full h-[80vh] grid place-items-center">
+          <Loader2 className="h-10 w-10 animate-spin" />
+        </div>
+      ) : (
+        <>
+          <div className="flex items-center  mb-10">
+            <Button variant="ghost" size="icon" className=" justify-start">
+              <Link href="/lingkod/events/all">
+                <ArrowLeft />
+              </Link>
+            </Button>
 
-        <h3 className="text-xl font-semibold w-full">Edit Event</h3>
-      </div>
-      <div className="flex justify-between">
-        <div className="w-1/3 me-5">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormField
-                control={form.control}
-                name="image"
-                render={({ field: { value, onChange, ...fieldProps } }) => (
-                  <FormItem className="mb-4">
-                    <FormLabel>Event Picture</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...fieldProps}
-                        className={`${
-                          imagePreview !== null ? "text-white" : "text-gray-400"
-                        } border-gray-200`}
-                        accept=".png,.jpg"
-                        placeholder="Picture"
-                        type="file"
-                        // accept="image/*, application/pdf"
-                        onChange={(event) => {
-                          const file = event.target.files?.[0];
-                          if (file) {
-                            onChange(file);
-                            setImagePreview(URL.createObjectURL(file));
-                          } else {
-                            onChange(null);
-                            setImagePreview(null);
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem className="mb-4">
-                    <FormLabel>Event title</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter title"
-                        {...field}
-                        className="placeholder:text-gray-400"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="body"
-                render={({ field }) => (
-                  <FormItem className="mb-4">
-                    <FormLabel>Description</FormLabel>
-                    <FormControl className="dark:bg-transparent dark:border-gray-300 ">
-                      <Textarea
-                        placeholder="Tell us a little bit about yourself"
-                        className="resize-none "
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="category" // Make sure this matches your schema field name
-                render={({ field }) => (
-                  <FormItem className="mb-4">
-                    <FormLabel>Select Category</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                          setCategory(value);
-                        }} // Update the form state
-                        value={field.value} // Controlled input
-                      >
-                        <SelectTrigger className="w-full dark:bg-transparent dark:border-gray-300 rounded dark:focus:outline-none">
-                          <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                        <SelectContent className=" rounded dark:bg-[#4844b4] bg-[#4844b4]">
-                          <SelectItem value="news">News</SelectItem>
-                          <SelectItem value="event">Event</SelectItem>
-                          <SelectItem value="update">Update</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {category === "event" && (
-                <>
+            <h3 className="text-xl font-semibold w-full">Edit Event</h3>
+          </div>
+          <div className="flex justify-between">
+            <div className="w-1/3 me-5">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
                   <FormField
                     control={form.control}
-                    name="location"
-                    render={({ field }) => (
+                    name="image"
+                    render={({ field: { value, onChange, ...fieldProps } }) => (
                       <FormItem className="mb-4">
-                        <FormLabel>Event Location</FormLabel>
+                        <FormLabel>Event Picture</FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Enter location"
+                            {...fieldProps}
+                            className={`${
+                              imagePreview !== null
+                                ? "text-white"
+                                : "text-gray-400"
+                            } border-gray-200`}
+                            accept=".png,.jpg"
+                            placeholder="Picture"
+                            type="file"
+                            // accept="image/*, application/pdf"
+                            onChange={(event) => {
+                              const file = event.target.files?.[0];
+                              if (file) {
+                                onChange(file);
+                                setImagePreview(URL.createObjectURL(file));
+                              } else {
+                                onChange(null);
+                                setImagePreview(null);
+                              }
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem className="mb-4">
+                        <FormLabel>Event title</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter title"
                             {...field}
                             className="placeholder:text-gray-400"
                           />
@@ -311,94 +314,163 @@ const EditEvent = (props: Props) => {
 
                   <FormField
                     control={form.control}
-                    name="time"
+                    name="body"
                     render={({ field }) => (
-                      <FormItem className="flex flex-col mb-6">
-                        <FormLabel>Event Time</FormLabel>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                          <MobileTimePicker
-                            className="border-gray-300"
-                            slotProps={{
-                              textField: {
-                                sx: {
-                                  "& .MuiOutlinedInput-root": {
-                                    "& fieldset": {
-                                      borderColor: "#d1d5db",
-                                    },
-                                    "&:hover fieldset": {
-                                      borderColor: "#d1d5db",
-                                    },
-                                    "&.Mui-focused fieldset": {
-                                      borderColor: "#d1d5db",
-                                    },
-                                  },
-                                  "& .MuiInputBase-input": {
-                                    color: "#d1d5db",
-                                  },
-                                  "& .MuiInputLabel-root": {
-                                    color: "#d1d5db",
-                                  },
-                                },
-                              },
-                            }}
-                            value={time}
-                            onChange={(newValue) => {
-                              setTime(newValue);
-                              field.onChange(newValue);
-                            }}
+                      <FormItem className="mb-4">
+                        <FormLabel>Description</FormLabel>
+                        <FormControl className="dark:bg-transparent dark:border-gray-300 ">
+                          <Textarea
+                            placeholder="Tell us a little bit about yourself"
+                            className="resize-none "
+                            {...field}
                           />
-                        </LocalizationProvider>
+                        </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                </>
-              )}
 
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col mb-5">
-                    <FormLabel>
-                      {category === "event" ? "Event Date" : "Date"}
-                    </FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            " justify-start text-left font-normal",
-                            !date && "text-muted-foreground "
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {date ? (
-                            format(date, "PPP")
-                          ) : (
-                            <span className="text-gray-400">Pick a date</span>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          className="bg-[#4844b4]"
-                          mode="single"
-                          selected={date}
-                          onSelect={(selectedDate) => {
-                            setDate(selectedDate || undefined);
-                            field.onChange(selectedDate || undefined);
-                          }}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  <FormField
+                    control={form.control}
+                    name="category" // Make sure this matches your schema field name
+                    render={({ field }) => (
+                      <FormItem className="mb-4">
+                        <FormLabel>Select Category</FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              setCategory(value);
+                            }} // Update the form state
+                            value={field.value} // Controlled input
+                          >
+                            <SelectTrigger className="w-full dark:bg-transparent dark:border-gray-300 rounded dark:focus:outline-none">
+                              <SelectValue placeholder="Select category" />
+                            </SelectTrigger>
+                            <SelectContent className=" rounded dark:bg-[#4844b4] bg-[#4844b4]">
+                              <SelectItem value="news">News</SelectItem>
+                              <SelectItem value="event">Event</SelectItem>
+                              <SelectItem value="update">Update</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              {/* <FormField
+                  {category === "event" && (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="location"
+                        render={({ field }) => (
+                          <FormItem className="mb-4">
+                            <FormLabel>Event Location</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Enter location"
+                                {...field}
+                                className="placeholder:text-gray-400"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="time"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col mb-6">
+                            <FormLabel>Event Time</FormLabel>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                              <MobileTimePicker
+                                className="border-gray-300"
+                                slotProps={{
+                                  textField: {
+                                    sx: {
+                                      "& .MuiOutlinedInput-root": {
+                                        "& fieldset": {
+                                          borderColor: "#d1d5db",
+                                        },
+                                        "&:hover fieldset": {
+                                          borderColor: "#d1d5db",
+                                        },
+                                        "&.Mui-focused fieldset": {
+                                          borderColor: "#d1d5db",
+                                        },
+                                      },
+                                      "& .MuiInputBase-input": {
+                                        color: "#d1d5db",
+                                      },
+                                      "& .MuiInputLabel-root": {
+                                        color: "#d1d5db",
+                                      },
+                                    },
+                                  },
+                                }}
+                                value={time}
+                                onChange={(newValue) => {
+                                  setTime(newValue);
+                                  field.onChange(newValue);
+                                }}
+                              />
+                            </LocalizationProvider>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </>
+                  )}
+
+                  <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col mb-5">
+                        <FormLabel>
+                          {category === "event" ? "Event Date" : "Date"}
+                        </FormLabel>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                " justify-start text-left font-normal",
+                                !date && "text-muted-foreground "
+                              )}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {date ? (
+                                format(date, "PPP")
+                              ) : (
+                                <span className="text-gray-400">
+                                  Pick a date
+                                </span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0">
+                            <Calendar
+                              className="bg-[#4844b4]"
+                              mode="single"
+                              selected={date}
+                              onSelect={(selectedDate) => {
+                                setDate(selectedDate || undefined);
+                                field.onChange(selectedDate || undefined);
+                              }}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* <FormField
                 control={form.control}
                 name="time"
                 render={({ field }) => (
@@ -442,43 +514,45 @@ const EditEvent = (props: Props) => {
                 )}
               /> */}
 
-              <div className="grid place-items-center">
-                <Button
-                  type="submit"
-                  variant="default"
-                  className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/2"
-                >
-                  {loading ? (
-                    <Loader2 className="h-10 w-10 animate-spin" />
-                  ) : (
-                    "SUBMIT"
-                  )}
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </div>
-        <div className="w-1/2">
-          {imagePreview ? (
-            <div className="relative w-3/4 h-3/4 mx-auto">
-              <Image
-                src={imagePreview}
-                alt="Preview Image"
-                fill
-                objectFit="contain"
-                sizes="w-auto h-auto"
-              />
+                  <div className="grid place-items-center">
+                    <Button
+                      type="submit"
+                      variant="default"
+                      className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/2"
+                    >
+                      {loading ? (
+                        <Loader2 className="h-10 w-10 animate-spin" />
+                      ) : (
+                        "SUBMIT"
+                      )}
+                    </Button>
+                  </div>
+                </form>
+              </Form>
             </div>
-          ) : (
-            // <img
-            //   src={imagePreview}
-            //   alt="Preview"
-            //   className="max-w-xs max-h-80 object-cover mt-4"
-            // />
-            <p className="text-gray-400 text-center">No image selected</p>
-          )}
-        </div>
-      </div>
+            <div className="w-1/2">
+              {imagePreview ? (
+                <div className="relative w-3/4 h-3/4 mx-auto">
+                  <Image
+                    src={imagePreview}
+                    alt="Preview Image"
+                    fill
+                    objectFit="contain"
+                    sizes="w-auto h-auto"
+                  />
+                </div>
+              ) : (
+                // <img
+                //   src={imagePreview}
+                //   alt="Preview"
+                //   className="max-w-xs max-h-80 object-cover mt-4"
+                // />
+                <p className="text-gray-400 text-center">No image selected</p>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </ScrollArea>
   );
 };

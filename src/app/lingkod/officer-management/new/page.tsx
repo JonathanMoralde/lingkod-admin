@@ -29,13 +29,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { handleSubmit } from "../actions";
-
+import { db, auth } from "@/config/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 const formSchema = z
   .object({
     first_name: z.string(),
@@ -81,15 +77,45 @@ const NewOfficer = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      await handleSubmit(
-        data.first_name,
-        data.middle_name,
-        data.last_name,
-        data.position,
-        data.gender,
+      // await handleSubmit(
+      //   data.first_name,
+      //   data.middle_name,
+      //   data.last_name,
+      //   data.position,
+      //   data.gender,
+      //   data.email,
+      //   data.password
+      // );
+
+      const user = await createUserWithEmailAndPassword(
+        auth,
         data.email,
         data.password
       );
+
+      // insert the event details in the events collection
+      const eventData: any = {
+        uid: user.user.uid,
+        first_name: data.first_name,
+        middle_name: data.middle_name,
+        last_name: data.last_name,
+        position: data.position,
+        gender: data.gender,
+        joined_full_name: `${data.first_name} ${data.middle_name.charAt(0)}. ${
+          data.last_name
+        }`,
+        joined_full_name_lowercase: `${
+          data.first_name
+        } ${data.middle_name.charAt(0)}. ${data.last_name}`.toLocaleLowerCase(),
+        email: data.email,
+        role: "admin",
+        status: "active",
+      };
+
+      // Use setDoc to create a document with the user's uid as the document ID
+      const userDocRef = doc(db, "users", user.user.uid);
+      await setDoc(userDocRef, eventData);
+
       toast.success("Officer was added successfully!");
       form.reset({
         first_name: "",

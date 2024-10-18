@@ -8,17 +8,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 type Props = {
   title: string;
   icon: ReactNode;
   description: string;
   data: number;
+  route: string;
 };
 
 const ReportCard = (props: Props) => {
+  const router = useRouter();
   return (
-    <Card className=" rounded-xl dark:bg-[#4844B4] z-10 shadow-md">
+    <Card
+      className=" rounded-xl dark:bg-[#4844B4] z-10 shadow-md hover:cursor-pointer"
+      onClick={() => {
+        router.push(`/lingkod/${props.route}`);
+      }}
+    >
       <CardHeader>
         <CardTitle>{props.title}</CardTitle>
       </CardHeader>

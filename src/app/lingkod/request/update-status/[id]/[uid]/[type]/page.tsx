@@ -33,14 +33,14 @@ import {
   addDoc,
 } from "firebase/firestore";
 
-type Props = { params: { id: string; uid: string } };
+type Props = { params: { id: string; uid: string; type: string } };
 
 const FormSchema = z.object({
   status: z.string(),
 });
 
-const EditStatus = (props: Props) => {
-  const { id, uid }: { id: string; uid: string } = props.params;
+const EditStatus = ({ params }: Props) => {
+  const { id, uid, type } = params;
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -56,15 +56,19 @@ const EditStatus = (props: Props) => {
     setLoading(true);
     try {
       // await handleStatus(id, data.status, uid);
-      const documentRef = doc(db, "blotter_reports", id);
+      const documentRef = doc(db, "requests", id);
       await updateDoc(documentRef, { status: data.status });
 
       const notificationRef = collection(db, "notifications");
       const notificationData: any = {
         is_read: false,
         receiver_uid: uid,
-        notif_msg: `Blotter report status is now ${data.status}.`,
-        type: "report",
+        notif_msg: `${
+          data.status === "approved"
+            ? `${type} is ready to be claimed at the Barangay Hall.`
+            : `Your request for ${type} has been rejected`
+        }`,
+        type: "request",
         timestamp: serverTimestamp(),
       };
 
@@ -88,7 +92,7 @@ const EditStatus = (props: Props) => {
     <section className="bg-indigo-950 rounded-xl px-4 py-10  h-[80vh]">
       <div className="flex items-center  mb-10">
         <Button variant="ghost" size="icon" className=" justify-start">
-          <Link href="/lingkod/reports">
+          <Link href="/lingkod/request">
             <ArrowLeft />
           </Link>
         </Button>
@@ -117,11 +121,8 @@ const EditStatus = (props: Props) => {
                   </FormControl>
                   <SelectContent className="dark:bg-[#4844b4] bg-[#4844b4]">
                     <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="ongoing">Ongoing</SelectItem>
-                    <SelectItem value="resolved">Resolved Issue</SelectItem>
-                    <SelectItem value="filed to action">
-                      Filed to action
-                    </SelectItem>
+                    <SelectItem value="approved">Approved</SelectItem>
+                    <SelectItem value="rejected">Rejected</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />

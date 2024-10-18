@@ -15,20 +15,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { format } from "date-fns";
 import Link from "next/link";
-import { handleApprove, handleReject } from "./actions";
+// import { handleApprove, handleReject } from "./actions";
 import ApproveRejectContainer from "./approve-reject-btn-container";
+import { format } from "date-fns";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type DocRequest = {
   id: string;
   uid: string;
   full_name: string;
   type: string;
   date_requested: string;
-  status: "pending" | "accepted" | "declined";
+  status: "pending" | "approved" | "rejected";
 };
 
 export const columns: ColumnDef<DocRequest>[] = [
@@ -85,9 +83,17 @@ export const columns: ColumnDef<DocRequest>[] = [
                 Copy payment ID
               </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              {data.status == "pending" && (
-                <ApproveRejectContainer data={data} />
-              )}
+              {/* {data.status == "pending" && (
+                <ApproveRejectContainer
+                  data={data}
+                  changeStatus={changeStatus}
+                />
+              )} */}
+              <Link
+                href={`/lingkod/request/update-status/${data.id}/${data.uid}/${data.type}`}
+              >
+                <DropdownMenuItem>Update Status</DropdownMenuItem>
+              </Link>
               {data.type == "Barangay Clearance" ||
               data.type == "Business Permit" ? (
                 <Link href={`/lingkod/request/assign-ctc/${data.id}`}>
