@@ -8,16 +8,18 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
-import {
-  BrgyClearance,
-  BrgyIndigency,
-  BusinessPermit,
-  DocDetails,
-  EventPermit,
-} from "@/app/pdf/actions";
-import { BarangayOfficial } from "@/app/pdf/actions";
+// import {
+//   BrgyClearance,
+//   BrgyIndigency,
+//   BusinessPermit,
+//   DocDetails,
+//   EventPermit,
+// } from "@/app/pdf/actions";
+// import { BarangayOfficial } from "@/app/pdf/actions";
 
 import { format } from "date-fns";
+import { BusinessPermit, DocDetails } from "@/app/pdf/[id]/page";
+import { BarangayOfficial } from "@/utils/firebaseUtils";
 const formatWithOrdinal = (date: Date): string => {
   const day = format(date, "d");
   const dayNumber = parseInt(day, 10);

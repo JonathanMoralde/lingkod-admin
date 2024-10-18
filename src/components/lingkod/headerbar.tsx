@@ -30,7 +30,7 @@ import { FaCalendarAlt, FaUserCircle, FaBell } from "react-icons/fa";
 
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { deleteAuthCookie } from "@/app/action";
+// import { deleteAuthCookie } from "@/app/action";
 import { useAuth } from "@/app/context/AuthContext";
 import Link from "next/link";
 import { ScrollArea } from "../ui/scroll-area";
@@ -93,7 +93,7 @@ const HeaderBar = () => {
       // Sign out the user with Firebase
       await logout();
 
-      await deleteAuthCookie();
+      // await deleteAuthCookie();
 
       // Redirect to the login page or home page
       router.push("/");
