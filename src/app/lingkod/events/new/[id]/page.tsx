@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-import { format, formatDate } from "date-fns";
+import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -46,19 +46,11 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { db, storage } from "@/config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
-  getFirestore,
   collection,
-  getDocs,
-  where,
-  query,
   updateDoc,
   doc,
   Timestamp,
-  addDoc,
-  orderBy,
-  deleteDoc,
   getDoc,
-  serverTimestamp,
 } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 

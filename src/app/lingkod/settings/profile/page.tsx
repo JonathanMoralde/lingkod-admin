@@ -61,9 +61,7 @@ const formSchema = z.object({
 });
 type FormSchema = z.infer<typeof formSchema>;
 
-type Props = {};
-
-const Profile = (props: Props) => {
+const Profile = () => {
   const { user } = useAuth();
   const router = useRouter();
 

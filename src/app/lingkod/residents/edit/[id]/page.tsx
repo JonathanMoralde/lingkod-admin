@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,9 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
-import { format, formatDate } from "date-fns";
+import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -28,25 +27,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
-// If you are using date-fns v3.x, please import the v3 adapter
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { Timestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { getUserData, handleEdit } from "../../actions";
+// import { getUserData, handleEdit } from "../../actions";
 import { db } from "@/config/firebase";
-import { collection, getDocs, where, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  where,
+  query,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 
 const formSchema = z.object({
   first_name: z.string().min(1, "first name is required"),
@@ -142,19 +135,37 @@ const EditUser = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      await handleEdit(
-        id,
-        data.first_name,
-        data.middle_name,
-        data.last_name,
-        data.zone,
-        data.email,
-        data.age,
-        data.birthday,
-        data.civil_status,
-        data.gender,
-        data.contact_number
-      );
+      // await handleEdit(
+      //   id,
+      //   data.first_name,
+      //   data.middle_name,
+      //   data.last_name,
+      //   data.zone,
+      //   data.email,
+      //   data.age,
+      //   data.birthday,
+      //   data.civil_status,
+      //   data.gender,
+      //   data.contact_number
+      // );
+      const documentRef = doc(collection(db, "users"), id);
+
+      const eventData: any = {
+        first_name: data.first_name,
+        middle_name: data.middle_name,
+        last_name: data.last_name,
+        joined_full_name: `${data.first_name} ${data.middle_name} ${data.last_name}`,
+        joined_full_name_lowercase: `${data.first_name.toLocaleLowerCase()} ${data.middle_name.toLocaleLowerCase()} ${data.last_name.toLocaleLowerCase()}`,
+        zone: data.zone,
+        email: data.email,
+        age: data.age,
+        birtday: format(data.birthday, "MMMM dd, yyyy"),
+        civil_status: data.civil_status,
+        gender: data.gender,
+        contact_number: data.contact_number,
+      };
+
+      await updateDoc(documentRef, eventData);
       toast.success("User was updated successfully!");
       router.back();
     } catch (error) {

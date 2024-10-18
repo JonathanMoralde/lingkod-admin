@@ -40,21 +40,13 @@ import {
 } from "@/components/ui/command";
 // import { getUsersList, handleSubmit } from "../action";
 import { toast } from "sonner";
-import { db, storage } from "@/config/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db } from "@/config/firebase";
 import {
-  getFirestore,
   collection,
   getDocs,
   where,
   query,
-  updateDoc,
-  doc,
-  Timestamp,
   addDoc,
-  orderBy,
-  deleteDoc,
-  getDoc,
   serverTimestamp,
 } from "firebase/firestore";
 

@@ -66,27 +66,6 @@
 //   }
 // }
 
-// export interface UserDetails {
-//   id: string;
-//   full_name: string;
-//   zone: string;
-//   email: string;
-//   status: "pending" | "approved" | "not approved";
-//   age: number;
-//   birthday: string;
-//   block: string;
-//   civil_status: string;
-//   first_name: string;
-//   middle_name: string;
-//   last_name: string;
-//   gender: string;
-//   contact_number: string;
-//   lot: string;
-//   profile_pic: string;
-//   sector: string;
-//   valid_id: string;
-// }
-
 // export async function getUserData(uid: string): Promise<UserDetails> {
 //   // Fetch data from your API here.
 

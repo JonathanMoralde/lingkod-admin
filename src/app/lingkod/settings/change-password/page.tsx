@@ -55,9 +55,7 @@ const formSchema = z
 
 type FormSchema = z.infer<typeof formSchema>;
 
-type Props = {};
-
-const ChangePassword = (props: Props) => {
+const ChangePassword = () => {
   const { user } = useAuth();
 
   const form = useForm<FormSchema>({

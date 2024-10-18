@@ -9,7 +9,7 @@ import { db } from "@/config/firebase";
 import { collection, getDocs, query } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 const Reports = () => {
   // const reports: Report[] = await getData();

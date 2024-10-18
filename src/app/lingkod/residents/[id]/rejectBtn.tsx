@@ -6,16 +6,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
 import { db } from "@/config/firebase";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  where,
-  query,
-  updateDoc,
-  doc,
-  Timestamp,
-} from "firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 
 type Props = {
   id: string;

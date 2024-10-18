@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-import { format, formatDate } from "date-fns";
+import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -46,40 +46,15 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { db, storage } from "@/config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
-  getFirestore,
   collection,
   getDocs,
   where,
   query,
-  updateDoc,
-  doc,
   Timestamp,
   addDoc,
-  orderBy,
-  deleteDoc,
-  getDoc,
   serverTimestamp,
 } from "firebase/firestore";
 
-type Props = {};
-
-// Define the form schema using Zod
-
-// const formSchema = z.object({
-//   image: z
-//     .instanceof(File)
-//     .refine((file) => file.size <= 5000000, "Max file size is 5MB"),
-//   title: z.string().min(1, "Event title is required"),
-//   body: z.string().min(1, "Description is required"),
-//   location: z.string().min(1, "Event Location is required"),
-//   date: z.date({
-//     required_error: "Event date is required",
-//   }),
-//   time: z.date({
-//     required_error: "Event time is required",
-//   }),
-//   category: z.string(),
-// });
 const formSchema = z.object({
   image: z
     .instanceof(File)
@@ -113,7 +88,7 @@ const refinedFormSchema = formSchema.refine(
 
 type FormData = z.infer<typeof refinedFormSchema>;
 
-const NewEvent = (props: Props) => {
+const NewEvent = () => {
   const [date, setDate] = React.useState<Date>();
   const [imagePreview, setImagePreview] = React.useState<string | null>(null);
   const [time, setTime] = React.useState<Date | null>(null);
