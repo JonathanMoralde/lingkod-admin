@@ -1,14 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-  PDFViewer,
-} from "@react-pdf/renderer";
+import { PDFViewer } from "@react-pdf/renderer";
 // import {
 //   BrgyClearance,
 //   BrgyIndigency,
@@ -20,7 +13,6 @@ import BarangayClearancePDF from "@/components/lingkod/barangay-clearance-pdf";
 import BarangayIndigency from "@/components/lingkod/barangay-indigency-pdf";
 import BusinessPermitPdf from "@/components/lingkod/business-permit-pdf";
 import EventPermitPdf from "@/components/lingkod/event-permit-pdf";
-import BlotterReportPdf from "@/components/lingkod/blotter-report-pdf";
 import { BarangayOfficial } from "@/utils/firebaseUtils";
 import { DocDetails } from "./page";
 // import { BarangayOfficial } from "@/app/pdf/actions";

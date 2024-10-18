@@ -1,16 +1,11 @@
 "use client";
 
 import React from "react";
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-  PDFViewer,
-} from "@react-pdf/renderer";
-import { BarangayOfficial, BlotterDocDetails } from "@/app/pdf/actions";
+import { PDFViewer } from "@react-pdf/renderer";
+// import { BarangayOfficial, BlotterDocDetails } from "@/app/pdf/actions";
 import BlotterReportPdf from "@/components/lingkod/blotter-report-pdf";
+import { BarangayOfficial } from "@/utils/firebaseUtils";
+import { BlotterDocDetails } from "./page";
 
 type Props = {
   barangayCaptain: BarangayOfficial;

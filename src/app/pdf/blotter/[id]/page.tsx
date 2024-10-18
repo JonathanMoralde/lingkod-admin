@@ -9,10 +9,9 @@ import React, { useCallback, useEffect, useState } from "react";
 // } from "../../actions";
 import BlotterPdfView from "./pdf-viewer";
 import { BarangayOfficial, fetchBarangayOfficial } from "@/utils/firebaseUtils";
-import { DocDetails } from "../../[id]/page";
 import { toast } from "sonner";
 import { db } from "@/config/firebase";
-import { collection, doc, Timestamp, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 
 export type BlotterDocDetails = {
