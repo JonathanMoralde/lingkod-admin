@@ -16,13 +16,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { format } from "date-fns";
+import { HouseholdMember } from "../columns";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type HouseholdMember = {
-  name: string;
-  age: string;
-};
+// export type HouseholdMember = {
+//   name: string;
+//   age: string;
+// };
 
 export const columns: ColumnDef<HouseholdMember>[] = [
   {
