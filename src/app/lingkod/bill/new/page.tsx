@@ -139,6 +139,8 @@ const PostBill = () => {
         due_date: data.due_date,
         disconnection_date: data.disconnection_date,
         status: "unpaid",
+        is_sent: false,
+        due_notif_sent: false,
       };
 
       await addDoc(collectionRef, eventData);
