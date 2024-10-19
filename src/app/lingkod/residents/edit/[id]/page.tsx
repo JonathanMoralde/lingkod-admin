@@ -145,7 +145,7 @@ const EditUser = (props: Props) => {
         zone: data.zone,
         email: data.email,
         age: data.age,
-        birtday: format(data.birthday, "MMMM dd, yyyy"),
+        birthday: format(data.birthday, "MMMM dd, yyyy"),
         civil_status: data.civil_status,
         gender: data.gender,
         contact_number: data.contact_number,
