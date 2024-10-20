@@ -312,9 +312,9 @@ const EditEvent = (props: Props) => {
                               <SelectValue placeholder="Select category" />
                             </SelectTrigger>
                             <SelectContent className=" rounded dark:bg-[#4844b4] bg-[#4844b4]">
-                              <SelectItem value="news">News</SelectItem>
-                              <SelectItem value="event">Event</SelectItem>
-                              <SelectItem value="update">Update</SelectItem>
+                              <SelectItem value="News">News</SelectItem>
+                              <SelectItem value="Events">Events</SelectItem>
+                              <SelectItem value="Updates">Updates</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>
