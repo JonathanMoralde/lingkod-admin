@@ -15,6 +15,7 @@ import { collection, getDocs, where, query } from "firebase/firestore";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface dashboardCount {
   residentCount: number;
@@ -78,44 +79,44 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <section className="bg-indigo-950 rounded-xl px-4 py-10  h-[80vh]">
+    <section className="bg-indigo-950 rounded-xl px-6 md:px-4 py-10  md:h-[80vh]">
       {loading ? (
         <div className="w-full h-full grid place-items-center">
           <Loader2 className="h-10 w-10 animate-spin" />
         </div>
       ) : (
         <>
-          <h3 className="text-3xl font-semibold mb-6 text-center">
+          <h3 className="text-2xl md:text-3xl font-semibold mb-6 text-center">
             Welcome, Admin!
           </h3>
 
-          <div className="relative grid grid-cols-2 w-3/4 gap-4 mx-auto">
+          <div className="relative grid grid-cols-1 md:grid-cols-2 w-full md:w-3/4 gap-4 mx-auto ">
             <ReportCard
               title="Profiles"
               description="Total Residents"
               data={dashboardCount.residentCount}
-              icon={<FaUsers size={50} />}
+              icon={<FaUsers className="text-4xl md:text-6xl text-center" />}
               route="residents"
             />
             <ReportCard
               title="Blotter Reports"
               description="Total Blotter Reports"
               data={dashboardCount.reportCount}
-              icon={<FaExclamationTriangle size={50} />}
+              icon={<FaExclamationTriangle className="text-4xl md:text-6xl" />}
               route="reports"
             />
             <ReportCard
               title="Document Request"
               description="Total Document Request"
               data={dashboardCount.requestCount}
-              icon={<FaFileDownload size={50} />}
+              icon={<FaFileDownload className="text-4xl md:text-6xl" />}
               route="request"
             />
             <ReportCard
               title="Events"
               description="Total Events"
               data={dashboardCount.eventCount}
-              icon={<FaCalendar size={50} />}
+              icon={<FaCalendar className="text-4xl md:text-6xl" />}
               route="events/all"
             />
 

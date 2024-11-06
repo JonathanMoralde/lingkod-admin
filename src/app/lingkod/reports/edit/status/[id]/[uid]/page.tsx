@@ -91,13 +91,15 @@ const EditStatus = (props: Props) => {
           </Link>
         </Button>
 
-        <h3 className="text-xl font-semibold w-full">Update Status</h3>
+        <h3 className="text-lg md:text-xl font-semibold w-full">
+          Update Status
+        </h3>
       </div>
 
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-1/3 space-y-6"
+          className="md:w-1/2 lg:w-1/3 space-y-6"
         >
           <FormField
             control={form.control}

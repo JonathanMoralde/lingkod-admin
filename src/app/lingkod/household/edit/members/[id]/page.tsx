@@ -102,7 +102,7 @@ const EditMembers = ({ params }: Props) => {
   };
 
   return (
-    <section className="p-6 bg-indigo-950 rounded-xl h-[80vh] w-full">
+    <section className="p-6 bg-indigo-950 rounded-xl min-h-[80vh] w-full">
       {isFetching ? (
         <div className="w-full h-full grid place-items-center">
           <Loader2 className="h-10 w-10 animate-spin" />
@@ -116,13 +116,16 @@ const EditMembers = ({ params }: Props) => {
               </Link>
             </Button>
 
-            <h3 className="text-xl font-semibold w-full">
+            <h3 className="text-lg md:text-xl font-semibold w-full">
               Edit household members
             </h3>
           </div>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-1/2">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="md:3/4 lg:w-1/2"
+            >
               {/* Dynamic members fields */}
               {fields.map((member, index) => (
                 <div key={member.id} className="flex gap-4 mb-4">

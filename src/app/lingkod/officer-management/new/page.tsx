@@ -76,16 +76,6 @@ const NewOfficer = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      // await handleSubmit(
-      //   data.first_name,
-      //   data.middle_name,
-      //   data.last_name,
-      //   data.position,
-      //   data.gender,
-      //   data.email,
-      //   data.password
-      // );
-
       const user = await createUserWithEmailAndPassword(
         auth,
         data.email,
@@ -141,7 +131,7 @@ const NewOfficer = (props: Props) => {
   };
 
   return (
-    <ScrollArea className="bg-indigo-950 rounded-xl px-4  h-[80vh]">
+    <ScrollArea className="bg-indigo-950 rounded-xl px-4  min-h-[80vh]">
       <div className="py-10">
         <div className="flex items-center  mb-4">
           <Button variant="ghost" size="icon" className=" justify-start">
@@ -150,13 +140,15 @@ const NewOfficer = (props: Props) => {
             </Link>
           </Button>
 
-          <h3 className="text-xl font-semibold w-full">Add New Officer</h3>
+          <h3 className="text-lg md:text-xl font-semibold w-full">
+            Add New Officer
+          </h3>
         </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex gap-16 mb-10">
-              <div className="w-1/2 space-y-4">
+            <div className="flex flex-col md:flex-row gap-4 md:gap-16 mb-10">
+              <div className="md:w-1/2 space-y-4">
                 <FormField
                   control={form.control}
                   name="first_name"
@@ -295,7 +287,7 @@ const NewOfficer = (props: Props) => {
                 />
               </div>
 
-              <div className="w-1/2 space-y-4">
+              <div className="md:w-1/2 space-y-4">
                 <FormField
                   name="email"
                   control={form.control}
@@ -306,7 +298,7 @@ const NewOfficer = (props: Props) => {
                         <Input
                           className="text-white rounded"
                           type="email"
-                          placeholder="Enter your email"
+                          placeholder="Enter email"
                           {...field}
                         />
                       </FormControl>
@@ -325,7 +317,7 @@ const NewOfficer = (props: Props) => {
                         <Input
                           className="text-white rounded"
                           type="password"
-                          placeholder="Enter your password"
+                          placeholder="Enter password"
                           {...field}
                         />
                       </FormControl>
@@ -343,7 +335,7 @@ const NewOfficer = (props: Props) => {
                         <Input
                           className="text-white rounded"
                           type="password"
-                          placeholder="Enter your password"
+                          placeholder="Enter password"
                           {...field}
                         />
                       </FormControl>
@@ -358,7 +350,7 @@ const NewOfficer = (props: Props) => {
               <Button
                 type="submit"
                 variant="default"
-                className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/4"
+                className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/2 md:w-1/4"
               >
                 {loading ? (
                   <Loader2 className="h-10 w-10 animate-spin" />

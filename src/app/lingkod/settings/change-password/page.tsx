@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../../context/auth-context";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
@@ -95,11 +95,13 @@ const ChangePassword = () => {
   return (
     <ScrollArea className="bg-indigo-950 rounded-xl">
       <div className="flex justify-between mb-4">
-        <h3 className="text-xl font-semibold w-full ">Change Password</h3>
+        <h3 className="text-lg md:text-xl font-semibold w-full ">
+          Change Password
+        </h3>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-1/2 ">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="md:w-1/2 ">
           <div className="space-y-4 mb-10">
             <FormField
               name="oldPassword"
@@ -161,7 +163,7 @@ const ChangePassword = () => {
             <Button
               type="submit"
               variant="default"
-              className={`bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/4`}
+              className={`bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/2 md:w-1/4`}
             >
               {loading ? (
                 <Loader2 className="h-10 w-10 animate-spin" />

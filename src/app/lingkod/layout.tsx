@@ -1,8 +1,8 @@
 "use client";
 import HeaderBar from "@/components/lingkod/headerbar";
 import Sidebar from "@/components/lingkod/sidebar";
-import React, { useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/auth-context";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
@@ -13,12 +13,17 @@ const layout = ({
 }>) => {
   const router = useRouter();
   const { user } = useAuth();
+  const [showDrawer, setShowDawer] = useState<boolean>(false);
 
   useEffect(() => {
     if (!user) {
       router.push("/");
     }
   }, [user, router]);
+
+  const toggleDrawer = () => {
+    setShowDawer(!showDrawer);
+  };
 
   return (
     <>
@@ -28,10 +33,10 @@ const layout = ({
         </main>
       ) : (
         <div className="bg-indigo-900 min-h-screen overflow-hidden flex py-10">
-          <Sidebar />
-          <main className="mx-4 w-full h-full">
+          <Sidebar showDrawer={showDrawer} toggleDrawer={toggleDrawer} />
+          <main className="w-full h-full px-4">
             {/* header bar */}
-            <HeaderBar />
+            <HeaderBar toggleDrawer={toggleDrawer} />
 
             {children}
           </main>

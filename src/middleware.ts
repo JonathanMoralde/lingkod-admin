@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { AdminUserDetails } from "./app/context/AuthContext";
+import { AdminUserDetails } from "./app/context/auth-context";
 
 // List of protected routes with allowed positions
 const protectedRoutes = [

@@ -87,7 +87,7 @@ export function DataTable<TData, TValue>({
             placeholder="Search"
             value={globalFilter}
             onChange={(event) => setGlobalFilter(event.target.value)}
-            className="max-w-sm rounded border-gray-400 text-gray-400 hover:border-white  hover:text-white transition-all"
+            className="md:max-w-sm rounded border-gray-400 text-gray-400 hover:border-white  hover:text-white transition-all"
           />
         </div>
       )}

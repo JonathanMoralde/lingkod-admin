@@ -105,13 +105,16 @@ const EditHousehold = ({ params }: Props) => {
               </Link>
             </Button>
 
-            <h3 className="text-xl font-semibold w-full">
+            <h3 className="text-lg md:text-xl font-semibold w-full">
               Edit household details
             </h3>
           </div>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-1/3">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="md:w-1/2 lg:w-1/3"
+            >
               <FormField
                 name="household_head"
                 control={form.control}

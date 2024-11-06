@@ -13,11 +13,13 @@ const layout = ({
   const pathname = usePathname();
   return (
     <>
-      <section className="bg-indigo-950 rounded-xl px-4 py-10 h-[80vh]">
-        <h3 className="text-xl font-semibold mb-10">Account Settings</h3>
+      <section className="bg-indigo-950 rounded-xl px-4 py-10 lg:h-[80vh]">
+        <h3 className="text-lg md:text-xl font-semibold mb-4 lg:mb-10">
+          Account Settings
+        </h3>
 
-        <div className="flex h-5/6">
-          <div className="flex flex-col w-1/4 gap-2">
+        <div className="flex flex-col lg:flex-row lg:h-5/6">
+          <div className="flex lg:flex-col lg:w-1/4 gap-2 mb-2 lg:mb-0">
             <Link href="/lingkod/settings/profile">
               <Button
                 className={`hover:bg-[#ffffff24] w-full flex justify-start rounded-full ${
@@ -42,10 +44,10 @@ const layout = ({
             </Link>
           </div>
           <Separator
-            orientation="vertical"
-            className="bg-[#ffffff65] h-full mx-4"
+            orientation={window.innerWidth <= 820 ? "horizontal" : "vertical"}
+            className="bg-[#ffffff65]  w-full lg:h-auto lg:w-[1px]  my-4 mb-4 lg:mb-0 lg:my-0 lg:mx-4"
           />
-          <div className="w-full">{children}</div>
+          <div className="w-full ">{children}</div>
         </div>
       </section>
     </>

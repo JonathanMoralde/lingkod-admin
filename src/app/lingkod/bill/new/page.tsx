@@ -192,7 +192,7 @@ const PostBill = () => {
   };
 
   return (
-    <ScrollArea className="bg-indigo-950 rounded-xl px-4   h-[80vh]">
+    <ScrollArea className="bg-indigo-950 rounded-xl px-4  min-h-[80vh]">
       <div className="py-10">
         <div className="flex items-center  mb-4">
           <Button variant="ghost" size="icon" className=" justify-start">
@@ -201,14 +201,14 @@ const PostBill = () => {
             </Link>
           </Button>
 
-          <h3 className="text-xl font-semibold w-full">Post Bill</h3>
+          <h3 className="text-lg md:text-xl font-semibold w-full">Post Bill</h3>
         </div>
 
         {/* <div className="w-full"> */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex gap-16 mb-6">
-              <div className="w-1/2">
+            <div className="flex flex-col md:flex-row gap-4 md:gap-16 mb-6">
+              <div className="md:w-1/2">
                 <FormField
                   control={form.control}
                   name="uid"
@@ -372,7 +372,7 @@ const PostBill = () => {
                   )}
                 />
               </div>
-              <div className="w-1/2">
+              <div className="md:w-1/2">
                 <FormField
                   control={form.control}
                   name="date_released"
@@ -540,7 +540,7 @@ const PostBill = () => {
                 />
               </div>
             </div>
-            <div className="grid place-items-center w-1/2 mx-auto">
+            <div className="grid place-items-center md:w-1/2 mx-auto">
               <Button
                 type="submit"
                 variant="default"

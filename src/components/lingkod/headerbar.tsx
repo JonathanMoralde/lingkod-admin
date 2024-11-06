@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, LogOut, Settings, UserPlus } from "lucide-react";
+import { Loader2, LogOut, Menu, Settings, UserPlus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +26,7 @@ import { FaCalendarAlt, FaUserCircle, FaBell } from "react-icons/fa";
 
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "@/app/context/auth-context";
 import Link from "next/link";
 import { ScrollArea } from "../ui/scroll-area";
 import {
@@ -50,7 +50,11 @@ export type NotificationData = {
   timestamp: string;
 };
 
-const HeaderBar = () => {
+type Props = {
+  toggleDrawer: () => void;
+};
+
+const HeaderBar = ({ toggleDrawer }: Props) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [loading, setLoading] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
@@ -228,8 +232,8 @@ const HeaderBar = () => {
   return (
     <div className="bg-indigo-950 rounded-xl py-3 mb-4 p-4 flex justify-between items-center">
       <div className="flex items-center">
-        <FaCalendarAlt className="me-2 text-2xl" />
-        <p className="text-sm font-light leading-none">{`${dayOfWeek}, ${formattedDate} ${formattedTime}`}</p>
+        <FaCalendarAlt className="me-2 text-lg md:text-2xl" />
+        <p className="text-xs md:text-sm font-light leading-none">{`${dayOfWeek}, ${formattedDate} ${formattedTime}`}</p>
       </div>
       <div className="flex">
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
@@ -240,11 +244,11 @@ const HeaderBar = () => {
               className="relative"
               // onClick={handleNotif}
             >
-              <FaBell className="text-xl" />
+              <FaBell className="text-lg md:text-xl" />
               {notifications.length > 0 && (
                 <Badge
                   variant="destructive"
-                  className="absolute top-0 right-0 px-1.5 py-0 text-[0.6rem]"
+                  className="absolute top-0 right-0 px-1.5 py-0  text-[0.6rem]"
                 >
                   {notifications.length}
                 </Badge>
@@ -284,7 +288,7 @@ const HeaderBar = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="default" size="icon">
-              <FaUserCircle className="text-2xl" />
+              <FaUserCircle className="text-xl md:text-2xl" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 dark:bg-[#4844B4] bg-[#4844B4] mr-10">
@@ -317,6 +321,16 @@ const HeaderBar = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <Button
+          size="icon"
+          variant="ghost"
+          className="lg:hidden"
+          onClick={() => {
+            toggleDrawer();
+          }}
+        >
+          <Menu />
+        </Button>
       </div>
     </div>
   );

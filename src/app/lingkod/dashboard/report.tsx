@@ -27,16 +27,16 @@ const ReportCard = (props: Props) => {
       }}
     >
       <CardHeader>
-        <CardTitle>{props.title}</CardTitle>
+        <CardTitle className="text-xl md:text-2xl">{props.title}</CardTitle>
       </CardHeader>
-      <CardContent className="flex justify-between items-center">
-        <span className="w-1/2">{props.icon}</span>
-        <p className="w-1/2 text-center text-[2.5rem] font-bold">
+      <CardContent className="flex justify-between items-center ">
+        <span className="w-1/2 ">{props.icon}</span>
+        <p className="w-1/2 text-[2rem] md:text-[2.5rem] font-bold text-center">
           {props.data}
         </p>
       </CardContent>
       <CardFooter>
-        <p className="font-light">{props.description}</p>
+        <p className="font-light text-sm md:text-base">{props.description}</p>
       </CardFooter>
     </Card>
   );

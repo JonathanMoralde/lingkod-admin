@@ -168,7 +168,7 @@ const EditUser = (props: Props) => {
   };
 
   return (
-    <ScrollArea className="bg-indigo-950 rounded-xl px-4  h-[80vh]">
+    <ScrollArea className="bg-indigo-950 rounded-xl px-4  min-h-[80vh]">
       {isFetching ? (
         <div className="w-full h-[80vh] grid place-items-center">
           <Loader2 className="h-10 w-10 animate-spin" />
@@ -182,13 +182,15 @@ const EditUser = (props: Props) => {
               </Link>
             </Button>
 
-            <h3 className="text-xl font-semibold w-full">Edit User Details</h3>
+            <h3 className="text-lg md:text-xl font-semibold w-full">
+              Edit User Details
+            </h3>
           </div>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="flex gap-16 mb-6">
-                <div className="w-1/2">
+              <div className="flex md:gap-16 mb-6 flex-col md:flex-row">
+                <div className="md:w-1/2">
                   <FormField
                     control={form.control}
                     name="first_name"
@@ -303,7 +305,7 @@ const EditUser = (props: Props) => {
                     )}
                   />
                 </div>
-                <div className="w-1/2">
+                <div className="md:w-1/2">
                   <FormField
                     control={form.control}
                     name="zone"
@@ -392,7 +394,7 @@ const EditUser = (props: Props) => {
                   />
                 </div>
               </div>
-              <div className="grid place-items-center w-1/2 mx-auto">
+              <div className="grid place-items-center md:w-1/2 mx-auto">
                 <Button
                   type="submit"
                   variant="default"

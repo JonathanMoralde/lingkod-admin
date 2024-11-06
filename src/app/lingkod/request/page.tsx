@@ -48,25 +48,17 @@ const Request = () => {
     fetchData();
   }, []);
 
-  const changeStatus = (
-    status: "pending" | "approved" | "rejected",
-    data: DocRequest
-  ) => {
-    const index = requests.findIndex((e) => e.id == data.id);
-    let tempData = requests;
-    tempData[index].status = status;
-    setRequests([...tempData]);
-  };
-
   return (
-    <section className="bg-indigo-950 rounded-xl px-4 py-10  h-[80vh]">
+    <section className="bg-indigo-950 rounded-xl px-4 py-10  min-h-[80vh]">
       {loading ? (
         <div className="w-full h-full grid place-items-center">
           <Loader2 className="h-10 w-10 animate-spin" />
         </div>
       ) : (
         <>
-          <h3 className="text-xl font-semibold mb-2">Document Requests</h3>
+          <h3 className="text-lg md:text-xl font-semibold mb-2">
+            Document Requests
+          </h3>
 
           <DataTable columns={columns} data={requests} />
         </>

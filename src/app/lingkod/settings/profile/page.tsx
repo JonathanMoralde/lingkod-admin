@@ -37,7 +37,7 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../../context/auth-context";
 
 export type CurrentAdmin = {
   id: string;
@@ -184,8 +184,8 @@ const Profile = () => {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="flex gap-16 mb-10">
-                <div className="w-1/2 space-y-4">
+              <div className="flex flex-col md:flex-row gap-4 md:gap-16 mb-10">
+                <div className="md:w-1/2 space-y-4">
                   <FormField
                     control={form.control}
                     name="first_name"
@@ -244,7 +244,7 @@ const Profile = () => {
                   />
                 </div>
 
-                <div className="w-1/2 space-y-4">
+                <div className="md:w-1/2 space-y-4">
                   <FormField
                     control={form.control}
                     name="position"
@@ -325,7 +325,7 @@ const Profile = () => {
                 <Button
                   type="submit"
                   variant="default"
-                  className={`bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/4 ${
+                  className={`bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/2 md:w-1/4 ${
                     isEdit ? "" : "hidden"
                   }`}
                 >

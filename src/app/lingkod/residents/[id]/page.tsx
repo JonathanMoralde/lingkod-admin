@@ -54,7 +54,7 @@ const ResidentDetail = (props: Props) => {
 
         setData({
           id: doc.id,
-          full_name: docData.joined_full_name, // Omit 'id' from the User type to avoid conflicts
+          full_name: docData.joined_full_name,
           zone: docData.zone,
           email: docData.email,
           status: docData.status,
@@ -91,25 +91,27 @@ const ResidentDetail = (props: Props) => {
   };
 
   return (
-    <ScrollArea className="bg-indigo-950 rounded-xl px-4 py-10 h-[80vh]">
+    <ScrollArea className="bg-indigo-950 rounded-xl px-4 py-10 lg:h-[80vh]">
       {loading && data == undefined ? (
-        <div className="w-full h-[80vh] grid place-items-center">
+        <div className="w-full lg:h-[80vh] grid place-items-center">
           <Loader2 className="h-10 w-10 animate-spin" />
         </div>
       ) : (
         <>
-          <div className="flex items-center text-center mb-10">
+          <div className="flex items-center lg:text-center mb-10">
             <Button variant="ghost" size="icon" className=" justify-start">
               <Link href="/lingkod/residents">
                 <ArrowLeft />
               </Link>
             </Button>
 
-            <h3 className="text-xl font-semibold w-full">User Information</h3>
+            <h3 className="text-lg md:text-xl font-semibold w-full">
+              User Information
+            </h3>
           </div>
-          <div className="flex mb-10 gap-10">
+          <div className="flex flex-col items-center lg:flex-row mb-10 gap-10">
             {/* image & btn */}
-            <div className="w-1/4 h-full me-4">
+            <div className="w-full lg:w-1/4 h-1/4 lg:h-full lg:me-4">
               <div className="relative mx-auto w-52 h-52 rounded-full overflow-hidden">
                 <Image
                   src={data?.profile_pic ?? ""}
@@ -121,7 +123,7 @@ const ResidentDetail = (props: Props) => {
               </div>
             </div>
             {/* details */}
-            <div className="flex w-1/2 justify-between">
+            <div className="flex flex-col lg:flex-row w-full lg:w-1/2 justify-between text-sm md:text-base">
               <div>
                 <p className="mb-4 font-light">
                   <span className="font-semibold">First Name: </span>
@@ -171,10 +173,10 @@ const ResidentDetail = (props: Props) => {
 
           {data?.status !== undefined && data.status == "pending" ? (
             <div className="w-full">
-              <h3 className="text-xl font-semibold text-center w-full mb-10">
+              <h3 className="text-lg md:text-xl font-semibold text-center w-full mb-10">
                 Submitted ID
               </h3>
-              <div className="relative mx-auto w-[600px] h-80 mb-10">
+              <div className="relative mx-auto lg:w-[600px] h-80 mb-10">
                 <Image
                   src={data?.valid_id ?? ""}
                   alt="Background Image"

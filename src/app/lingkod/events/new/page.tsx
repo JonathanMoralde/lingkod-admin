@@ -190,17 +190,8 @@ const NewEvent = () => {
     }
   };
 
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   return (
-    <ScrollArea className="bg-indigo-950 rounded-xl px-4 py-10 h-[80vh]">
+    <ScrollArea className="bg-indigo-950 rounded-xl px-4 py-10 min-h-[80vh]">
       <div className="flex items-center  mb-4">
         <Button variant="ghost" size="icon" className=" justify-start">
           <Link href="/lingkod/events/all">
@@ -208,10 +199,12 @@ const NewEvent = () => {
           </Link>
         </Button>
 
-        <h3 className="text-xl font-semibold w-full">Post New Event</h3>
+        <h3 className="text-lg md:text-xl font-semibold w-full">
+          Post New Event
+        </h3>
       </div>
-      <div className="flex justify-between">
-        <div className="w-1/3 me-5">
+      <div className="flex flex-col-reverse items-center md:flex-row md:justify-between">
+        <div className="md:w-1/2 lg:w-1/3 me-5">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
@@ -437,9 +430,9 @@ const NewEvent = () => {
             </form>
           </Form>
         </div>
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           {imagePreview ? (
-            <div className="relative w-3/4 h-3/4 mx-auto">
+            <div className="relative w-full h-52 lg:w-3/4 lg:h-3/4 mx-auto">
               <Image
                 src={imagePreview}
                 alt="Preview Image"

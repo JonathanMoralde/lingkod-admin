@@ -104,7 +104,7 @@ const EventCard = (props: Props) => {
     }
   };
   return (
-    <Card className="w-[23%] h-96 rounded-xl overflow-hidden">
+    <Card className="md:w-[31%] lg:w-[23%] h-96 rounded-xl overflow-hidden">
       <CardHeader className="relative w-full h-1/2 mt-0 space-y-0">
         {isLoading ? (
           <Loader2 className="h-10 w-10 animate-spin z-20 absolute right-0 top-0" />

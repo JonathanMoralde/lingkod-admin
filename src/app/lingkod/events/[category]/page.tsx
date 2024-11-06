@@ -100,15 +100,15 @@ const Events = ({ params }: Props) => {
   };
 
   return (
-    <ScrollArea className="bg-indigo-950 rounded-xl h-[80vh]">
+    <ScrollArea className="bg-indigo-950 rounded-xl min-h-[80vh]">
       {loading ? (
         <div className="w-full h-[80vh] grid place-items-center">
           <Loader2 className="h-10 w-10 animate-spin" />
         </div>
       ) : (
         <div className="py-10 px-4">
-          <div className="mb-2 flex justify-between">
-            <h3 className="text-xl font-semibold ">Events</h3>
+          <div className="md:mb-2 mb-4 flex justify-between">
+            <h3 className="text-lg md:text-xl font-semibold ">Events</h3>
 
             <Link href="/lingkod/events/new">
               <Button
@@ -122,7 +122,7 @@ const Events = ({ params }: Props) => {
 
           <FilterBtn currentCategory={category} />
 
-          <div className="flex flex-wrap w-full gap-4">
+          <div className="flex justify-center lg:justify-start flex-col md:flex-row md:flex-wrap w-full gap-4">
             {data.map((event, index) => (
               <EventCard
                 title={event.event_title}

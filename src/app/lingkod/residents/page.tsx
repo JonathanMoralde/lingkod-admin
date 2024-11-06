@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 
 import { db } from "@/config/firebase";
 import { collection, getDocs, where, query } from "firebase/firestore";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const Residents = () => {
   const [data, setData] = useState<User[]>([]);
@@ -49,14 +50,14 @@ const Residents = () => {
   }, []);
 
   return (
-    <section className="bg-indigo-950 rounded-xl px-4 py-10 h-[80vh]">
+    <section className="bg-indigo-950 rounded-xl px-4 py-10 min-h-[80vh]">
       {loading ? (
         <div className="w-full h-full grid place-items-center">
           <Loader2 className="h-10 w-10 animate-spin" />
         </div>
       ) : (
         <>
-          <h3 className="text-xl font-semibold mb-2">Records</h3>
+          <h3 className="text-lg md:text-xl font-semibold mb-2">Records</h3>
 
           <DataTable columns={columns} data={data} />
         </>

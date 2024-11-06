@@ -22,7 +22,7 @@ const FilterBtn = ({ currentCategory }: Props) => {
   };
 
   return (
-    <div className="mb-6 w-1/4 flex gap-4 items-center">
+    <div className="mb-6 w-3/4 md:w-1/2 lg:w-1/4 flex gap-4 items-center">
       <p className="font-light">Filter:</p>
       <Select
         onValueChange={handleSelectChange}

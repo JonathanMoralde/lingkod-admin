@@ -67,7 +67,7 @@ const BillDetails = (props: Props) => {
   }, []);
 
   return (
-    <section className="bg-indigo-950 rounded-xl px-4 py-10  h-[80vh]">
+    <section className="bg-indigo-950 rounded-xl px-4 py-10 h-[80vh]">
       {loading && billDetail === undefined ? (
         <div className="w-full h-full grid place-items-center">
           <Loader2 className="h-10 w-10 animate-spin" />
@@ -81,11 +81,11 @@ const BillDetails = (props: Props) => {
               </Link>
             </Button>
 
-            <h3 className="text-xl font-semibold w-full">
+            <h3 className="text-lg md:text-xl font-semibold w-full">
               BAPA Consumption Bill
             </h3>
           </div>
-          <div className="w-1/2 text-gray-50">
+          <div className="md:w-1/2 text-gray-50 text-sm md:text-base">
             <article className="mb-4 flex gap-4">
               <div>
                 <h3>BAPA Member Name:</h3>

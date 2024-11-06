@@ -28,8 +28,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// import { Admin } from "../../columns";
-// import { getAdminData, handleEdit } from "../../actions";
 import { useRouter } from "next/navigation";
 import { db } from "@/config/firebase";
 import {
@@ -40,12 +38,6 @@ import {
   query,
   updateDoc,
   doc,
-  Timestamp,
-  addDoc,
-  orderBy,
-  deleteDoc,
-  getDoc,
-  setDoc,
 } from "firebase/firestore";
 
 const formSchema = z.object({
@@ -120,14 +112,6 @@ const EditOfficer = (props: Props) => {
   ) => {
     setLoading(true);
     try {
-      // await handleEdit(
-      //   id,
-      //   data.first_name,
-      //   data.middle_name,
-      //   data.last_name,
-      //   data.position,
-      //   data.gender
-      // );
       const userDocRef = doc(db, "users", id);
 
       const eventData: any = {
@@ -165,7 +149,7 @@ const EditOfficer = (props: Props) => {
     }
   };
   return (
-    <ScrollArea className="bg-indigo-950 rounded-xl px-4  h-[80vh]">
+    <ScrollArea className="bg-indigo-950 rounded-xl px-4  min-h-[80vh]">
       {isFetching ? (
         <div className="w-full h-full grid place-items-center">
           <Loader2 className="h-10 w-10 animate-spin" />
@@ -180,13 +164,15 @@ const EditOfficer = (props: Props) => {
                 </Link>
               </Button>
 
-              <h3 className="text-xl font-semibold w-full">Edit Officer</h3>
+              <h3 className="text-lg md:text-xl font-semibold w-full">
+                Edit Officer
+              </h3>
             </div>
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="flex gap-16 mb-10">
-                  <div className="w-1/2 space-y-4">
+                <div className="flex flex-col md:flex-row gap-4 md:gap-16 mb-10">
+                  <div className="md:w-1/2 space-y-4">
                     <FormField
                       control={form.control}
                       name="first_name"
@@ -242,7 +228,7 @@ const EditOfficer = (props: Props) => {
                     />
                   </div>
 
-                  <div className="w-1/2 space-y-4">
+                  <div className="md:w-1/2 space-y-4">
                     <FormField
                       control={form.control}
                       name="position" // Make sure this matches your schema field name
@@ -332,7 +318,7 @@ const EditOfficer = (props: Props) => {
                   <Button
                     type="submit"
                     variant="default"
-                    className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/4"
+                    className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/2 md:w-1/4"
                   >
                     {loading ? (
                       <Loader2 className="h-10 w-10 animate-spin" />

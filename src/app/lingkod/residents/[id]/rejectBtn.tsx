@@ -31,7 +31,7 @@ const RejectBtn = ({ id, changeStatus }: Props) => {
   return (
     <Button
       variant="destructive"
-      className="bg-red-600  rounded hover:bg-[#ff1a1ab6] shadow-lg font-semibold tracking-wide text-indigo-950 w-1/6"
+      className="bg-red-600  rounded hover:bg-[#ff1a1ab6] shadow-lg font-semibold tracking-wide text-indigo-950 w-1/4 lg:w-1/6 text-sm md:text-base"
       onClick={handleReject}
     >
       {loading ? <Loader2 className="h-10 w-10 animate-spin" /> : "Reject"}

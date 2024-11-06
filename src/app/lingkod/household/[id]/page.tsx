@@ -58,7 +58,7 @@ const HouseholdDetails = (props: Props) => {
   }, []);
 
   return (
-    <ScrollArea className="bg-indigo-950 rounded-xl px-4   h-[80vh]">
+    <ScrollArea className="bg-indigo-950 rounded-xl px-4   min-h-[80vh]">
       {loading ? (
         <div className="w-full h-[80vh] grid place-items-center">
           <Loader2 className="h-10 w-10 animate-spin" />
@@ -72,10 +72,12 @@ const HouseholdDetails = (props: Props) => {
               </Link>
             </Button>
 
-            <h3 className="text-xl font-semibold w-full">Household details</h3>
+            <h3 className="text-lg md:text-xl font-semibold w-full">
+              Household details
+            </h3>
           </div>
 
-          <article className="mb-4 flex gap-4">
+          <article className="mb-4 flex gap-4 text-sm md:text-base">
             <div className="text-gray-100">
               <h3>Household Head: </h3>
               <h3>Address: </h3>
@@ -94,7 +96,7 @@ const HouseholdDetails = (props: Props) => {
           </article>
 
           <article>
-            <p className="mb-4">Members:</p>
+            <p className="mb-4 text-sm md:text-base">Members:</p>
 
             <DataTable
               columns={columns}

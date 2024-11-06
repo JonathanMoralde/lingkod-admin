@@ -31,7 +31,7 @@ const ApproveBtn = ({ id, changeStatus }: Props) => {
   return (
     <Button
       variant="default"
-      className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/6"
+      className="bg-white  rounded hover:bg-[#ffffffc6] shadow-lg font-semibold tracking-wide text-indigo-950 me-5 w-1/4 lg:w-1/6 text-sm md:text-base"
       onClick={handleApprove}
     >
       {isLoading ? <Loader2 className="h-10 w-10 animate-spin" /> : "Approve"}

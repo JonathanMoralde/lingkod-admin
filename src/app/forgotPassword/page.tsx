@@ -19,7 +19,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "@/app/context/auth-context";
 import { auth } from "@/config/firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
 
@@ -60,8 +60,8 @@ const ForgotPassword = () => {
 
   return (
     <main className="relative overflow-hidden bg-indigo-900 min-h-screen">
-      <div className="absolute rotate-12 top-[-35rem] left-[-30rem]">
-        <div className="relative w-[81.25rem] h-[81.25rem]">
+      <div className="absolute rotate-12 top-[-35rem] left-[-26rem] md:top-[-35rem] md:left-[-30rem]">
+        <div className="relative w-[60rem] h-[60rem] md:w-[81.25rem] md:h-[81.25rem]">
           <Image
             className=" "
             src="/1.svg"
@@ -73,10 +73,10 @@ const ForgotPassword = () => {
         </div>
       </div>
       <div
-        className="absolute rotate-12 bottom-[-45rem] right-[-30rem] 
+        className="absolute rotate-12 bottom-[-30rem] right-[-25rem] md:bottom-[-45rem] md:right-[-30rem] 
       "
       >
-        <div className="relative w-[81.25rem] h-[81.25rem]">
+        <div className="relative w-[60rem] h-[60rem] md:w-[81.25rem] md:h-[81.25rem]">
           <Image
             className=""
             src="/2.svg"
@@ -88,8 +88,8 @@ const ForgotPassword = () => {
         </div>
       </div>
 
-      <section className="h-screen flex items-center my-auto w-1/3 mx-auto relative">
-        <div className="flex justify-between items-center h-1/2 w-full bg-[#4844B4] rounded-3xl border-white border-2 shadow-lg">
+      <section className="h-screen flex items-center my-auto w-3/4 md:w-1/2 lg:w-1/3 mx-auto relative">
+        <div className="flex justify-between items-center h-1/2 md:h-1/3 lg:h-1/2 w-full bg-[#4844B4] rounded-3xl border-white border-2 shadow-lg">
           {/* login form */}
 
           <div className="w-full px-10 py-20  h-full rounded-2xl relative">
